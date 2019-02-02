@@ -1,0 +1,51 @@
+package com.librarySystem.model;
+
+/**
+ * This class represents the item and states its ID, name and quantity.
+ * It will be used in the HashMap as the value.
+ * 
+ * @author shivani
+ * @version 1.0
+ *
+ */
+public class Item {
+	private String ID;
+	private String name;
+	private int quantity;
+	/**
+	 * @return the iD
+	 */
+	public String getID() {
+		return ID;
+	}
+	/**
+	 * @param iD the iD to set
+	 */
+	public void setID(String iD) {
+		this.ID = iD;
+	}
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @return the quantity
+	 */
+	public int getQuantity() {
+		return quantity;
+	}
+	/**
+	 * @param quantity the quantity to set
+	 */
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+}
