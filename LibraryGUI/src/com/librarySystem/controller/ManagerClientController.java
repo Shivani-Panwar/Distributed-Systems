@@ -3,7 +3,13 @@ package com.librarySystem.controller;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import com.librarySystem.constant.University;
+import com.librarySystem.model.Item;
+import com.librarySystem.utility.Utilities;
+import com.librarySystem.service.RMIService;
 
 /**
  * This class defines the managerClient method which is used for capturing the inputs from the user.
@@ -23,7 +29,17 @@ public class ManagerClientController {
 		String itemID=null;
 		String itemName=null;
 		int quantity=0;
-		Registry getRegister = LocateRegistry.getRegistry(9999);
+		University univ=null;
+		RMIService service = new RMIService();
+		
+		if(Utilities.CodeCheck(managerID, false, "CON", false)){
+			univ=University.CONCORDIA;
+		}else if(Utilities.CodeCheck(managerID, false, "MCG", false)){
+			univ=University.MCGILL;
+		}else{
+			univ=University.MONTREAL;
+		}
+		
 		System.out.println("Select the action to be performed:\n1.Add an item.\n2.Find an item.\n3.Delete an item.\n  ");
 		int selection= managerInp.nextInt();
 		switch(selection)
@@ -35,9 +51,21 @@ public class ManagerClientController {
 			itemName=managerInp.nextLine();
 			System.out.println("Enter the number items to be added: ");
 			quantity=managerInp.nextInt();
+			if(service.addItem(univ, managerID, itemID, itemName, quantity)){
+				System.out.println("The item was added successfully!!");
+			}else{
+				System.out.println("The item could not be added!!");
+			}
 			break;
 			
 		case 2:
+			ArrayList<Item> itemsfound = service.listItemAvailability(univ, managerID);
+			if(itemsfound.isEmpty()==false){
+				System.out.println("Items found: ");
+				for(int i=0;i<itemsfound.size();i++){
+					System.out.println(itemsfound.get(i));
+				}
+			}
 			break;
 		
 		case 3:
@@ -47,6 +75,13 @@ public class ManagerClientController {
 			itemName=managerInp.nextLine();
 			System.out.println("Enter the number items to be removed: ");
 			quantity=managerInp.nextInt();
+			if(service.removeItem(univ, managerID, itemID, quantity)){
+				System.out.println("The item was successfully returned!!");
+			}
+			else{
+				System.out.println("The item cannot be returned!!");
+			}
+			
 			break;
 			
 		}
