@@ -6,8 +6,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.librarySystem.constant.University;
@@ -24,7 +22,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
 	private CopyOnWriteArraySet<String> ClientList;
 
 	public LibraryImpl() throws RemoteException {

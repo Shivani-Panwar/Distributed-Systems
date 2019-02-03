@@ -66,7 +66,6 @@ public class RMIService {
 	public boolean borrowItem(University university, String userID, String itemID, int numberOfDays) {
 
 		LibraryInterface library = client.getLibrary(university);
-		ArrayList<Item> result = null;
 		if (library != null) {
 			try {
 				return library.borrowItem(userID, itemID, numberOfDays);

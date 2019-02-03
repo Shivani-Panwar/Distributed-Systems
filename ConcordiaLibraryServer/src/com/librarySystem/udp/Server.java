@@ -1,38 +1,46 @@
 package com.librarySystem.udp;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 import com.librarySystem.constant.Constants;
 
 public class Server {
-	public void replyToClient() {
-		DatagramSocket socket = null;
-		byte[] buffer = new byte[4000];
-		try {
-			socket = new DatagramSocket();
-
-			while (true) {
-				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-				socket.receive(request);
-
-				DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), request.getAddress(),
-						request.getPort());
-				socket.send(reply);
-			}
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (socket != null) {
-				socket.close();
-			}
-		}
+	@SuppressWarnings("resource")
+	public void replyToClient() throws IOException {
+		 // server is listening on port 5056 
+        ServerSocket ss = new ServerSocket(Constants.OWN_SERVER_UDP_PORT); 
+          
+        // running infinite loop for getting 
+        // client request 
+        while (true)  
+        { 
+            Socket s = null; 
+              
+            try 
+            { 
+                // socket object to receive incoming client requests 
+                s = ss.accept(); 
+                  
+                // obtaining input and out streams 
+                DataInputStream dis = new DataInputStream(s.getInputStream()); 
+                DataOutputStream dos = new DataOutputStream(s.getOutputStream());  
+  
+                // create a new thread object 
+                Thread t = new ClientHandler(s, dis, dos); 
+  
+                // Invoking the start() method 
+                t.start(); 
+                  
+            } 
+            catch (Exception e){ 
+                s.close(); 
+                e.printStackTrace(); 
+            } 
+        } 
 
 	}
 

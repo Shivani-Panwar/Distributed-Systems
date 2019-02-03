@@ -12,6 +12,17 @@ public class Item {
 	private String ID;
 	private String name;
 	private int quantity;
+	
+	public Item(){
+		
+	}
+	
+	public Item (String ID, String name, int quantity){
+		this.ID = ID;
+		this.name = name;
+		this.quantity = quantity;
+	}
+	
 	/**
 	 * @return the iD
 	 */
