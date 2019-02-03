@@ -9,6 +9,13 @@ package com.librarySystem.utility;
  */
 public class Utilities {
  
+	/**
+	 * @param str
+	 * @param clientCheck
+	 * @param code
+	 * @param isManager
+	 * @return
+	 */
 	public static boolean CodeCheck(String str, boolean clientCheck, String code, boolean isManager){
 		
 		str = (clientCheck)?str.substring(0,4):str.substring(0,3);

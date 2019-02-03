@@ -46,8 +46,8 @@ public class Utilities {
 			File logFile = new File(FilePath);
 			logFile.createNewFile();
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
-			String toWrite = "Client ID : " + memberID + " - Action Performed : " + actionPerformed + " Message : " + reply
-					+ " Time : " + dateFormat.format(new Date());
+			String toWrite = "Client ID : " + memberID + " - Action Performed : " + actionPerformed + " Message : "
+					+ reply + " Time : " + dateFormat.format(new Date());
 			System.out.println(toWrite);
 			wr.newLine();
 			wr.write(toWrite);
@@ -109,5 +109,36 @@ public class Utilities {
 			Registry register = LocateRegistry.createRegistry(PortNumber);
 			System.out.println("New Registery is created");
 		}
+	}
+
+	/**
+	 * @param str
+	 * @param clientCheck
+	 * @param code
+	 * @param isManager
+	 * @return
+	 */
+	public static boolean CodeCheck(String str, boolean clientCheck, String code, boolean isManager) {
+
+		str = (clientCheck) ? str.substring(0, 4) : str.substring(0, 3);
+		if (clientCheck) {
+			if (str.equals(code)) {
+				if (isManager) {
+					if (str.endsWith("M")) {
+						return true;
+					}
+				} else {
+					if (str.endsWith("U")) {
+						return true;
+					}
+				}
+			}
+		} else {
+			if (str.equals(code)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
