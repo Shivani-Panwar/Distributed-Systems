@@ -10,6 +10,12 @@ import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
 import com.librarySystem.utility.Utilities;
 
+/**
+ * 
+ * @author Shivani
+ * @version 1.0
+ *
+ */
 public class Client {
 
 	private String requestToServer(String message, int universityPort) {
@@ -52,8 +58,11 @@ public class Client {
 
 		ArrayList<Item> items = new ArrayList<>();
 
-		items.addAll(Utilities.getItemsFromReply(requestToServer(message, Constants.OTHER_SERVER_UDP_PORT_I)));
-		items.addAll(Utilities.getItemsFromReply(requestToServer(message, Constants.OTHER_SERVER_UDP_PORT_II)));
+		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
+		for(University library : remoteLibraries){
+			items.addAll(Utilities.getItemsFromReply(requestToServer(message, library.getUdpPort())));
+		}
+		
 
 		return items;
 	}
@@ -62,9 +71,10 @@ public class Client {
 
 		String message = Utilities.getServerMessageString(Constants.BORROW_ITEM_ACTION, userID, itemID, days);
 
+		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
 		return Boolean
-				.valueOf(requestToServer(message, (University.MCGILL.getCode().equals(Utilities.getUniversity(itemID))
-						? Constants.OTHER_SERVER_UDP_PORT_I : Constants.OTHER_SERVER_UDP_PORT_II)));
+				.valueOf(requestToServer(message, (remoteLibraries.get(0).equals(Utilities.getUniversity(itemID))
+						? remoteLibraries.get(0).getUdpPort() : remoteLibraries.get(1).getUdpPort())));
 
 	}
 
@@ -72,18 +82,21 @@ public class Client {
 
 		String message = Utilities.getServerMessageString(Constants.ADD_TO_QUEUE_ACTION, userID, itemID, 0);
 
+		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
 		return Boolean
-				.valueOf(requestToServer(message, (University.MCGILL.getCode().equals(Utilities.getUniversity(itemID))
-						? Constants.OTHER_SERVER_UDP_PORT_I : Constants.OTHER_SERVER_UDP_PORT_II)));
+				.valueOf(requestToServer(message, (remoteLibraries.get(0).equals(Utilities.getUniversity(itemID))
+						? remoteLibraries.get(0).getUdpPort() : remoteLibraries.get(1).getUdpPort())));
 
 	}
 
 	public boolean returnItemToRemoteLibrary(String userID, String itemID) {
 
 		String message = Utilities.getServerMessageString(Constants.RETURN_ITEM_ACTION, userID, itemID, 0);
+		
+		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
 		return Boolean
-				.valueOf(requestToServer(message, (University.MCGILL.getCode().equals(Utilities.getUniversity(itemID))
-						? Constants.OTHER_SERVER_UDP_PORT_I : Constants.OTHER_SERVER_UDP_PORT_II)));
+				.valueOf(requestToServer(message, (remoteLibraries.get(0).equals(Utilities.getUniversity(itemID))
+						? remoteLibraries.get(0).getUdpPort() : remoteLibraries.get(1).getUdpPort())));
 	}
 
 }

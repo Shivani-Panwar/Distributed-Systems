@@ -7,6 +7,13 @@ import com.librarySystem.constant.University;
 import com.librarySystem.dao.LibraryImpl;
 import com.librarySystem.utility.Utilities;
 
+
+/**
+ * 
+ * @author Shivani
+ * @version 1.0
+ *
+ */
 public class Server {
 
 	public void URLRegistry() {

@@ -3,10 +3,16 @@ package com.librarySystem.rmi;
 import java.rmi.Naming;
 
 import com.librarySystem.constant.Constants;
-import com.librarySystem.constant.University;
 import com.librarySystem.dao.LibraryImpl;
 import com.librarySystem.utility.Utilities;
 
+
+/**
+ * 
+ * @author Shivani
+ * @version 1.0
+ *
+ */
 public class Server {
 
 	public void URLRegistry() {
@@ -16,7 +22,7 @@ public class Server {
 			Utilities.initRegistry(Constants.PORT);
 
 			LibraryImpl LibImpl = new LibraryImpl();
-			String registryURL = "rmi://"+Constants.HOSTANAME+":"+Constants.PORT+"/"+University.CONCORDIA.getCode()+"";
+			String registryURL = "rmi://"+Constants.HOSTANAME+":"+Constants.PORT+"/"+Constants.UNIVERSITY.getCode()+"";
 
 			Naming.rebind(registryURL, LibImpl);
 			System.out.println("Server is Running...");

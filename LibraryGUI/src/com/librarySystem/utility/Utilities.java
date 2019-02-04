@@ -1,5 +1,7 @@
 package com.librarySystem.utility;
 
+import com.librarySystem.constant.University;
+
 /**
  * This class contains utilities that the client uses.
  * 
@@ -39,5 +41,15 @@ public class Utilities {
 		}
 		
 		return false;
-	}	
+	}
+	
+	public static University getUniversity(String userId){
+		if(University.CONCORDIA.getCode().equals(userId.substring(0, 3))){
+			return University.CONCORDIA;
+		} else if(University.MCGILL.getCode().equals(userId.substring(0, 3))){
+			return University.MCGILL;	
+		} else {
+			return University.MONTREAL;
+		}
+	}
 }

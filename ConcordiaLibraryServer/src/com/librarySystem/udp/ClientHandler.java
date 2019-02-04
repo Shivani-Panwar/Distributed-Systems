@@ -10,6 +10,12 @@ import com.librarySystem.dao.LibraryImpl;
 import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.utility.Utilities;
 
+/**
+ * 
+ * @author Shivani
+ * @version 1.0
+ *
+ */
 public class ClientHandler extends Thread {
 	final DatagramPacket in;
 	final DatagramSocket ds;

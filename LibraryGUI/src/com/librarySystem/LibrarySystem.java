@@ -1,10 +1,11 @@
 package com.librarySystem;
 
-import java.io.IOException;
+import java.util.Scanner;
 
 import com.librarySystem.constant.University;
-import com.librarySystem.dao.Client;
-import com.librarySystem.dao.LibraryInterface;
+import com.librarySystem.controller.ManagerClientController;
+import com.librarySystem.controller.UserClientController;
+import com.librarySystem.utility.Utilities;
 
 /**
  * This class takes the input from the member and then determines which library
@@ -18,6 +19,7 @@ public class LibrarySystem {
 
 	public static void main(String[] args) {
 		
+		/*
 		Client client = new Client();
 		LibraryInterface concordiaLibrary = client.getLibrary(University.CONCORDIA);
 		LibraryInterface mcgillLibrary = client.getLibrary(University.MCGILL);
@@ -28,9 +30,9 @@ public class LibrarySystem {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
-		/*Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		// Capture the member ID
 		System.out.println("Enter your ID: ");
 		String memberID = sc.nextLine();
@@ -56,7 +58,7 @@ public class LibrarySystem {
 			}
 		} else {
 			System.out.println("Enter a valid ID!!");
-		}*/
+		}
 
 	}
 

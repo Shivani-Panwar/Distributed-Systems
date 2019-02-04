@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import com.librarySystem.constant.University;
+import com.librarySystem.constant.Constants;
 import com.librarySystem.model.Item;
 import com.librarySystem.udp.Client;
 import com.librarySystem.utility.Utilities;
@@ -17,6 +17,7 @@ import com.librarySystem.utility.Utilities;
  * This class implements the remote interface LibraryInterface
  * 
  * @author Shivani
+ * @version 1.0
  *
  */
 public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface {
@@ -68,12 +69,12 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		if (result == true) {
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Addition of Item", managerID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Addition of Item", managerID,
 					"The item has been added to the inventory successfully!!");
 			Utilities.clientLog(managerID, "Addition of Item",
 					"The item has been added to the inventory successfully!!");
 		} else {
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Addition of Item", managerID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Addition of Item", managerID,
 					"The item cannot be added to the inventory!!");
 			Utilities.clientLog(managerID, "Addition of Item", "The item cannot be added to the inventory!!");
 		}
@@ -111,11 +112,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		if (result == true) {
 			Utilities.clientLog(managerID, "Removal of Item",
 					"The item has been successfully removed from the inventory!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Removal of Item", managerID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Removal of Item", managerID,
 					"The item has been successfully removed from the inventory!!");
 		} else {
 			Utilities.clientLog(managerID, "Removal of Item", "The item could not be removed from the inventory!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Removal of Item", managerID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Removal of Item", managerID,
 					"The item could not be removed from the inventory!!");
 		}
 		return result;
@@ -132,7 +133,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		Utilities.clientLog(managerID, "Requested List of Items", "The Items have been listed successfully");
-		Utilities.serverLog(University.CONCORDIA.getCode(), "Requested List of Items", managerID,
+		Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Requested List of Items", managerID,
 				"The Items have been listed successfully");
 
 		return ResultList;
@@ -144,7 +145,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		boolean result = false;
 		boolean alreadyborrowed = false;
 		// Check if the request is for an item in the user's library
-		if (Utilities.getUniversity(itemID).equals(University.CONCORDIA.getCode())) {
+		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY.getCode())) {
 			// Check if external client has already borrowed an item
 			if (!Utilities.CodeCheck(userID, false, itemID.substring(0, 3), false)) {
 				if (ClientList.contains(userID)) {
@@ -203,15 +204,15 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// Log file generation
 		if (result == true) {
 
-			if (!Utilities.getUniversity(userID).getCode().equals(University.CONCORDIA.getCode())) {
+			if (!Utilities.getUniversity(userID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 				ClientList.add(userID);
 			}
 			Utilities.clientLog(userID, "Borrwing an Item", "Item borrowed Successfully!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Borrwing an Item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userID,
 					"Item borrowed Successfully!!");
 		} else {
 			Utilities.clientLog(userID, "Borrwing an Item", "Item could not be borrowed!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Borrwing an Item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userID,
 					"Item could not be borrowed!!");
 		}
 		return result;
@@ -229,7 +230,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			}
 		}
 
-		if (Utilities.getUniversity(userID).getCode().equals(University.CONCORDIA.getCode())) {
+		if (Utilities.getUniversity(userID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 			ArrayList<Item> items = new ArrayList<>();
 			Client findinothers = new Client();
 			items = findinothers.findItemsOnRemoteLibraries(userID, itemName);
@@ -242,11 +243,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		if (ResultList.size() != 0) {
 
 			Utilities.clientLog(userID, "Finding an item", "Items listed successfully!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Finding an item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Finding an item", userID,
 					"Items listed successfully!!");
 		} else {
 			Utilities.clientLog(userID, "Finding an item", "No items with the given name found!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Finding an item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Finding an item", userID,
 					"No items with the given name found!!");
 		}
 		return ResultList;
@@ -258,7 +259,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		int i = 0;
 		boolean flag = false;
 		boolean result = false;
-		if (Utilities.getUniversity(itemID).equals(University.CONCORDIA.getCode())) {
+		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY.getCode())) {
 		// When the user wants to return a book the quantity is increased by 1.
 		
 		while (i < userList.size()) {
@@ -290,11 +291,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				ClientList.remove(userID);
 			}
 			Utilities.clientLog(userID, "Returning an Item", "The item was successfully returned!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Returning an Item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
 					"The item was successfully returned!!");
 		} else {
 			Utilities.clientLog(userID, "Returning an Item", "The item cannot be returned!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Returning an Item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
 					"The item cannot be returned!!");
 		}
 		return result;
@@ -346,11 +347,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// Log file generation
 		if (result == true) {
 			Utilities.clientLog(userID, "Wait queue", "The user was successfully added to the wait queue!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Wait queue", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Wait queue", userID,
 					"The user was successfully added to the wait queue!!");
 		} else {
 			Utilities.clientLog(userID, "Wait queue", "The user cannot be added to the wait queue!!");
-			Utilities.serverLog(University.CONCORDIA.getCode(), "Wait queue", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Wait queue", userID,
 					"The user cannot be added to the wait queue!!");
 		}
 		return result;

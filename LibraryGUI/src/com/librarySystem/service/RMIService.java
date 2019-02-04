@@ -8,6 +8,12 @@ import com.librarySystem.dao.Client;
 import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.model.Item;
 
+/**
+ * 
+ * @author Shivani
+ * @version 1.0
+ *
+ */
 public class RMIService {
 
 	private static Client client;

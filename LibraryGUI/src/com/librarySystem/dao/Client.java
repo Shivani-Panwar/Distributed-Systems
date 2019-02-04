@@ -8,6 +8,12 @@ import java.rmi.registry.Registry;
 import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
 
+/**
+ * 
+ * @author Shivani
+ * @version 1.0
+ *
+ */
 public class Client {
 
 	public LibraryInterface getLibrary(University university) {
