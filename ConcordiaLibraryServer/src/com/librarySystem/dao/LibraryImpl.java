@@ -10,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
+import com.librarySystem.udp.Client;
 import com.librarySystem.utility.Utilities;
 
 /**
@@ -141,17 +142,20 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	public synchronized boolean borrowItem(String userID, String itemID, int numberOfDays) {
 
 		boolean result = false;
-		boolean alreadyborrowed=false;
-		// Check if external client has already borrowed an item
-		if (!Utilities.CodeCheck(userID, false, itemID.substring(0, 3), false)) {
-			if (ClientList.contains(userID)) {
-				alreadyborrowed= true;
-			}else {
-				alreadyborrowed = false;
-			} 
-		}
-				if (map != null && map.containsKey(itemID) && alreadyborrowed==false) {
+		boolean alreadyborrowed = false;
+		// Check if the request is for an item in the user's library
+		if (Utilities.getUniversity(itemID).equals(University.CONCORDIA.getCode())) {
+			// Check if external client has already borrowed an item
+			if (!Utilities.CodeCheck(userID, false, itemID.substring(0, 3), false)) {
+				if (ClientList.contains(userID)) {
+					alreadyborrowed = true;
+				} else {
+					alreadyborrowed = false;
+				}
+			}
+				if (map != null && map.containsKey(itemID) && alreadyborrowed == false) {
 					Item item = map.get(itemID);
+
 					if (item.getQuantity() != 0) {
 						item.setQuantity(item.getQuantity() - 1);
 						map.put(itemID, item);
@@ -178,51 +182,30 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 							BorrowList.put(itemID, borrowDetails);
 
 						}
-						// Add the item in the list if the list is not empty
-						else {
+					// Add the item in the list if the list is not empty
+					else {
 
-							borrowDetails = new ArrayList<>();
-							borrowDetails.add(userID);
+						borrowDetails = new ArrayList<>();
+						borrowDetails.add(userID);
 
-							BorrowList.put(itemID, borrowDetails);
-						}
+						BorrowList.put(itemID, borrowDetails);
 					}
-
 				}
-			
 
-				/*
-				 * if (map != null && map.containsKey(itemID)) { Item item =
-				 * map.get(itemID); if (item.getQuantity() != 0) {
-				 * item.setQuantity(item.getQuantity() - 1); map.put(itemID,
-				 * item); result = true;
-				 * 
-				 * //Add item and user to the list of borrowed items
-				 * ArrayList<String> borrowDetails = null; // Check if the list
-				 * of borrowed items is empty or not. if (BorrowList == null) {
-				 * 
-				 * borrowDetails = new ArrayList<>(); BorrowList = new
-				 * HashMap<>(); borrowDetails.add(userID);
-				 * 
-				 * BorrowList.put(itemID, borrowDetails);
-				 * 
-				 * } //Check if the list of borrowed items has the item ID
-				 * already else if (BorrowList.containsKey(itemID)) {
-				 * 
-				 * borrowDetails = BorrowList.get(itemID);
-				 * borrowDetails.add(userID); BorrowList.put(itemID,
-				 * borrowDetails);
-				 * 
-				 * } //Add the item in the list if the list is not empty else {
-				 * 
-				 * borrowDetails = new ArrayList<>(); borrowDetails.add(userID);
-				 * 
-				 * BorrowList.put(itemID, borrowDetails); }
-				 */
-			
+			}
+				// When the user requests an item from another library
+				else{
+				Client borrowitem = new Client();
+				result = borrowitem.borrowItemFromRemoteLibrary(userID, itemID, numberOfDays);
+			}
+		}
 
 		// Log file generation
 		if (result == true) {
+
+			if (!Utilities.getUniversity(userID).getCode().equals(University.CONCORDIA.getCode())) {
+				ClientList.add(userID);
+			}
 			Utilities.clientLog(userID, "Borrwing an Item", "Item borrowed Successfully!!");
 			Utilities.serverLog(University.CONCORDIA.getCode(), "Borrwing an Item", userID,
 					"Item borrowed Successfully!!");
@@ -246,12 +229,18 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			}
 		}
 
+		if (Utilities.getUniversity(userID).getCode().equals(University.CONCORDIA.getCode())) {
+			ArrayList<Item> items = new ArrayList<>();
+			Client findinothers = new Client();
+			items = findinothers.findItemsOnRemoteLibraries(userID, itemName);
+
+			if (items != null) {
+				ResultList.addAll(items);
+			}
+		}
 		// Log file generation
 		if (ResultList.size() != 0) {
-			
-				if (ClientList.contains(userID)) {
-					ClientList.remove(userID);
-				}
+
 			Utilities.clientLog(userID, "Finding an item", "Items listed successfully!!");
 			Utilities.serverLog(University.CONCORDIA.getCode(), "Finding an item", userID,
 					"Items listed successfully!!");
@@ -265,10 +254,13 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 	@Override
 	public boolean returnItem(String userID, String itemID) {
-		// When the user wants to return a book the quantity is increased by 1.
 		ArrayList<String> userList = BorrowList.get(itemID);
 		int i = 0;
 		boolean flag = false;
+		boolean result = false;
+		if (Utilities.getUniversity(itemID).equals(University.CONCORDIA.getCode())) {
+		// When the user wants to return a book the quantity is increased by 1.
+		
 		while (i < userList.size()) {
 			if (userList.get(i) == userID) {
 				flag = true;
@@ -277,7 +269,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 
 		// When the user wants to return a book the quantity is increased by 1.
-		boolean result = false;
+		
 		if (flag == true) {
 			if (map != null && map.containsKey(itemID)) {
 				Item item = map.get(itemID);
@@ -288,11 +280,14 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				result = false;
 			}
 		}
+		}else{
+			Client returnitem = new Client();
+			result = returnitem.returnItemToRemoteLibrary(userID, itemID);
+		}
 		// Log file generation
-		if (result == true) 
-		{			
-			if(ClientList.contains(userID)){
-			ClientList.remove(userID);
+		if (result == true) {
+			if (ClientList.contains(userID)) {
+				ClientList.remove(userID);
 			}
 			Utilities.clientLog(userID, "Returning an Item", "The item was successfully returned!!");
 			Utilities.serverLog(University.CONCORDIA.getCode(), "Returning an Item", userID,

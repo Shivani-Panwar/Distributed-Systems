@@ -1,11 +1,9 @@
 package com.librarySystem.udp;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+
 import java.io.IOException;
-import java.net.Socket;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 
 import com.librarySystem.constant.Constants;
 import com.librarySystem.dao.LibraryImpl;
@@ -13,27 +11,25 @@ import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.utility.Utilities;
 
 public class ClientHandler extends Thread {
-	DateFormat fordate = new SimpleDateFormat("yyyy/MM/dd");
-	DateFormat fortime = new SimpleDateFormat("hh:mm:ss");
-	final DataInputStream dis;
-	final DataOutputStream dos;
-	final Socket s;
+	final DatagramPacket in;
+	final DatagramSocket ds;
 
 	// Constructor
-	public ClientHandler(Socket s, DataInputStream dis, DataOutputStream dos) {
-		this.s = s;
-		this.dis = dis;
-		this.dos = dos;
+	public ClientHandler(DatagramSocket s2, DatagramPacket request) {
+		this.ds = s2;
+		this.in = request;
 	}
 
 	@Override
 	public void run() {
 		String received;
 		try {
+			final DatagramPacket out;
+			byte[] bytes;
 
 			LibraryInterface library = new LibraryImpl();
 			
-			received = dis.readUTF();
+			received = in.getData().toString();
 
 			String action = Utilities.getActionFromMessage(received);
 
@@ -42,32 +38,40 @@ public class ClientHandler extends Thread {
 			switch (action) {
 
 			case Constants.FIND_ITEM_ACTION:
-				dos.writeUTF(Utilities.getReplyStringFromList(library.findItem(Utilities.getUserIdFromMessage(received)
-						, Utilities.getItemFromMessage(received))));
+				bytes = Utilities.getReplyStringFromList(library.findItem(Utilities.getUserIdFromMessage(received)
+						, Utilities.getItemFromMessage(received))).getBytes();
+				out= new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
+				//dos.writeUTF(Utilities.getReplyStringFromList(library.findItem(Utilities.getUserIdFromMessage(received)
+				//		, Utilities.getItemFromMessage(received))));
 				break;
 
 			case Constants.BORROW_ITEM_ACTION:
-				dos.writeUTF(String.valueOf(library.borrowItem(Utilities.getUserIdFromMessage(received)
-						, Utilities.getItemFromMessage(received), Utilities.getDaysFromMessage(received))));
+				bytes = String.valueOf(library.borrowItem(Utilities.getUserIdFromMessage(received)
+						, Utilities.getItemFromMessage(received), Utilities.getDaysFromMessage(received))).getBytes();
+				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
+				//dos.writeUTF(String.valueOf(library.borrowItem(Utilities.getUserIdFromMessage(received)
+				//		, Utilities.getItemFromMessage(received), Utilities.getDaysFromMessage(received))));
 				break;
 				
 			case Constants.ADD_TO_QUEUE_ACTION:
-				dos.writeUTF("");
+				bytes = "".getBytes();
+				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
 				break;
-
+				
+			case Constants.RETURN_ITEM_ACTION:
+				bytes= String.valueOf(library.returnItem(Utilities.getUserIdFromMessage(received)
+						, Utilities.getItemFromMessage(received))).getBytes();
+				out = new DatagramPacket(bytes,bytes.length, in.getAddress(),in.getPort());
+				break;
+				
 			default:
-				dos.writeUTF("Invalid input");
+				bytes = "Invalid input".getBytes();
+				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
 				break;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			// closing resources
-			this.dis.close();
-			this.dos.close();
-
+			
+			ds.send(out);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

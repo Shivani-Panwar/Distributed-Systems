@@ -10,10 +10,11 @@ package com.librarySystem.utility;
 public class Utilities {
  
 	/**
-	 * @param str
-	 * @param clientCheck
-	 * @param code
-	 * @param isManager
+	 * This method is used to check the code that is prefixed before the item IDs and the user IDs
+	 * @param str - The string that is to be checked
+	 * @param clientCheck - true if code is to be checked for a user, false if the code is to be checked for item
+	 * @param code - the code with which the string will be compared
+	 * @param isManager - true when the user is a manager, false in all other cases
 	 * @return
 	 */
 	public static boolean CodeCheck(String str, boolean clientCheck, String code, boolean isManager){

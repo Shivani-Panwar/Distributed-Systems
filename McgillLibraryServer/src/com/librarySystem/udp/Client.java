@@ -62,8 +62,8 @@ public class Client {
 
 		String message = Utilities.getServerMessageString(Constants.BORROW_ITEM_ACTION, userID, itemID, days);
 
-		return Boolean
-				.valueOf(requestToServer(message, (University.MCGILL.getCode().equals(Utilities.getUniversity(itemID))
+		return Boolean.valueOf(
+				requestToServer(message, (University.CONCORDIA.getCode().equals(Utilities.getUniversity(userID))
 						? Constants.OTHER_SERVER_UDP_PORT_I : Constants.OTHER_SERVER_UDP_PORT_II)));
 
 	}
@@ -72,8 +72,8 @@ public class Client {
 
 		String message = Utilities.getServerMessageString(Constants.ADD_TO_QUEUE_ACTION, userID, itemID, 0);
 
-		return Boolean
-				.valueOf(requestToServer(message, (University.MCGILL.getCode().equals(Utilities.getUniversity(itemID))
+		return Boolean.valueOf(
+				requestToServer(message, (University.CONCORDIA.getCode().equals(Utilities.getUniversity(userID))
 						? Constants.OTHER_SERVER_UDP_PORT_I : Constants.OTHER_SERVER_UDP_PORT_II)));
 
 	}

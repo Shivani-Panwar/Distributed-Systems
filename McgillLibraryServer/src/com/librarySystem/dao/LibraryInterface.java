@@ -36,7 +36,7 @@ public interface LibraryInterface extends Remote {
 	 * @throws IOException
 	 */
 	public boolean addItem(String managerID, String itemID, String itemName, int quantity)
-			throws java.rmi.RemoteException, IOException;
+			throws java.rmi.RemoteException;
 
 	/**
 	 * This method is invoked by the library manager when he needs to remove the
@@ -56,7 +56,7 @@ public interface LibraryInterface extends Remote {
 	 * @throws IOException
 	 */
 	public boolean removeItem(String managerID, String itemID, int quantity)
-			throws java.rmi.RemoteException, IOException;
+			throws java.rmi.RemoteException;
 
 	/**
 	 * This method is invoked by the library manager when he needs the list of
@@ -69,7 +69,7 @@ public interface LibraryInterface extends Remote {
 	 * @throws java.rmi.RemoteException
 	 * @throws IOException
 	 */
-	public ArrayList<Item> listItemAvailability(String managerID) throws java.rmi.RemoteException, IOException;
+	public ArrayList<Item> listItemAvailability(String managerID) throws java.rmi.RemoteException;
 
 	// Methods that the user will invoke.
 
@@ -92,7 +92,7 @@ public interface LibraryInterface extends Remote {
 	 * @throws IOException
 	 */
 	public boolean borrowItem(String userID, String itemID, int numberOfDays)
-			throws java.rmi.RemoteException, IOException;
+			throws java.rmi.RemoteException;
 
 	/**
 	 * This method is invoked by the user on the appropriate server to find the
@@ -108,7 +108,7 @@ public interface LibraryInterface extends Remote {
 	 * @throws java.rmi.RemoteException
 	 * @throws IOException
 	 */
-	public ArrayList<Item> findItem(String userID, String itemName) throws java.rmi.RemoteException, IOException;
+	public ArrayList<Item> findItem(String userID, String itemName) throws java.rmi.RemoteException;
 
 	/**
 	 * This method is invoked by the user when he wants to return a book that he
@@ -123,5 +123,5 @@ public interface LibraryInterface extends Remote {
 	 * @throws java.rmi.RemoteException
 	 * @throws IOException
 	 */
-	public boolean returnItem(String userID, String itemID) throws java.rmi.RemoteException, IOException;
+	public boolean returnItem(String userID, String itemID) throws java.rmi.RemoteException;
 }

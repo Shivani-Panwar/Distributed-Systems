@@ -2,7 +2,7 @@ package com.librarySystem;
 
 import com.librarySystem.rmi.Server;
 
-public class ConcordiaServer {
+public class McGillServer {
 
 	
 	public static void main(String[] args){

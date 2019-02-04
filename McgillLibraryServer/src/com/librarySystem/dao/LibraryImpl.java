@@ -6,10 +6,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
+import com.librarySystem.udp.Client;
 import com.librarySystem.utility.Utilities;
 
 /**
@@ -21,22 +22,20 @@ import com.librarySystem.utility.Utilities;
 public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface {
 
 	private static final long serialVersionUID = 1L;
-	
-	@SuppressWarnings("unused")
-	private Vector<String> ClientList;
+
+	private CopyOnWriteArraySet<String> ClientList;
 
 	public LibraryImpl() throws RemoteException {
 		super();
-		ClientList = new Vector<String>();
+		ClientList = new CopyOnWriteArraySet<String>();
 	}
 
 	private static HashMap<String, Item> map;
-	private static HashMap<String,ArrayList<String>> BorrowList;
+	private static HashMap<String, ArrayList<String>> BorrowList;
 	private static HashMap<String, ArrayList<String>> WaitQueue;
 
 	@Override
-	public synchronized boolean addItem(String managerID, String itemID, String itemName, int quantity)
-			throws IOException {
+	public synchronized boolean addItem(String managerID, String itemID, String itemName, int quantity) {
 
 		Item item = null;
 		boolean result = false;
@@ -71,9 +70,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		if (result == true) {
 			Utilities.serverLog(University.MCGILL.getCode(), "Addition of Item", managerID,
 					"The item has been added to the inventory successfully!!");
-			Utilities.clientLog(managerID, "Addition of Item", "The item has been added to the inventory successfully!!");
+			Utilities.clientLog(managerID, "Addition of Item",
+					"The item has been added to the inventory successfully!!");
 		} else {
-			Utilities.serverLog(University.MCGILL.getCode(), "Addition of Item", managerID, "The item cannot be added to the inventory!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Addition of Item", managerID,
+					"The item cannot be added to the inventory!!");
 			Utilities.clientLog(managerID, "Addition of Item", "The item cannot be added to the inventory!!");
 		}
 
@@ -82,11 +83,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	}
 
 	@Override
-	public synchronized boolean removeItem(String managerID, String itemID, int quantity) throws IOException {
+	public synchronized boolean removeItem(String managerID, String itemID, int quantity) {
 		// HashMap<String, Item> map = new HashMap<String, Item>();
 
 		boolean result = false;
-	
+
 		// When the manager wants to reduce the quantity of the item
 		if (map != null && map.containsKey(itemID) && quantity != 0 && map.get(itemID).getQuantity() >= quantity) {
 			Item item = map.get(itemID);
@@ -98,6 +99,8 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// When the manager wants to delete the item completely
 		else if (map.containsKey(itemID) && quantity == 0) {
 			map.remove(itemID);
+			BorrowList.remove(itemID);
+			WaitQueue.remove(itemID);
 			result = true;
 		}
 		// When the item ID is not found in the inventory
@@ -106,7 +109,8 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		if (result == true) {
-			Utilities.clientLog(managerID, "Removal of Item", "The item has been successfully removed from the inventory!!");
+			Utilities.clientLog(managerID, "Removal of Item",
+					"The item has been successfully removed from the inventory!!");
 			Utilities.serverLog(University.MCGILL.getCode(), "Removal of Item", managerID,
 					"The item has been successfully removed from the inventory!!");
 		} else {
@@ -118,7 +122,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	}
 
 	@Override
-	public synchronized ArrayList<Item> listItemAvailability(String managerID) throws IOException {
+	public synchronized ArrayList<Item> listItemAvailability(String managerID) {
 		// When the manager wants to list out all the items in his library
 		ArrayList<Item> ResultList = new ArrayList<>();
 		HashMap<String, Item> entry = new HashMap<>();
@@ -128,66 +132,93 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		Utilities.clientLog(managerID, "Requested List of Items", "The Items have been listed successfully");
-		Utilities.serverLog(University.MCGILL.getCode(), "Requested List of Items", managerID, "The Items have been listed successfully");
+		Utilities.serverLog(University.MCGILL.getCode(), "Requested List of Items", managerID,
+				"The Items have been listed successfully");
 
 		return ResultList;
 	}
 
 	@Override
-	public synchronized boolean borrowItem(String userID, String itemID, int numberOfDays) throws IOException {
+	public synchronized boolean borrowItem(String userID, String itemID, int numberOfDays) {
 
 		boolean result = false;
-		if (map != null && map.containsKey(itemID)) {
-			Item item = map.get(itemID);
-			if (item.getQuantity() != 0) {
-				item.setQuantity(item.getQuantity() - 1);
-				map.put(itemID, item);
-				result = true;
-				
-				//Add item and user to the list of borrowed items
-				ArrayList<String> borrowDetails = null;
-				// Check if the list of borrowed items is empty or not.
-				if (BorrowList == null) {
-				
-					borrowDetails = new ArrayList<>();
-					BorrowList = new HashMap<>();
-					borrowDetails.add(userID);
-
-					BorrowList.put(itemID, borrowDetails);
-					
+		boolean alreadyborrowed = false;
+		// Check if the request is for an item in the user's library
+		if (Utilities.getUniversity(itemID).equals(University.MCGILL.getCode())) {
+			// Check if external client has already borrowed an item
+			if (!Utilities.CodeCheck(userID, false, itemID.substring(0, 3), false)) {
+				if (ClientList.contains(userID)) {
+					alreadyborrowed = true;
+				} else {
+					alreadyborrowed = false;
 				}
-				//Check if the list of borrowed items has the item ID already
-				else if (BorrowList.containsKey(itemID)) {
-				
-					borrowDetails = BorrowList.get(itemID);
-					borrowDetails.add(userID);
-					BorrowList.put(itemID, borrowDetails);
-					
-				} 
-				//Add the item in the list if the list is not empty
-				else {
-
-					borrowDetails = new ArrayList<>();
-					borrowDetails.add(userID);
-
-					BorrowList.put(itemID, borrowDetails);
 			}
-		} 
+				if (map != null && map.containsKey(itemID) && alreadyborrowed == false) {
+					Item item = map.get(itemID);
+
+					if (item.getQuantity() != 0) {
+						item.setQuantity(item.getQuantity() - 1);
+						map.put(itemID, item);
+						result = true;
+
+						// Add item and user to the list of borrowed items
+						ArrayList<String> borrowDetails = null;
+						// Check if the list of borrowed items is empty or not.
+						if (BorrowList == null) {
+
+							borrowDetails = new ArrayList<>();
+							BorrowList = new HashMap<>();
+							borrowDetails.add(userID);
+
+							BorrowList.put(itemID, borrowDetails);
+
+						}
+						// Check if the list of borrowed items has the item ID
+						// already
+						else if (BorrowList.containsKey(itemID)) {
+
+							borrowDetails = BorrowList.get(itemID);
+							borrowDetails.add(userID);
+							BorrowList.put(itemID, borrowDetails);
+
+						}
+					// Add the item in the list if the list is not empty
+					else {
+
+						borrowDetails = new ArrayList<>();
+						borrowDetails.add(userID);
+
+						BorrowList.put(itemID, borrowDetails);
+					}
+				}
+
+			}
+				// When the user requests an item from another library
+				else{
+				Client borrowitem = new Client();
+				result = borrowitem.borrowItemFromRemoteLibrary(userID, itemID, numberOfDays);
+			}
 		}
 
 		// Log file generation
 		if (result == true) {
+
+			if (!Utilities.getUniversity(userID).getCode().equals(University.MCGILL.getCode())) {
+				ClientList.add(userID);
+			}
 			Utilities.clientLog(userID, "Borrwing an Item", "Item borrowed Successfully!!");
-			Utilities.serverLog(University.MCGILL.getCode(), "Borrwing an Item", userID, "Item borrowed Successfully!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Borrwing an Item", userID,
+					"Item borrowed Successfully!!");
 		} else {
 			Utilities.clientLog(userID, "Borrwing an Item", "Item could not be borrowed!!");
-			Utilities.serverLog(University.MCGILL.getCode(), "Borrwing an Item", userID, "Item could not be borrowed!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Borrwing an Item", userID,
+					"Item could not be borrowed!!");
 		}
 		return result;
 	}
 
 	@Override
-	public synchronized ArrayList<Item> findItem(String userID, String itemName) throws IOException {
+	public synchronized ArrayList<Item> findItem(String userID, String itemName) {
 		// If the item name matches the one entered by the user then it is added
 		// to the array list
 		ArrayList<Item> ResultList = new ArrayList<>();
@@ -198,40 +229,75 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			}
 		}
 
+		if (Utilities.getUniversity(userID).getCode().equals(University.MCGILL.getCode())) {
+			ArrayList<Item> items = new ArrayList<>();
+			Client findinothers = new Client();
+			items = findinothers.findItemsOnRemoteLibraries(userID, itemName);
+
+			if (items != null) {
+				ResultList.addAll(items);
+			}
+		}
 		// Log file generation
 		if (ResultList.size() != 0) {
+
 			Utilities.clientLog(userID, "Finding an item", "Items listed successfully!!");
-			Utilities.serverLog(University.MCGILL.getCode(), "Finding an item", userID, "Items listed successfully!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Finding an item", userID,
+					"Items listed successfully!!");
 		} else {
 			Utilities.clientLog(userID, "Finding an item", "No items with the given name found!!");
-			Utilities.serverLog(University.MCGILL.getCode(), "Finding an item", userID, "No items with the given name found!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Finding an item", userID,
+					"No items with the given name found!!");
 		}
 		return ResultList;
 	}
 
 	@Override
-	public boolean returnItem(String userID, String itemID) throws IOException {
-		// When the user wants to return a book the quantity is increased by 1.
+	public boolean returnItem(String userID, String itemID) {
+		ArrayList<String> userList = BorrowList.get(itemID);
+		int i = 0;
+		boolean flag = false;
 		boolean result = false;
-		if (map != null && map.containsKey(itemID)) {
-			Item item = map.get(itemID);
-			item.setQuantity(item.getQuantity() + 1);
-			map.put(itemID, item);
-			result = true;
-		} else {
-			result = false;
+		if (Utilities.getUniversity(itemID).equals(University.MCGILL.getCode())) {
+		// When the user wants to return a book the quantity is increased by 1.
+		
+		while (i < userList.size()) {
+			if (userList.get(i) == userID) {
+				flag = true;
+				break;
+			}
 		}
 
+		// When the user wants to return a book the quantity is increased by 1.
+		
+		if (flag == true) {
+			if (map != null && map.containsKey(itemID)) {
+				Item item = map.get(itemID);
+				item.setQuantity(item.getQuantity() + 1);
+				map.put(itemID, item);
+				result = true;
+			} else {
+				result = false;
+			}
+		}
+		}else{
+			Client returnitem = new Client();
+			result = returnitem.returnItemToRemoteLibrary(userID, itemID);
+		}
 		// Log file generation
 		if (result == true) {
+			if (ClientList.contains(userID)) {
+				ClientList.remove(userID);
+			}
 			Utilities.clientLog(userID, "Returning an Item", "The item was successfully returned!!");
-			Utilities.serverLog(University.MCGILL.getCode(), "Returning an Item", userID, "The item was successfully returned!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Returning an Item", userID,
+					"The item was successfully returned!!");
 		} else {
 			Utilities.clientLog(userID, "Returning an Item", "The item cannot be returned!!");
-			Utilities.serverLog(University.MCGILL.getCode(), "Returning an Item", userID, "The item cannot be returned!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Returning an Item", userID,
+					"The item cannot be returned!!");
 		}
 		return result;
-
 	}
 
 	/**
@@ -245,7 +311,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean addToQueue(String itemID, String userID) throws IOException {
+	public boolean addToQueue(String itemID, String userID) {
 
 		ArrayList<String> usersWaiting = null;
 		boolean result = false;
@@ -258,14 +324,14 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			WaitQueue.put(itemID, usersWaiting);
 
 			result = true;
-		} 
+		}
 		// Check if the item ID already exists in the queue
 		else if (WaitQueue.containsKey(itemID)) {
 			usersWaiting = WaitQueue.get(itemID);
 			usersWaiting.add(userID);
 			WaitQueue.put(itemID, usersWaiting);
 			result = true;
-		} 
+		}
 		// Add the item in the list if the list is not empty
 		else {
 
@@ -280,10 +346,12 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// Log file generation
 		if (result == true) {
 			Utilities.clientLog(userID, "Wait queue", "The user was successfully added to the wait queue!!");
-			Utilities.serverLog(University.MCGILL.getCode(), "Wait queue", userID, "The user was successfully added to the wait queue!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Wait queue", userID,
+					"The user was successfully added to the wait queue!!");
 		} else {
 			Utilities.clientLog(userID, "Wait queue", "The user cannot be added to the wait queue!!");
-			Utilities.serverLog(University.MCGILL.getCode(), "Wait queue", userID, "The user cannot be added to the wait queue!!");
+			Utilities.serverLog(University.MCGILL.getCode(), "Wait queue", userID,
+					"The user cannot be added to the wait queue!!");
 		}
 		return result;
 	}
