@@ -12,7 +12,7 @@ import com.librarySystem.udp.ServerUDP;
  * @version 1.0
  *
  */
-public class MontrealServer {
+public class ConcordiaServer {
 
 	public static void main(String[] args) throws IOException{
 

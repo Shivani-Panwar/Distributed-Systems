@@ -10,6 +10,7 @@ import java.rmi.registry.Registry;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import com.librarySystem.constant.Constants;
@@ -19,7 +20,7 @@ import com.librarySystem.model.Item;
 /**
  * This class contains the utilities that the server class can use.
  * 
- * @author shivani
+ * @author Shivani
  * @version 1.0
  *
  */
@@ -157,6 +158,13 @@ public class Utilities {
 		}
 	}
 	
+	public static ArrayList<University> getRemoteLibraryNames(){
+		University[] libraries = University.class.getEnumConstants();
+		ArrayList<University> list = new ArrayList<University>(Arrays.asList(libraries));
+		list.remove(Constants.UNIVERSITY);
+		return list;
+	}
+	
 	public static String getServerMessageString(String action, String userID, String item, int days){	
 		return new StringBuilder().append(action)
 				.append(Constants.SERVER_MESSAGE_SEPERATOR)
@@ -191,7 +199,7 @@ public class Utilities {
 		for(int i = 0; i < list.length; i++){
 			String[] s = list[i].split(Constants.SERVER_MESSAGE_SEPERATOR);
 			if(s.length == 3) {
-				Item item = new Item(s[0].trim(),s[1].trim(),Integer.valueOf(s[2].trim()));
+				Item item = new Item(s[0].trim(), s[1].trim(), Integer.valueOf(s[2].trim()));
 				items.add(item);
 			}
 		}

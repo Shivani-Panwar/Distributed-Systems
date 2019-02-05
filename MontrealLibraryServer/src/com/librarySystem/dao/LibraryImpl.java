@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import com.librarySystem.constant.University;
+import com.librarySystem.constant.Constants;
 import com.librarySystem.model.Item;
 import com.librarySystem.udp.Client;
 import com.librarySystem.utility.Utilities;
@@ -17,6 +17,7 @@ import com.librarySystem.utility.Utilities;
  * This class implements the remote interface LibraryInterface
  * 
  * @author Shivani
+ * @version 1.0
  *
  */
 public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface {
@@ -68,12 +69,12 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		if (result == true) {
-			Utilities.serverLog(University.MONTREAL.getCode(), "Addition of Item", managerID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Addition of Item", managerID,
 					"The item has been added to the inventory successfully!!");
 			Utilities.clientLog(managerID, "Addition of Item",
 					"The item has been added to the inventory successfully!!");
 		} else {
-			Utilities.serverLog(University.MONTREAL.getCode(), "Addition of Item", managerID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Addition of Item", managerID,
 					"The item cannot be added to the inventory!!");
 			Utilities.clientLog(managerID, "Addition of Item", "The item cannot be added to the inventory!!");
 		}
@@ -111,11 +112,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		if (result == true) {
 			Utilities.clientLog(managerID, "Removal of Item",
 					"The item has been successfully removed from the inventory!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Removal of Item", managerID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Removal of Item", managerID,
 					"The item has been successfully removed from the inventory!!");
 		} else {
 			Utilities.clientLog(managerID, "Removal of Item", "The item could not be removed from the inventory!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Removal of Item", managerID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Removal of Item", managerID,
 					"The item could not be removed from the inventory!!");
 		}
 		return result;
@@ -132,19 +133,20 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		Utilities.clientLog(managerID, "Requested List of Items", "The Items have been listed successfully");
-		Utilities.serverLog(University.MONTREAL.getCode(), "Requested List of Items", managerID,
+		Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Requested List of Items", managerID,
 				"The Items have been listed successfully");
 
 		return ResultList;
 	}
 
 	@Override
-	public synchronized boolean borrowItem(String userID, String itemID, int numberOfDays) {
+	public synchronized String borrowItem(String userID, String itemID, int numberOfDays) {
 
-		boolean result = false;
+		String result = null;
 		boolean alreadyborrowed = false;
 		// Check if the request is for an item in the user's library
-		if (Utilities.getUniversity(itemID).equals(University.MONTREAL.getCode())) {
+		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY.getCode())) {
+
 			// Check if external client has already borrowed an item
 			if (!Utilities.CodeCheck(userID, false, itemID.substring(0, 3), false)) {
 				if (ClientList.contains(userID)) {
@@ -153,35 +155,43 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 					alreadyborrowed = false;
 				}
 			}
-				if (map != null && map.containsKey(itemID) && alreadyborrowed == false) {
-					Item item = map.get(itemID);
 
-					if (item.getQuantity() != 0) {
-						item.setQuantity(item.getQuantity() - 1);
-						map.put(itemID, item);
-						result = true;
+			if (map != null && map.containsKey(itemID) && alreadyborrowed == false) {
+				Item item = map.get(itemID);
 
-						// Add item and user to the list of borrowed items
-						ArrayList<String> borrowDetails = null;
-						// Check if the list of borrowed items is empty or not.
-						if (BorrowList == null) {
+				if (item.getQuantity() != 0) {
+					item.setQuantity(item.getQuantity() - 1);
+					map.put(itemID, item);
 
-							borrowDetails = new ArrayList<>();
-							BorrowList = new HashMap<>();
-							borrowDetails.add(userID);
+					// Check if user is from same library
+					if (Utilities.getUniversity(userID).equals(Constants.UNIVERSITY.getCode())){
+						result = Constants.BORROWED_FROM_OWN;
+					}else{
+						result = Constants.BORROWED_FROM_OTHER;
+					}
+						
 
-							BorrowList.put(itemID, borrowDetails);
+					// Add item and user to the list of borrowed items
+					ArrayList<String> borrowDetails = null;
+					// Check if the list of borrowed items is empty or not.
+					if (BorrowList == null) {
 
-						}
-						// Check if the list of borrowed items has the item ID
-						// already
-						else if (BorrowList.containsKey(itemID)) {
+						borrowDetails = new ArrayList<>();
+						BorrowList = new HashMap<>();
+						borrowDetails.add(userID);
 
-							borrowDetails = BorrowList.get(itemID);
-							borrowDetails.add(userID);
-							BorrowList.put(itemID, borrowDetails);
+						BorrowList.put(itemID, borrowDetails);
 
-						}
+					}
+					// Check if the list of borrowed items has the item ID
+					// already
+					else if (BorrowList.containsKey(itemID)) {
+
+						borrowDetails = BorrowList.get(itemID);
+						borrowDetails.add(userID);
+						BorrowList.put(itemID, borrowDetails);
+
+					}
 					// Add the item in the list if the list is not empty
 					else {
 
@@ -191,27 +201,33 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 						BorrowList.put(itemID, borrowDetails);
 					}
 				}
+				// When the quantity of the item is zero
+				else {
+					result= Constants.BORROW_FAIL_OWN;
+				}
 
-			}
-				// When the user requests an item from another library
-				else{
-				Client borrowitem = new Client();
-				result = borrowitem.borrowItemFromRemoteLibrary(userID, itemID, numberOfDays);
+			}else{
+				result=Constants.BORROW_FAIL_ITEM_NOT_FOUND;
 			}
 		}
-		
-		// Log file generation
-		if (result == true) {
+		// When the user requests an item from another library
+		else {
+			Client borrowitem = new Client();
+			result = borrowitem.borrowItemFromRemoteLibrary(userID, itemID, numberOfDays);
+		}
 
-			if (!Utilities.getUniversity(userID).getCode().equals(University.MONTREAL.getCode())) {
+		// Log file generation
+		if (result.equals(Constants.BORROWED_FROM_OTHER) || result.equals(Constants.BORROWED_FROM_OWN)) {
+
+			if (!Utilities.getUniversity(userID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 				ClientList.add(userID);
 			}
 			Utilities.clientLog(userID, "Borrwing an Item", "Item borrowed Successfully!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Borrwing an Item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userID,
 					"Item borrowed Successfully!!");
 		} else {
 			Utilities.clientLog(userID, "Borrwing an Item", "Item could not be borrowed!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Borrwing an Item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userID,
 					"Item could not be borrowed!!");
 		}
 		return result;
@@ -229,7 +245,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			}
 		}
 
-		if (Utilities.getUniversity(userID).getCode().equals(University.MONTREAL.getCode())) {
+		if (Utilities.getUniversity(userID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 			ArrayList<Item> items = new ArrayList<>();
 			Client findinothers = new Client();
 			items = findinothers.findItemsOnRemoteLibraries(userID, itemName);
@@ -242,11 +258,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		if (ResultList.size() != 0) {
 
 			Utilities.clientLog(userID, "Finding an item", "Items listed successfully!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Finding an item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Finding an item", userID,
 					"Items listed successfully!!");
 		} else {
 			Utilities.clientLog(userID, "Finding an item", "No items with the given name found!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Finding an item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Finding an item", userID,
 					"No items with the given name found!!");
 		}
 		return ResultList;
@@ -258,29 +274,31 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		int i = 0;
 		boolean flag = false;
 		boolean result = false;
-		if (Utilities.getUniversity(itemID).equals(University.MONTREAL.getCode())) {
-		// When the user wants to return a book the quantity is increased by 1.
-		
-		while (i < userList.size()) {
-			if (userList.get(i) == userID) {
-				flag = true;
-				break;
-			}
-		}
+		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY.getCode())) {
+			// When the user wants to return a book the quantity is increased by
+			// 1.
 
-		// When the user wants to return a book the quantity is increased by 1.
-		
-		if (flag == true) {
-			if (map != null && map.containsKey(itemID)) {
-				Item item = map.get(itemID);
-				item.setQuantity(item.getQuantity() + 1);
-				map.put(itemID, item);
-				result = true;
-			} else {
-				result = false;
+			while (i < userList.size()) {
+				if (userList.get(i) == userID) {
+					flag = true;
+					break;
+				}
 			}
-		}
-		}else{
+
+			// When the user wants to return a book the quantity is increased by
+			// 1.
+
+			if (flag == true) {
+				if (map != null && map.containsKey(itemID)) {
+					Item item = map.get(itemID);
+					item.setQuantity(item.getQuantity() + 1);
+					map.put(itemID, item);
+					result = true;
+				} else {
+					result = false;
+				}
+			}
+		} else {
 			Client returnitem = new Client();
 			result = returnitem.returnItemToRemoteLibrary(userID, itemID);
 		}
@@ -290,11 +308,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				ClientList.remove(userID);
 			}
 			Utilities.clientLog(userID, "Returning an Item", "The item was successfully returned!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Returning an Item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
 					"The item was successfully returned!!");
 		} else {
 			Utilities.clientLog(userID, "Returning an Item", "The item cannot be returned!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Returning an Item", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
 					"The item cannot be returned!!");
 		}
 		return result;
@@ -346,11 +364,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// Log file generation
 		if (result == true) {
 			Utilities.clientLog(userID, "Wait queue", "The user was successfully added to the wait queue!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Wait queue", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Wait queue", userID,
 					"The user was successfully added to the wait queue!!");
 		} else {
 			Utilities.clientLog(userID, "Wait queue", "The user cannot be added to the wait queue!!");
-			Utilities.serverLog(University.MONTREAL.getCode(), "Wait queue", userID,
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Wait queue", userID,
 					"The user cannot be added to the wait queue!!");
 		}
 		return result;
