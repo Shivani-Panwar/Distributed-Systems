@@ -10,7 +10,7 @@ package com.librarySystem.constant;
 public enum University {
 	
 	CONCORDIA("CON", 9996),
-	MCGILL("MAC", 9997),
+	MCGILL("MCG", 9997),
 	MONTREAL("MON", 9998);
 	
 	private final String code;

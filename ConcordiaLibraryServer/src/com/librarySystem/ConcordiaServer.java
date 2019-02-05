@@ -1,6 +1,9 @@
 package com.librarySystem;
 
+import java.io.IOException;
+
 import com.librarySystem.rmi.Server;
+import com.librarySystem.udp.ServerUDP;
 
 
 /**
@@ -11,13 +14,14 @@ import com.librarySystem.rmi.Server;
  */
 public class ConcordiaServer {
 
-	public static void main(String[] args){
-		//ArrayList<University> lib = Utilities.getRemoteLibraryNames();
-		//for(University library : lib){
-		//	System.out.println("Code :" + library.getCode() + " Port :" + library.getUdpPort());
-		//}
-		
+	public static void main(String[] args) throws IOException{
+
 		Server server=new Server();
-		server.URLRegistry();		
+		server.URLRegistry();	
+		
+		ServerUDP serverudp=new ServerUDP();
+		serverudp.startServer();
+		
+		
 	}
 }

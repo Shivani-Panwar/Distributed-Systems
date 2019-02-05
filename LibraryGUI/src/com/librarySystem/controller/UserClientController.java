@@ -3,6 +3,7 @@ package com.librarySystem.controller;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
 import com.librarySystem.service.RMIService;
@@ -46,14 +47,27 @@ public class UserClientController {
 			System.out.println(
 					"Select the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
 			int selection = userInp.nextInt();
+			int yesno=0;
 			switch (selection) {
 			case 1:
 				System.out.println("Enter the ID for the item to be borrowed: ");
 				itemID = userInp.nextLine();
 				System.out.println("Enter the number of days for which you want to borrow the item: ");
 				int days = userInp.nextInt();
-				if (service.borrowItem(university, userID, itemID, days)) {
+				
+				String reply = service.borrowItem(university, userID, itemID, days);
+				if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
 					System.out.println("The book has been successfully borrowed!!");
+				}else if(reply.equals(Constants.BORROW_FAIL_ITEM_NOT_FOUND)){
+					System.out.println("The item cannot be borrowed!!");
+				}else if(reply.equals(Constants.BORROW_FAIL_OWN)){
+					System.out.println("Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.");
+					yesno=userInp.nextInt();
+					if(yesno==1){
+						
+					}else{
+						break;
+					}
 				}
 				break;
 

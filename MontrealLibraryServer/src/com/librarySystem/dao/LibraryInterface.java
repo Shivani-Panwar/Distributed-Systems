@@ -91,7 +91,7 @@ public interface LibraryInterface extends Remote {
 	 * @throws java.rmi.RemoteException
 	 * @throws IOException
 	 */
-	public String borrowItem(String userID, String itemID, int numberOfDays)
+	public boolean borrowItem(String userID, String itemID, int numberOfDays)
 			throws java.rmi.RemoteException;
 
 	/**

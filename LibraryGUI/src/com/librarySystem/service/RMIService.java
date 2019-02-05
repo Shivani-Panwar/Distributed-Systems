@@ -69,7 +69,7 @@ public class RMIService {
 		return result;
 	}
 
-	public boolean borrowItem(University university, String userID, String itemID, int numberOfDays) {
+	public String borrowItem(University university, String userID, String itemID, int numberOfDays) {
 
 		LibraryInterface library = client.getLibrary(university);
 		if (library != null) {
@@ -80,7 +80,7 @@ public class RMIService {
 				e.printStackTrace();
 			}
 		}
-		return false;
+		return "";
 	}
 
 	public ArrayList<Item> findItem(University university, String userID, String itemName) {

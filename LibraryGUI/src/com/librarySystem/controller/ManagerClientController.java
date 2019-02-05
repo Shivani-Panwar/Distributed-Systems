@@ -68,6 +68,8 @@ public class ManagerClientController {
 					for (int i = 0; i < itemsfound.size(); i++) {
 						System.out.println(itemsfound.get(i));
 					}
+				}else{
+					System.out.println("No items were found!!");
 				}
 				break;
 

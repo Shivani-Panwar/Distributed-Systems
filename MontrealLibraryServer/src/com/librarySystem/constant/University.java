@@ -9,24 +9,17 @@ package com.librarySystem.constant;
  */
 public enum University {
 	
-
-	CONCORDIA("CON", 9996),
-	MCGILL("MCG", 9997),
-	MONTREAL("MON", 9998);
+	CONCORDIA("CON"),
+	MCGILL("MAC"),
+	MONTREAL("MON");
 	
 	private final String code;
-	private final int udpPort;
 	
-	private University(final String code, final int udpPort){
+	private University(final String code){
 		this.code = code;
-		this.udpPort = udpPort;
 	}
 
 	public String getCode() {
 		return code;
-	}
-	
-	public int getUdpPort(){
-		return udpPort;
 	}
 }
