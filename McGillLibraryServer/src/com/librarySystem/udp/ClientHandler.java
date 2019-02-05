@@ -11,6 +11,7 @@ import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.utility.Utilities;
 
 /**
+ * This class checks the request that will be sent to the other servers and creates a message that will be sent using UDP.
  * 
  * @author Shivani
  * @version 1.0
@@ -47,16 +48,14 @@ public class ClientHandler extends Thread {
 				bytes = Utilities.getReplyStringFromList(library.findItem(Utilities.getUserIdFromMessage(received)
 						, Utilities.getItemFromMessage(received))).getBytes();
 				out= new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
-				//dos.writeUTF(Utilities.getReplyStringFromList(library.findItem(Utilities.getUserIdFromMessage(received)
-				//		, Utilities.getItemFromMessage(received))));
+			
 				break;
 
 			case Constants.BORROW_ITEM_ACTION:
 				bytes = String.valueOf(library.borrowItem(Utilities.getUserIdFromMessage(received)
 						, Utilities.getItemFromMessage(received), Utilities.getDaysFromMessage(received))).getBytes();
 				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
-				//dos.writeUTF(String.valueOf(library.borrowItem(Utilities.getUserIdFromMessage(received)
-				//		, Utilities.getItemFromMessage(received), Utilities.getDaysFromMessage(received))));
+				
 				break;
 				
 			case Constants.ADD_TO_QUEUE_ACTION:

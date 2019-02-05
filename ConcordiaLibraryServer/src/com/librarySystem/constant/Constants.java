@@ -1,7 +1,7 @@
 package com.librarySystem.constant;
 
 /**
- * 
+ * This class defines all the constant values that are being used throughout the project
  * @author Shivani
  * @version 1.0
  *

@@ -50,6 +50,11 @@ public class Utilities {
 		return false;
 	}
 
+	/**
+	 * This method is used to find the university corresponding to the user ID.
+	 * @param userId
+	 * @return
+	 */
 	public static University getUniversity(String userId) {
 		if (University.CONCORDIA.getCode().equals(userId.substring(0, 3))) {
 			return University.CONCORDIA;

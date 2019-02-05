@@ -118,10 +118,18 @@ public class Utilities {
 	}
 
 	/**
+	 * This method is used to check the code that is prefixed before the item
+	 * IDs and the user IDs
+	 * 
 	 * @param str
+	 *            - The string that is to be checked
 	 * @param clientCheck
+	 *            - true if code is to be checked for a user, false if the code
+	 *            is to be checked for item
 	 * @param code
+	 *            - the code with which the string will be compared
 	 * @param isManager
+	 *            - true when the user is a manager, false in all other cases
 	 * @return
 	 */
 	public static boolean CodeCheck(String str, boolean clientCheck, String code, boolean isManager) {
@@ -148,6 +156,11 @@ public class Utilities {
 		return false;
 	}
 	
+	/**
+	 * This method is used to find the university corresponding to the user ID.
+	 * @param userId
+	 * @return
+	 */
 	public static University getUniversity(String userId){
 		if(University.CONCORDIA.getCode().equals(userId.substring(0, 3))){
 			return University.CONCORDIA;
@@ -158,6 +171,10 @@ public class Utilities {
 		}
 	}
 	
+	/**
+	 * This method is used to find the names of the library apart from the users library.
+	 * @return
+	 */
 	public static ArrayList<University> getRemoteLibraryNames(){
 		University[] libraries = University.class.getEnumConstants();
 		ArrayList<University> list = new ArrayList<University>(Arrays.asList(libraries));
@@ -165,6 +182,14 @@ public class Utilities {
 		return list;
 	}
 	
+	/**
+	 * This method defines how the UDP messages from servers will be separated.
+	 * @param action - Action being  performed by the server.
+	 * @param userID
+	 * @param item
+	 * @param days
+	 * @return
+	 */
 	public static String getServerMessageString(String action, String userID, String item, int days){	
 		return new StringBuilder().append(action)
 				.append(Constants.SERVER_MESSAGE_SEPERATOR)
@@ -177,22 +202,47 @@ public class Utilities {
 			
 	}
 	
+	/**
+	 * This method is used to get the action being performed from the message that is sent using UDP.
+	 * @param message
+	 * @return
+	 */
 	public static String getActionFromMessage(String message){
 		return message.split(Constants.SERVER_MESSAGE_SEPERATOR)[0];
 	}
 	
+	/**
+	 * This method is used to get the userID from the message that is sent using UDP.
+	 * @param message
+	 * @return
+	 */
 	public static String getUserIdFromMessage(String message){
 		return message.split(Constants.SERVER_MESSAGE_SEPERATOR)[1];
 	}
 	
+	/**
+	 * This method is used to get the item name from the message that is sent using UDP.
+	 * @param message
+	 * @return
+	 */
 	public static String getItemFromMessage(String message){
 		return message.split(Constants.SERVER_MESSAGE_SEPERATOR)[2];
 	}
 	
+	/**
+	 * This method is used to get the number of days from the message that is sent using UDP.
+	 * @param message
+	 * @return
+	 */
 	public static int getDaysFromMessage(String message){
 		return Integer.valueOf(message.split(Constants.SERVER_MESSAGE_SEPERATOR)[2]);
 	}
 	
+	/**
+	 * This method is used to get the item from the reply that is received from the server
+	 * @param message
+	 * @return
+	 */
 	public static ArrayList<Item> getItemsFromReply(String message){
 		ArrayList<Item> items = new ArrayList<>();
 		String[] list = message.split(Constants.SERVER_MESSAGE_DOUBLE_SEPERATOR);
@@ -206,6 +256,11 @@ public class Utilities {
 		return items;
 	}
 	
+	/**
+	 * This message is used to get the String reply from the server message.
+	 * @param list
+	 * @return
+	 */
 	public static String getReplyStringFromList(ArrayList<Item> list){
 		int i = 0;
 		StringBuilder builder = new StringBuilder();

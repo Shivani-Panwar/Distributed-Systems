@@ -7,12 +7,13 @@ import com.librarySystem.udp.ServerUDP;
 
 
 /**
+ * This is the class that starts both the RMI and the UDP servers.
  * 
  * @author Shivani
  * @version 1.0
  *
  */
-public class ConcordiaServer {
+public class McGillServer {
 
 	public static void main(String[] args) throws IOException{
 

@@ -9,7 +9,7 @@ import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
 
 /**
- * 
+ * This class is used by the client side to find the appropriate server to contact.
  * @author Shivani
  * @version 1.0
  *

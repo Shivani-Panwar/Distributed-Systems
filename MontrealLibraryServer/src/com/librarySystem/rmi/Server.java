@@ -8,13 +8,16 @@ import com.librarySystem.utility.Utilities;
 
 
 /**
- * 
+ * This class is used to initiate the server registry for RMI.
  * @author Shivani
  * @version 1.0
  *
  */
 public class Server {
 
+	/**
+	 * This method initiates the server for the RMI.
+	 */
 	public void URLRegistry() {
 		try {
 			// Call initRegistry to check whether the server is already
