@@ -44,16 +44,27 @@ public class UserClientController {
 		}
 
 		do {
+			
 			System.out.println(
 					"Select the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
-			int selection = userInp.nextInt();
+			int selection =0; 
+		
+			selection=userInp.nextInt();
 			int yesno=0;
 			switch (selection) {
 			case 1:
 				System.out.println("Enter the ID for the item to be borrowed: ");
+				//if(userInp.hasNext()){
+					
 				itemID = userInp.nextLine();
+				
+				//}
 				System.out.println("Enter the number of days for which you want to borrow the item: ");
-				int days = userInp.nextInt();
+				int days=0;
+				if(userInp.hasNextInt()){ 
+					days = userInp.nextInt();
+				}
+				
 				
 				String reply = service.borrowItem(university, userID, itemID, days);
 				if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
@@ -62,7 +73,8 @@ public class UserClientController {
 					System.out.println("The item cannot be borrowed!!");
 				}else if(reply.equals(Constants.BORROW_FAIL_OWN)){
 					System.out.println("Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.");
-					yesno=userInp.nextInt();
+					if(userInp.hasNextInt()){
+					yesno=userInp.nextInt();}
 					if(yesno==1){
 						
 					}else{
@@ -95,6 +107,7 @@ public class UserClientController {
 				logout = true;
 
 			default:
+				logout = true;
 				System.out.println("Enter a valid choice!!");
 			}
 		} while (!logout);

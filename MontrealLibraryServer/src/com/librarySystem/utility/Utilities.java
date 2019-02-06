@@ -136,7 +136,7 @@ public class Utilities {
 
 		str = (clientCheck) ? str.substring(0, 4) : str.substring(0, 3);
 		if (clientCheck) {
-			if (str.equals(code)) {
+			if (!str.equals(code)) {
 				if (isManager) {
 					if (str.endsWith("M")) {
 						return true;

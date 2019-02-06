@@ -1,6 +1,10 @@
 package com.librarySystem.utility;
 
+import java.util.Scanner;
+
 import com.librarySystem.constant.University;
+import com.librarySystem.controller.ManagerClientController;
+import com.librarySystem.controller.UserClientController;
 
 /**
  * This class contains utilities that the client uses.
@@ -27,26 +31,29 @@ public class Utilities {
 	 * @return
 	 */
 	public static boolean CodeCheck(String str, boolean clientCheck, String code, boolean isManager) {
-
+		
 		str = (clientCheck) ? str.substring(0, 4) : str.substring(0, 3);
 		if (clientCheck) {
-			if (str.equals(code)) {
+			if (!str.equals(code)) {
 				if (isManager) {
 					if (str.endsWith("M")) {
+						
 						return true;
 					}
 				} else {
 					if (str.endsWith("U")) {
+						
 						return true;
 					}
 				}
 			}
 		} else {
 			if (str.equals(code)) {
+				
 				return true;
 			}
 		}
-
+		
 		return false;
 	}
 
