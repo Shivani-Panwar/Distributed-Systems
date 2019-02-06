@@ -1,10 +1,6 @@
 package com.librarySystem.utility;
 
-import java.util.Scanner;
-
 import com.librarySystem.constant.University;
-import com.librarySystem.controller.ManagerClientController;
-import com.librarySystem.controller.UserClientController;
 
 /**
  * This class contains utilities that the client uses.

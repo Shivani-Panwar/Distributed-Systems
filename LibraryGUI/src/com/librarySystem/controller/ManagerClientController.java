@@ -1,11 +1,13 @@
 package com.librarySystem.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
 import com.librarySystem.service.RMIService;
+import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
 
 /**
@@ -24,9 +26,10 @@ public class ManagerClientController {
 	 * 
 	 * @param managerID
 	 *            - ID of the manager that is logged into the system.
+	 * @throws IOException 
 	 */
-	public void managerClient(String managerID) {
-		Scanner managerInp = new Scanner(System.in);
+	public void managerClient(String managerID) throws IOException {
+		BufferedReader reader = InputReader.getReader();
 		String itemID = null;
 		String itemName = null;
 		boolean logout = false;
@@ -45,15 +48,15 @@ public class ManagerClientController {
 		do {
 			System.out.println(
 					"Select the action to be performed:\n1.Add an item.\n2.Find an item.\n3.Delete an item.\n4.Logout\n");
-			int selection = managerInp.nextInt();
+			int selection = Integer.valueOf(reader.readLine());
 			switch (selection) {
 			case 1:
 				System.out.println("Enter the ID for the item to be Added: ");
-				itemID = managerInp.nextLine();
+				itemID = reader.readLine();
 				System.out.println("Enter the name for the item to be Added: ");
-				itemName = managerInp.nextLine();
+				itemName = reader.readLine();
 				System.out.println("Enter the number items to be added: ");
-				quantity = managerInp.nextInt();
+				quantity = Integer.valueOf(reader.readLine());
 				if (service.addItem(university, managerID, itemID, itemName, quantity)) {
 					System.out.println("The item was added successfully!!");
 				} else {
@@ -75,11 +78,11 @@ public class ManagerClientController {
 
 			case 3:
 				System.out.println("Enter the ID for the item to be removed: ");
-				itemID = managerInp.nextLine();
+				itemID = reader.readLine();
 				System.out.println("Enter the name for the item to be removed: ");
-				itemName = managerInp.nextLine();
+				itemName = reader.readLine();
 				System.out.println("Enter the number items to be removed: ");
-				quantity = managerInp.nextInt();
+				quantity = Integer.valueOf(reader.readLine());
 				if (service.removeItem(university, managerID, itemID, quantity)) {
 					System.out.println("The item was successfully returned!!");
 				} else {
@@ -95,7 +98,6 @@ public class ManagerClientController {
 
 			}
 		} while (!logout);
-		managerInp.close();
 	}
 
 }

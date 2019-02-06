@@ -1,12 +1,14 @@
 package com.librarySystem.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
 import com.librarySystem.service.RMIService;
+import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
 
 /**
@@ -26,9 +28,10 @@ public class UserClientController {
 	 * 
 	 * @param userID
 	 *            - ID of the user that is logged into the system.
+	 * @throws IOException 
 	 */
-	public void userClient(String userID) {
-		Scanner userInp = new Scanner(System.in);
+	public void userClient(String userID) throws IOException {
+		BufferedReader reader = InputReader.getReader();
 		String itemID = null;
 		String itemName = null;
 		boolean logout = false;
@@ -49,21 +52,19 @@ public class UserClientController {
 					"Select the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
 			int selection =0; 
 		
-			selection=userInp.nextInt();
+			selection=Integer.valueOf(reader.readLine());
 			int yesno=0;
 			switch (selection) {
 			case 1:
 				System.out.println("Enter the ID for the item to be borrowed: ");
 				//if(userInp.hasNext()){
 					
-				itemID = userInp.nextLine();
+				itemID = reader.readLine();
 				
 				//}
 				System.out.println("Enter the number of days for which you want to borrow the item: ");
 				int days=0;
-				if(userInp.hasNextInt()){ 
-					days = userInp.nextInt();
-				}
+				days = Integer.valueOf(reader.readLine());
 				
 				
 				String reply = service.borrowItem(university, userID, itemID, days);
@@ -73,8 +74,8 @@ public class UserClientController {
 					System.out.println("The item cannot be borrowed!!");
 				}else if(reply.equals(Constants.BORROW_FAIL_OWN)){
 					System.out.println("Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.");
-					if(userInp.hasNextInt()){
-					yesno=userInp.nextInt();}
+					
+					yesno=Integer.valueOf(reader.readLine());
 					if(yesno==1){
 						
 					}else{
@@ -85,7 +86,7 @@ public class UserClientController {
 
 			case 2:
 				System.out.println("Enter the name of the item to be searched: ");
-				itemName = userInp.nextLine();
+				itemName = reader.readLine();
 				ArrayList<Item> itemsfound = service.findItem(university, userID, itemName);
 				if (itemsfound.isEmpty() == false) {
 					System.out.println("Items found: ");
@@ -97,7 +98,7 @@ public class UserClientController {
 
 			case 3:
 				System.out.println("Enter the ID for the item to be returned: ");
-				itemID = userInp.nextLine();
+				itemID = reader.readLine();
 				if (service.returnItem(university, userID, itemID)) {
 					System.out.println("The item was returned successfully!!");
 				}
@@ -111,8 +112,6 @@ public class UserClientController {
 				System.out.println("Enter a valid choice!!");
 			}
 		} while (!logout);
-
-		userInp.close();
 	}
 
 }
