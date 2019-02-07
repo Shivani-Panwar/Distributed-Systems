@@ -69,7 +69,7 @@ public class ManagerClientController {
 				if (itemsfound.isEmpty() == false) {
 					System.out.println("Items found: ");
 					for (int i = 0; i < itemsfound.size(); i++) {
-						System.out.println(itemsfound.get(i));
+						System.out.println(itemsfound.get(i).getID() +" | "+itemsfound.get(i).getName() +" | "+itemsfound.get(i).getQuantity());
 					}
 				}else{
 					System.out.println("No items were found!!");
@@ -92,7 +92,7 @@ public class ManagerClientController {
 				break;
 			case 4:
 				logout = true;
-
+				break;
 			default:
 				System.out.println("Enter a valid choice!!");
 

@@ -245,12 +245,15 @@ public class Utilities {
 	 */
 	public static ArrayList<Item> getItemsFromReply(String message){
 		ArrayList<Item> items = new ArrayList<>();
-		String[] list = message.split(Constants.SERVER_MESSAGE_DOUBLE_SEPERATOR);
-		for(int i = 0; i < list.length; i++){
-			String[] s = list[i].split(Constants.SERVER_MESSAGE_SEPERATOR);
-			if(s.length == 3) {
-				Item item = new Item(s[0].trim(), s[1].trim(), Integer.valueOf(s[2].trim()));
-				items.add(item);
+		if(message != null){
+			String[] list = message.split(Constants.SERVER_MESSAGE_DOUBLE_SEPERATOR);
+		
+			for(int i = 0; i < list.length; i++){
+				String[] s = list[i].split(Constants.SERVER_MESSAGE_SEPERATOR);
+				if(s.length == 3) {
+					Item item = new Item(s[0].trim(), s[1].trim(), Integer.valueOf(s[2].trim()));
+					items.add(item);
+				}
 			}
 		}
 		return items;

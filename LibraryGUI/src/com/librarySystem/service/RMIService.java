@@ -128,6 +128,7 @@ public class RMIService {
 		if (library != null) {
 			try {
 				result = library.findItem(userID, itemName);
+				System.out.println(result.size());
 			} catch (RemoteException e) {
 				
 				e.printStackTrace();

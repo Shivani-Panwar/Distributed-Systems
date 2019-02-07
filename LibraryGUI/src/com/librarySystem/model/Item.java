@@ -1,5 +1,7 @@
 package com.librarySystem.model;
 
+import java.io.Serializable;
+
 /**
  * This class represents the item and states its ID, name and quantity. It will
  * be used in the HashMap as the value.
@@ -8,7 +10,11 @@ package com.librarySystem.model;
  * @version 1.0
  *
  */
-public class Item {
+public class Item implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8299587761233943244L;
 	private String ID;
 	private String name;
 	private int quantity;

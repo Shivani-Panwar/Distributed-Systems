@@ -68,18 +68,20 @@ public class UserClientController {
 				
 				
 				String reply = service.borrowItem(university, userID, itemID, days);
-				if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
-					System.out.println("The book has been successfully borrowed!!");
-				}else if(reply.equals(Constants.BORROW_FAIL_ITEM_NOT_FOUND)){
-					System.out.println("The item cannot be borrowed!!");
-				}else if(reply.equals(Constants.BORROW_FAIL_OWN)){
-					System.out.println("Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.");
-					
-					yesno=Integer.valueOf(reader.readLine());
-					if(yesno==1){
+				if(reply != null){
+					if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
+						System.out.println("The book has been successfully borrowed!!");
+					}else if(reply.equals(Constants.BORROW_FAIL_ITEM_NOT_FOUND)){
+						System.out.println("The item cannot be borrowed!!");
+					}else if(reply.equals(Constants.BORROW_FAIL_OWN)){
+						System.out.println("Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.");
 						
-					}else{
-						break;
+						yesno=Integer.valueOf(reader.readLine());
+						if(yesno==1){
+							
+						}else{
+							break;
+						}
 					}
 				}
 				break;
@@ -88,11 +90,13 @@ public class UserClientController {
 				System.out.println("Enter the name of the item to be searched: ");
 				itemName = reader.readLine();
 				ArrayList<Item> itemsfound = service.findItem(university, userID, itemName);
-				if (itemsfound.isEmpty() == false) {
+				if (!itemsfound.isEmpty()) {
 					System.out.println("Items found: ");
 					for (int i = 0; i < itemsfound.size(); i++) {
-						System.out.println(itemsfound.get(i));
+						System.out.println(itemsfound.get(i).getID() +" | "+itemsfound.get(i).getName() +" | "+itemsfound.get(i).getQuantity());
 					}
+				} else {
+					System.out.println("No Such Item Found");
 				}
 				break;
 

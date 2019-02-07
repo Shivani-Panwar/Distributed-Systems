@@ -6,6 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.librarySystem.constant.Constants;
@@ -69,6 +70,8 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		if (result == true) {
+			System.out.println(item.getID());
+			System.out.println(map.get(item.getID()).getName());
 			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Addition of Item", managerID,
 					"The item has been added to the inventory successfully!!");
 			Utilities.clientLog(managerID, "Addition of Item",
@@ -126,10 +129,10 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	public synchronized ArrayList<Item> listItemAvailability(String managerID) {
 		// When the manager wants to list out all the items in his library
 		ArrayList<Item> ResultList = new ArrayList<>();
-		HashMap<String, Item> entry = new HashMap<>();
+		Set<String> keys = map.keySet();
 
-		for (String key : entry.keySet()) {
-			ResultList.add(entry.get(key));
+		for (String key : keys) {
+			ResultList.add(map.get(key));
 		}
 		// Log file generation
 		Utilities.clientLog(managerID, "Requested List of Items", "The Items have been listed successfully");
@@ -145,7 +148,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		String result = null;
 		boolean alreadyborrowed = false;
 		// Check if the request is for an item in the user's library
-		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY.getCode())) {
+		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
 
 			// Check if external client has already borrowed an item
 			if (!Utilities.CodeCheck(userID, false, itemID.substring(0, 3), false)) {
@@ -217,7 +220,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 
 		// Log file generation
-		if (result.equals(Constants.BORROWED_FROM_OTHER) || result.equals(Constants.BORROWED_FROM_OWN)) {
+		if (result != null && (result.equals(Constants.BORROWED_FROM_OTHER) || result.equals(Constants.BORROWED_FROM_OWN))) {
 
 			if (!Utilities.getUniversity(userID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 				ClientList.add(userID);
@@ -256,7 +259,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		if (ResultList.size() != 0) {
-
+			System.out.println(ResultList.size());
 			Utilities.clientLog(userID, "Finding an item", "Items listed successfully!!");
 			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Finding an item", userID,
 					"Items listed successfully!!");
@@ -274,7 +277,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		int i = 0;
 		boolean flag = false;
 		boolean result = false;
-		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY.getCode())) {
+		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
 			// When the user wants to return a book the quantity is increased by
 			// 1.
 

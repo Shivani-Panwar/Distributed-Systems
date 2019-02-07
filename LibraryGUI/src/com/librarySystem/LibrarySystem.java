@@ -34,6 +34,8 @@ public class LibrarySystem {
 		 */
 
 		// Capture the member ID
+		boolean exit = false;
+		do {
 		BufferedReader reader = InputReader.getReader();
 		System.out.println("Enter your ID: ");
 		String memberID;
@@ -64,12 +66,17 @@ public class LibrarySystem {
 				System.out.println("Enter a valid ID!!");
 			}
 
+			System.out.println("Want to exit? (Y/N)");
+			String exitString = reader.readLine();
+			exit = (exitString.equals("Y"))? true : false;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			InputReader.closeReader();
-		}
+		} 
+			
+		} while (!exit);
+		
+		InputReader.closeReader();
 	}
 
 }
