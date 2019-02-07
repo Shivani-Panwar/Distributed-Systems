@@ -52,8 +52,8 @@ public class Utilities {
 			File logFile = new File(FilePath);
 			System.out.println(logFile.createNewFile());
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
-			String toWrite = "Client ID : " + memberID + " - Action Performed : " + actionPerformed + " Message : " + reply
-					+ " Time : " + dateFormat.format(new Date());
+			String toWrite = "Client ID : " + memberID + " - Action Performed : " + actionPerformed + " - Message : " + reply
+					+ " Time : " + dateFormat.format(new Date())+ "\n";
 			System.out.println(toWrite);
 			wr.newLine();
 			wr.write(toWrite);
@@ -86,7 +86,7 @@ public class Utilities {
 			System.out.println(logFile.createNewFile());
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
 			String toWrite = "Action Performed : " + actionPerformed + " Message : " + reply + " Time : "
-					+ dateFormat.format(new Date()) + "";
+					+ dateFormat.format(new Date()) + "\n";
 			System.out.println(toWrite);
 			wr.newLine();
 			wr.write(toWrite);

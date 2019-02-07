@@ -50,10 +50,10 @@ public class Utilities {
 		String FilePath = Constants.SERVER_LOG_PATH + serverID + "_Log";
 		try {
 			File logFile = new File(FilePath);
-			System.out.println(logFile.createNewFile());
+			//System.out.println(logFile.createNewFile());
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
 			String toWrite = "Client ID : " + memberID + " - Action Performed : " + actionPerformed + " Message : " + reply
-					+ " Time : " + dateFormat.format(new Date());
+					+ " Time : " + dateFormat.format(new Date())+"\n";
 			System.out.println(toWrite);
 			wr.newLine();
 			wr.write(toWrite);
@@ -83,10 +83,10 @@ public class Utilities {
 		String FilePath = Constants.CLIENT_LOG_PATH + memberID + "_Log";
 		try {
 			File logFile = new File(FilePath);
-			System.out.println(logFile.createNewFile());
+			//System.out.println(logFile.createNewFile());
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
 			String toWrite = "Action Performed : " + actionPerformed + " Message : " + reply + " Time : "
-					+ dateFormat.format(new Date()) + "";
+					+ dateFormat.format(new Date()) + "\n";
 			System.out.println(toWrite);
 			wr.newLine();
 			wr.write(toWrite);

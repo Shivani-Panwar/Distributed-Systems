@@ -88,7 +88,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 	@Override
 	public synchronized boolean removeItem(String managerID, String itemID, int quantity) {
-		// HashMap<String, Item> map = new HashMap<String, Item>();
 
 		boolean result = false;
 
@@ -167,12 +166,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 					map.put(itemID, item);
 
 					// Check if user is from same library
-					if (Utilities.getUniversity(userID).equals(Constants.UNIVERSITY.getCode())){
+					if (Utilities.getUniversity(userID).equals(Constants.UNIVERSITY.getCode())) {
 						result = Constants.BORROWED_FROM_OWN;
-					}else{
+					} else {
 						result = Constants.BORROWED_FROM_OTHER;
 					}
-						
 
 					// Add item and user to the list of borrowed items
 					ArrayList<String> borrowDetails = null;
@@ -206,11 +204,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				}
 				// When the quantity of the item is zero
 				else {
-					result= Constants.BORROW_FAIL_OWN;
+					result = Constants.BORROW_FAIL_OWN;
 				}
 
-			}else{
-				result=Constants.BORROW_FAIL_ITEM_NOT_FOUND;
+			} else {
+				result = Constants.BORROW_FAIL_ITEM_NOT_FOUND;
 			}
 		}
 		// When the user requests an item from another library
@@ -220,7 +218,8 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 
 		// Log file generation
-		if (result != null && (result.equals(Constants.BORROWED_FROM_OTHER) || result.equals(Constants.BORROWED_FROM_OWN))) {
+		if (result != null
+				&& (result.equals(Constants.BORROWED_FROM_OTHER) || result.equals(Constants.BORROWED_FROM_OWN))) {
 
 			if (!Utilities.getUniversity(userID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 				ClientList.add(userID);
@@ -277,21 +276,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		int i = 0;
 		boolean flag = false;
 		boolean result = false;
-		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
+		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 			// When the user wants to return a book the quantity is increased by
 			// 1.
 
-			while (i < userList.size()) {
-				if (userList.get(i) == userID) {
-					flag = true;
-					break;
-				}
-			}
-
-			// When the user wants to return a book the quantity is increased by
-			// 1.
-
-			if (flag == true) {
+			if (userList.contains(userID)) {
 				if (map != null && map.containsKey(itemID)) {
 					Item item = map.get(itemID);
 					item.setQuantity(item.getQuantity() + 1);

@@ -49,19 +49,16 @@ public class UserClientController {
 		do {
 			
 			System.out.println(
-					"Select the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
+					"\nSelect the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
 			int selection =0; 
 		
 			selection=Integer.valueOf(reader.readLine());
 			int yesno=0;
 			switch (selection) {
 			case 1:
-				System.out.println("Enter the ID for the item to be borrowed: ");
-				//if(userInp.hasNext()){
-					
+				System.out.println("\nEnter the ID for the item to be borrowed: ");
 				itemID = reader.readLine();
 				
-				//}
 				System.out.println("Enter the number of days for which you want to borrow the item: ");
 				int days=0;
 				days = Integer.valueOf(reader.readLine());
@@ -70,11 +67,11 @@ public class UserClientController {
 				String reply = service.borrowItem(university, userID, itemID, days);
 				if(reply != null){
 					if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
-						System.out.println("The book has been successfully borrowed!!");
+						System.out.println("The book has been successfully borrowed!!\n");
 					}else if(reply.equals(Constants.BORROW_FAIL_ITEM_NOT_FOUND)){
-						System.out.println("The item cannot be borrowed!!");
+						System.out.println("The item cannot be borrowed!!\n");
 					}else if(reply.equals(Constants.BORROW_FAIL_OWN)){
-						System.out.println("Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.");
+						System.out.println("Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.\n");
 						
 						yesno=Integer.valueOf(reader.readLine());
 						if(yesno==1){
@@ -96,24 +93,24 @@ public class UserClientController {
 						System.out.println(itemsfound.get(i).getID() +" | "+itemsfound.get(i).getName() +" | "+itemsfound.get(i).getQuantity());
 					}
 				} else {
-					System.out.println("No Such Item Found");
+					System.out.println("No Such Item Found\n");
 				}
 				break;
 
 			case 3:
-				System.out.println("Enter the ID for the item to be returned: ");
+				System.out.println("Enter the ID for the item to be returned: \n");
 				itemID = reader.readLine();
 				if (service.returnItem(university, userID, itemID)) {
-					System.out.println("The item was returned successfully!!");
+					System.out.println("The item was returned successfully!!\n");
 				}
 				break;
 
 			case 4:
 				logout = true;
-
+				break;
 			default:
-				logout = true;
-				System.out.println("Enter a valid choice!!");
+				System.out.println("Enter a valid choice!!\n");
+				break;
 			}
 		} while (!logout);
 	}

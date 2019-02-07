@@ -47,20 +47,20 @@ public class ManagerClientController {
 
 		do {
 			System.out.println(
-					"Select the action to be performed:\n1.Add an item.\n2.Find an item.\n3.Delete an item.\n4.Logout\n");
+					"\nSelect the action to be performed:\n1.Add an item.\n2.Find an item.\n3.Delete an item.\n4.Logout\n");
 			int selection = Integer.valueOf(reader.readLine());
 			switch (selection) {
 			case 1:
-				System.out.println("Enter the ID for the item to be Added: ");
+				System.out.println("\nEnter the ID for the item to be Added: ");
 				itemID = reader.readLine();
 				System.out.println("Enter the name for the item to be Added: ");
 				itemName = reader.readLine();
 				System.out.println("Enter the number items to be added: ");
 				quantity = Integer.valueOf(reader.readLine());
 				if (service.addItem(university, managerID, itemID, itemName, quantity)) {
-					System.out.println("The item was added successfully!!");
+					System.out.println("The item was added successfully!!\n");
 				} else {
-					System.out.println("The item could not be added!!");
+					System.out.println("The item could not be added!!\n");
 				}
 				break;
 
@@ -72,21 +72,21 @@ public class ManagerClientController {
 						System.out.println(itemsfound.get(i).getID() +" | "+itemsfound.get(i).getName() +" | "+itemsfound.get(i).getQuantity());
 					}
 				}else{
-					System.out.println("No items were found!!");
+					System.out.println("No items were found!!\n");
 				}
 				break;
 
 			case 3:
-				System.out.println("Enter the ID for the item to be removed: ");
+				System.out.println("\nEnter the ID for the item to be removed: ");
 				itemID = reader.readLine();
 				System.out.println("Enter the name for the item to be removed: ");
 				itemName = reader.readLine();
 				System.out.println("Enter the number items to be removed: ");
 				quantity = Integer.valueOf(reader.readLine());
 				if (service.removeItem(university, managerID, itemID, quantity)) {
-					System.out.println("The item was successfully returned!!");
+					System.out.println("The item was successfully returned!!\n");
 				} else {
-					System.out.println("The item cannot be returned!!");
+					System.out.println("The item cannot be returned!!\n");
 				}
 
 				break;
@@ -94,8 +94,8 @@ public class ManagerClientController {
 				logout = true;
 				break;
 			default:
-				System.out.println("Enter a valid choice!!");
-
+				System.out.println("Enter a valid choice!!\n");
+				break;
 			}
 		} while (!logout);
 	}

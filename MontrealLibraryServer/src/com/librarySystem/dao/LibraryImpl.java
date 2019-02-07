@@ -126,7 +126,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	public synchronized ArrayList<Item> listItemAvailability(String managerID) {
 		// When the manager wants to list out all the items in his library
 		ArrayList<Item> ResultList = new ArrayList<>();
-		HashMap<String, Item> entry = new HashMap<>();
+		HashMap<String, Item> entry = map;
 
 		for (String key : entry.keySet()) {
 			ResultList.add(entry.get(key));

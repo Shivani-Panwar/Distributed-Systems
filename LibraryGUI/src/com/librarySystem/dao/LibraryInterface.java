@@ -13,7 +13,7 @@ import com.librarySystem.model.Item;
  * @version 1.0
  *
  */
-public interface LibraryInterface extends Remote {
+public interface LibraryInterface extends Remote  {
 
 	// Methods that the manager can invoke.
 
