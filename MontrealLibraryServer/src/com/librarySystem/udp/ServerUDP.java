@@ -5,6 +5,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
 import com.librarySystem.constant.Constants;
+import com.librarySystem.utility.Utilities;
+
 
 /**
  * This method starts the UPD server so that the servers can interact with each other.
@@ -15,7 +17,7 @@ import com.librarySystem.constant.Constants;
 public class ServerUDP {
 
 	/**
-	 * This method defines how theserver will be started for the UDP connection.
+	 * This method defines how the server will be started for the UDP connection.
 	 * @throws IOException
 	 */
 	public void startServer() throws IOException {
@@ -39,7 +41,7 @@ public class ServerUDP {
 
 			} catch (Exception e) {
 				ds.close();
-				e.printStackTrace();
+				Utilities.errorLog(e.getMessage());
 			}
 		}
 

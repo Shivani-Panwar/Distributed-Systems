@@ -20,24 +20,12 @@ import com.librarySystem.utility.Utilities;
 public class LibrarySystem {
 
 	public static void main(String[] args) {
-
-		/*
-		 * Client client = new Client(); LibraryInterface concordiaLibrary =
-		 * client.getLibrary(University.CONCORDIA); LibraryInterface
-		 * mcgillLibrary = client.getLibrary(University.MCGILL);
-		 * 
-		 * try { System.out.println(concordiaLibrary.addItem("CONM1235",
-		 * "CON1234", "Examape", 1));
-		 * System.out.println(mcgillLibrary.addItem("MACM1233", "MAC1234",
-		 * "Examape", 1)); } catch (IOException e) { // TODO Auto-generated
-		 * catch block e.printStackTrace(); }
-		 */
-
+		
 		// Capture the member ID
 		boolean exit = false;
 		do {
 		BufferedReader reader = InputReader.getReader();
-		System.out.println("Enter your ID: ");
+		System.out.println("\nEnter your ID: ");
 		String memberID;
 		try {
 			memberID = reader.readLine();
@@ -70,8 +58,9 @@ public class LibrarySystem {
 			String exitString = reader.readLine();
 			exit = (exitString.equals("Y"))? true : false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			Utilities.errorLog(e.getMessage());
+			
 		} 
 			
 		} while (!exit);

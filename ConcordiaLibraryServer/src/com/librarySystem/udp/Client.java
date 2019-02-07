@@ -52,7 +52,7 @@ public class Client {
 
 			return received;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utilities.errorLog(e.getMessage());
 		} finally {
 			if (socket != null) {
 				socket.close();

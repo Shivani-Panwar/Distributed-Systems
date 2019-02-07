@@ -28,7 +28,7 @@ public class UserClientController {
 	 * 
 	 * @param userID
 	 *            - ID of the user that is logged into the system.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void userClient(String userID) throws IOException {
 		BufferedReader reader = InputReader.getReader();
@@ -38,6 +38,7 @@ public class UserClientController {
 		RMIService service = new RMIService();
 		University university = null;
 
+		//Check the university of the user.
 		if (Utilities.CodeCheck(userID, false, University.CONCORDIA.getCode(), false)) {
 			university = University.CONCORDIA;
 		} else if (Utilities.CodeCheck(userID, false, University.MCGILL.getCode(), false)) {
@@ -50,35 +51,53 @@ public class UserClientController {
 			
 			System.out.println(
 					"\nSelect the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
-			int selection =0; 
-		
-			selection=Integer.valueOf(reader.readLine());
-			int yesno=0;
+			int selection = 0;
+
+			selection = Integer.valueOf(reader.readLine());
+			int yesno = 0;
+			boolean waiting = false;
+			int choice = 0;
 			switch (selection) {
 			case 1:
 				System.out.println("\nEnter the ID for the item to be borrowed: ");
 				itemID = reader.readLine();
-				
+
 				System.out.println("Enter the number of days for which you want to borrow the item: ");
-				int days=0;
+				int days = 0;
 				days = Integer.valueOf(reader.readLine());
-				
-				
+
+				//Call method in RMIService class
 				String reply = service.borrowItem(university, userID, itemID, days);
-				if(reply != null){
+				if (reply != null) {
 					if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
 						System.out.println("The book has been successfully borrowed!!\n");
-					}else if(reply.equals(Constants.BORROW_FAIL_ITEM_NOT_FOUND)){
+					} else if (reply.equals(Constants.BORROW_FAIL_ITEM_NOT_FOUND)) {
 						System.out.println("The item cannot be borrowed!!\n");
-					}else if(reply.equals(Constants.BORROW_FAIL_OWN)){
-						System.out.println("Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.\n");
-						
-						yesno=Integer.valueOf(reader.readLine());
-						if(yesno==1){
-							
-						}else{
-							break;
-						}
+					} else if (reply.equals(Constants.BORROW_FAIL_OWN)) {
+						//If the book is not available then ask user if he wishes to be added in a wait list
+						do {
+							System.out.println(
+									"Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.\n");
+
+							yesno = Integer.valueOf(reader.readLine());
+							switch (yesno) {
+							case 1:
+								if(service.addToQueue(university, itemID, userID)){
+								System.out.println("You have been added to the wait queue.\n");
+								}
+								
+								choice = 1;
+								break;
+							case 2:
+								choice = 1;
+								break;
+							default:
+								System.out.println("Enter a valid choice");
+								choice = 0;
+								break;
+							}
+						} while (choice == 0);
+
 					}
 				}
 				break;
@@ -86,11 +105,13 @@ public class UserClientController {
 			case 2:
 				System.out.println("Enter the name of the item to be searched: ");
 				itemName = reader.readLine();
+				//Call RMIService method
 				ArrayList<Item> itemsfound = service.findItem(university, userID, itemName);
 				if (!itemsfound.isEmpty()) {
 					System.out.println("Items found: ");
 					for (int i = 0; i < itemsfound.size(); i++) {
-						System.out.println(itemsfound.get(i).getID() +" | "+itemsfound.get(i).getName() +" | "+itemsfound.get(i).getQuantity());
+						System.out.println(itemsfound.get(i).getID() + " | " + itemsfound.get(i).getName() + " | "
+								+ itemsfound.get(i).getQuantity());
 					}
 				} else {
 					System.out.println("No Such Item Found\n");
@@ -100,6 +121,7 @@ public class UserClientController {
 			case 3:
 				System.out.println("Enter the ID for the item to be returned: \n");
 				itemID = reader.readLine();
+				//Call RMIService method
 				if (service.returnItem(university, userID, itemID)) {
 					System.out.println("The item was returned successfully!!\n");
 				}

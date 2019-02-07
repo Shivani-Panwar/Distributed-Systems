@@ -7,6 +7,7 @@ import com.librarySystem.constant.University;
 import com.librarySystem.dao.Client;
 import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.model.Item;
+import com.librarySystem.utility.Utilities;
 
 /**
  * This class contains the methods that the clients wish to invoke on the server side.
@@ -40,7 +41,7 @@ public class RMIService {
 				return library.addItem(managerID, itemID, itemName, quantity);
 			} catch (RemoteException e) {
 		
-				e.printStackTrace();
+				Utilities.errorLog(e.getMessage());
 			}
 		}
 
@@ -64,7 +65,7 @@ public class RMIService {
 				return library.removeItem(managerID, itemID, quantity);
 			} catch (RemoteException e) {
 				
-				e.printStackTrace();
+				Utilities.errorLog(e.getMessage());
 			}
 		}
 
@@ -86,7 +87,7 @@ public class RMIService {
 				result = library.listItemAvailability(managerID);
 			} catch (RemoteException e) {
 				
-				e.printStackTrace();
+				Utilities.errorLog(e.getMessage());
 			}
 		}
 		return result;
@@ -108,7 +109,7 @@ public class RMIService {
 				return library.borrowItem(userID, itemID, numberOfDays);
 			} catch (RemoteException e) {
 			
-				e.printStackTrace();
+				Utilities.errorLog(e.getMessage());
 			}
 		}
 		return "";
@@ -131,7 +132,7 @@ public class RMIService {
 				System.out.println(result.size());
 			} catch (RemoteException e) {
 				
-				e.printStackTrace();
+				Utilities.errorLog(e.getMessage());
 			}
 		}
 		return result;
@@ -152,7 +153,22 @@ public class RMIService {
 				return library.returnItem(userID, itemID);
 			} catch (RemoteException e) {
 			
-				e.printStackTrace();
+				Utilities.errorLog(e.getMessage());
+			}
+		}
+		return false;
+	}
+	
+	public boolean addToQueue(University university, String itemID, String userID){
+		
+		LibraryInterface library = client.getLibrary(university);
+		if (library != null) {
+			try {
+				return library.addToQueue(itemID, userID);
+			} catch (RemoteException e) {
+			
+				Utilities.errorLog(e.getMessage());
+	
 			}
 		}
 		return false;

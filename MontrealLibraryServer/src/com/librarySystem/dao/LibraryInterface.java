@@ -124,4 +124,17 @@ public interface LibraryInterface extends Remote {
 	 * @throws IOException
 	 */
 	public boolean returnItem(String userID, String itemID) throws java.rmi.RemoteException;
+	
+	/**
+	 * This method is used if the user is not able to borrow the item an then
+	 * wants to be added to the wait list.
+	 * 
+	 * @param itemID
+	 *            - ID of the item that the user wants to borrow.
+	 * @param user
+	 *            - ID of the user that wants to borrow the item.
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean addToQueue(String itemID, String userID) throws java.rmi.RemoteException;
 }

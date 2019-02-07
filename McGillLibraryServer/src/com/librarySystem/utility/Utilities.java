@@ -50,16 +50,16 @@ public class Utilities {
 		String FilePath = Constants.SERVER_LOG_PATH + serverID + "_Log";
 		try {
 			File logFile = new File(FilePath);
-			System.out.println(logFile.createNewFile());
+			//System.out.println(logFile.createNewFile());
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
-			String toWrite = "Client ID : " + memberID + " - Action Performed : " + actionPerformed + " - Message : " + reply
-					+ " Time : " + dateFormat.format(new Date())+ "\n";
+			String toWrite = "Client ID : " + memberID + " - Action Performed : " + actionPerformed + " Message : " + reply
+					+ " Time : " + dateFormat.format(new Date())+"\n";
 			System.out.println(toWrite);
 			wr.newLine();
 			wr.write(toWrite);
 			wr.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utilities.errorLog(e.getMessage());
 		}
 
 	}
@@ -83,7 +83,7 @@ public class Utilities {
 		String FilePath = Constants.CLIENT_LOG_PATH + memberID + "_Log";
 		try {
 			File logFile = new File(FilePath);
-			System.out.println(logFile.createNewFile());
+			//System.out.println(logFile.createNewFile());
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
 			String toWrite = "Action Performed : " + actionPerformed + " Message : " + reply + " Time : "
 					+ dateFormat.format(new Date()) + "\n";
@@ -92,8 +92,31 @@ public class Utilities {
 			wr.write(toWrite);
 			wr.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utilities.errorLog(e.getMessage());
 		}
+	}
+	
+	/**
+	 * This method logs all the exceptions that are thrown.
+	 * 
+	 * @param error - The error message
+	 */
+	public static void errorLog(String error){
+		String FilePath = "Error_Log";
+		try {
+			File logFile = new File(FilePath);
+			//System.out.println(logFile.createNewFile());
+			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
+			String toWrite = " Error Message : " + error + " Time : "
+					+ dateFormat.format(new Date()) + "\n";
+			System.out.println(toWrite);
+			wr.newLine();
+			wr.write(toWrite);
+			wr.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
 	}
 
 	/**
@@ -245,12 +268,15 @@ public class Utilities {
 	 */
 	public static ArrayList<Item> getItemsFromReply(String message){
 		ArrayList<Item> items = new ArrayList<>();
-		String[] list = message.split(Constants.SERVER_MESSAGE_DOUBLE_SEPERATOR);
-		for(int i = 0; i < list.length; i++){
-			String[] s = list[i].split(Constants.SERVER_MESSAGE_SEPERATOR);
-			if(s.length == 3) {
-				Item item = new Item(s[0].trim(), s[1].trim(), Integer.valueOf(s[2].trim()));
-				items.add(item);
+		if(message != null){
+			String[] list = message.split(Constants.SERVER_MESSAGE_DOUBLE_SEPERATOR);
+		
+			for(int i = 0; i < list.length; i++){
+				String[] s = list[i].split(Constants.SERVER_MESSAGE_SEPERATOR);
+				if(s.length == 3) {
+					Item item = new Item(s[0].trim(), s[1].trim(), Integer.valueOf(s[2].trim()));
+					items.add(item);
+				}
 			}
 		}
 		return items;

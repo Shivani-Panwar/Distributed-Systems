@@ -1,5 +1,14 @@
 package com.librarySystem.utility;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
 
 /**
@@ -10,7 +19,7 @@ import com.librarySystem.constant.University;
  *
  */
 public class Utilities {
-
+	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	/**
 	 * This method is used to check the code that is prefixed before the item
 	 * IDs and the user IDs
@@ -67,5 +76,27 @@ public class Utilities {
 			return University.MONTREAL;
 		}
 	}
-
+	
+	/**
+	 * This method logs all the exceptions that are thrown.
+	 * 
+	 * @param error - The error message
+	 */
+	public static void errorLog(String error){
+		String FilePath = Constants.CLIENT_LOG_PATH+"Error_Log";
+		try {
+			File logFile = new File(FilePath);
+			//System.out.println(logFile.createNewFile());
+			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
+			String toWrite = " Error Message : " + error + " Time : "
+					+ dateFormat.format(new Date()) + "\n";
+			System.out.println(toWrite);
+			wr.newLine();
+			wr.write(toWrite);
+			wr.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
+	}
 }

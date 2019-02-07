@@ -59,7 +59,7 @@ public class Utilities {
 			wr.write(toWrite);
 			wr.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utilities.errorLog(e.getMessage());
 		}
 
 	}
@@ -92,8 +92,31 @@ public class Utilities {
 			wr.write(toWrite);
 			wr.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utilities.errorLog(e.getMessage());
 		}
+	}
+	
+	/**
+	 * This method logs all the exceptions that are thrown.
+	 * 
+	 * @param error - The error message
+	 */
+	public static void errorLog(String error){
+		String FilePath = "Error_Log";
+		try {
+			File logFile = new File(FilePath);
+			//System.out.println(logFile.createNewFile());
+			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
+			String toWrite = " Error Message : " + error + " Time : "
+					+ dateFormat.format(new Date()) + "\n";
+			System.out.println(toWrite);
+			wr.newLine();
+			wr.write(toWrite);
+			wr.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
 	}
 
 	/**

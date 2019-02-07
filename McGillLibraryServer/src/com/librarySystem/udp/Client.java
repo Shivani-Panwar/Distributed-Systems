@@ -31,6 +31,7 @@ public class Client {
 		try {
 
 			socket = new DatagramSocket();
+			socket.setSoTimeout(10000);
 
 			// getting localhost ip
 			InetAddress ip = InetAddress.getByName(Constants.HOSTANAME);
@@ -51,7 +52,7 @@ public class Client {
 
 			return received;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utilities.errorLog(e.getMessage());
 		} finally {
 			if (socket != null) {
 				socket.close();

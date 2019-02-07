@@ -44,29 +44,34 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 		// When the item is already present in the inventory, increase its
 		// quantity
-		if (map == null) {
-			item = new Item();
-			map = new HashMap<>();
-			item.setID(itemID);
-			item.setName(itemName);
-			item.setQuantity(quantity);
-			map.put(itemID, item);
-			result = true;
-		} else if (map.containsKey(itemID)) {
-			item = map.get(itemID);
-			item.setQuantity(item.getQuantity() + quantity);
-			map.put(itemID, item);
-			result = true;
-		}
-		// When the item is not present in the inventory, add an entry in the
-		// HashMap
-		else {
-			item = new Item();
-			item.setID(itemID);
-			item.setName(itemName);
-			item.setQuantity(quantity);
-			map.put(itemID, item);
-			result = true;
+		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())) {
+			if (map == null) {
+				item = new Item();
+				map = new HashMap<>();
+				item.setID(itemID);
+				item.setName(itemName);
+				item.setQuantity(quantity);
+				map.put(itemID, item);
+				result = true;
+			} else if (map.containsKey(itemID)) {
+				item = map.get(itemID);
+				item.setQuantity(item.getQuantity() + quantity);
+				map.put(itemID, item);
+				result = true;
+			}
+			// When the item is not present in the inventory, add an entry in
+			// the
+			// HashMap
+			else {
+				item = new Item();
+				item.setID(itemID);
+				item.setName(itemName);
+				item.setQuantity(quantity);
+				map.put(itemID, item);
+				result = true;
+			}
+		} else {
+			result = false;
 		}
 		// Log file generation
 		if (result == true) {
@@ -310,17 +315,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		return result;
 	}
 
-	/**
-	 * This method is used if the user is not able to borrow the item an then
-	 * wants to be added to the wait list.
-	 * 
-	 * @param itemID
-	 *            - ID of the item that the user wants to borrow.
-	 * @param user
-	 *            - ID of the user that wants to borrow the item.
-	 * @return
-	 * @throws IOException
-	 */
+	@Override
 	public boolean addToQueue(String itemID, String userID) {
 
 		ArrayList<String> usersWaiting = null;

@@ -8,6 +8,7 @@ import java.rmi.registry.Registry;
 
 import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
+import com.librarySystem.utility.Utilities;
 
 /**
  * This class is used by the client side to find the appropriate server to contact.
@@ -25,8 +26,9 @@ public class Client {
 			registry = LocateRegistry.getRegistry(Constants.PORT);
 			obj = (LibraryInterface) registry.lookup(registryURL);
 		} catch (RemoteException | NotBoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			Utilities.errorLog(e.getMessage());
 		}
 		return obj;
 	}

@@ -32,6 +32,7 @@ public class Server {
 
 		} catch (Exception e) {
 			System.out.println("The server did not start!! "+e.getMessage());
+			Utilities.errorLog(e.getMessage());
 		}
 
 	}
