@@ -81,12 +81,12 @@ public class ManagerClientController {
 				itemID = reader.readLine();
 				System.out.println("Enter the name for the item to be removed: ");
 				itemName = reader.readLine();
-				System.out.println("Enter the number items to be removed: ");
+				System.out.println("Enter the number items to be removed (Enter zero to delete an item completely): ");
 				quantity = Integer.valueOf(reader.readLine());
 				if (service.removeItem(university, managerID, itemID, quantity)) {
-					System.out.println("The item was successfully returned!!\n");
+					System.out.println("The item was successfully removed!!\n");
 				} else {
-					System.out.println("The item cannot be returned!!\n");
+					System.out.println("The item cannot be removed!!\n");
 				}
 
 				break;

@@ -38,7 +38,7 @@ public class UserClientController {
 		RMIService service = new RMIService();
 		University university = null;
 
-		//Check the university of the user.
+		// Check the university of the user.
 		if (Utilities.CodeCheck(userID, false, University.CONCORDIA.getCode(), false)) {
 			university = University.CONCORDIA;
 		} else if (Utilities.CodeCheck(userID, false, University.MCGILL.getCode(), false)) {
@@ -48,7 +48,7 @@ public class UserClientController {
 		}
 
 		do {
-			
+
 			System.out.println(
 					"\nSelect the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
 			int selection = 0;
@@ -66,7 +66,7 @@ public class UserClientController {
 				int days = 0;
 				days = Integer.valueOf(reader.readLine());
 
-				//Call method in RMIService class
+				// Call method in RMIService class
 				String reply = service.borrowItem(university, userID, itemID, days);
 				if (reply != null) {
 					if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
@@ -74,7 +74,8 @@ public class UserClientController {
 					} else if (reply.equals(Constants.BORROW_FAIL_ITEM_NOT_FOUND)) {
 						System.out.println("The item cannot be borrowed!!\n");
 					} else if (reply.equals(Constants.BORROW_FAIL_OWN)) {
-						//If the book is not available then ask user if he wishes to be added in a wait list
+						// If the book is not available then ask user if he
+						// wishes to be added in a wait list
 						do {
 							System.out.println(
 									"Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.\n");
@@ -82,10 +83,10 @@ public class UserClientController {
 							yesno = Integer.valueOf(reader.readLine());
 							switch (yesno) {
 							case 1:
-								if(service.addToQueue(university, itemID, userID)){
-								System.out.println("You have been added to the wait queue.\n");
+								if (service.addToQueue(university, itemID, userID)) {
+									System.out.println("You have been added to the wait queue.\n");
 								}
-								
+
 								choice = 1;
 								break;
 							case 2:
@@ -105,7 +106,7 @@ public class UserClientController {
 			case 2:
 				System.out.println("Enter the name of the item to be searched: ");
 				itemName = reader.readLine();
-				//Call RMIService method
+				// Call RMIService method
 				ArrayList<Item> itemsfound = service.findItem(university, userID, itemName);
 				if (!itemsfound.isEmpty()) {
 					System.out.println("Items found: ");
@@ -121,9 +122,11 @@ public class UserClientController {
 			case 3:
 				System.out.println("Enter the ID for the item to be returned: \n");
 				itemID = reader.readLine();
-				//Call RMIService method
+				// Call RMIService method
 				if (service.returnItem(university, userID, itemID)) {
 					System.out.println("The item was returned successfully!!\n");
+				}else{
+					System.out.println("The item could not be returned!!");
 				}
 				break;
 
