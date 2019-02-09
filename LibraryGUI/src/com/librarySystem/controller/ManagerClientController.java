@@ -79,8 +79,6 @@ public class ManagerClientController {
 			case 3:
 				System.out.println("\nEnter the ID for the item to be removed: ");
 				itemID = reader.readLine();
-				System.out.println("Enter the name for the item to be removed: ");
-				itemName = reader.readLine();
 				System.out.println("Enter the number items to be removed (Enter zero to delete an item completely): ");
 				quantity = Integer.valueOf(reader.readLine());
 				if (service.removeItem(university, managerID, itemID, quantity)) {
