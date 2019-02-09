@@ -85,11 +85,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				if (BorrowList == null) {
 					borrowDetails = new ArrayList<>();
 					BorrowList = new HashMap<>();
-					}else if (BorrowList.containsKey(itemID)) {
-						borrowDetails = BorrowList.get(itemID);	
-					}else {
-						borrowDetails = new ArrayList<>();
-						}
+				} else if (BorrowList.containsKey(itemID)) {
+					borrowDetails = BorrowList.get(itemID);
+				} else {
+					borrowDetails = new ArrayList<>();
+				}
 					count=(userList.size()<quantity?userList.size():quantity);
 					//Add user to borrow list only when the user is not external or when the user is external but has not borrowed 
 					//any item from the server otherwise skip user in wait list
@@ -196,17 +196,20 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		if (BorrowList != null) {
 			userList = BorrowList.get(itemID);
 		}
-
+		if(numberOfDays < 1){
+			return Constants.BORROW_FAIL_NO_OF_DAYS;
+		}
 		// Check if the request is for an item in the user's library
-		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY) && numberOfDays > 0) {
+		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
 			if (userList == null || !userList.contains(userID)) {
 
 				// Check if external client has already borrowed an item
-				if (!Utilities.CodeCheck(userID, false, itemID.substring(0, 3), false)) {
-
+				if (!Utilities.getUniversity(userID).equals(Constants.UNIVERSITY)) {
+					if(ClientList.contains(userID)){
 					alreadyborrowed = true;
 				} else {
 					alreadyborrowed = false;
+				}
 				}
 			}
 

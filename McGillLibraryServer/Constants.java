@@ -8,7 +8,7 @@ package com.librarySystem.constant;
  */
 public class Constants {
 	
-	public static final University UNIVERSITY = University.MCGILL;
+	public static final University UNIVERSITY = University.MONTREAL;
 	public static final String HOSTANAME = "localhost";
 	public static final int PORT = 9999;
 	public static final String SERVER_LOG_PATH = "D:\\Logs\\ServerLogs\\";
@@ -23,6 +23,5 @@ public class Constants {
 	public static final String BORROWED_FROM_OWN="Item successfully borrowed from Concordia library";
 	public static final String BORROW_FAIL_OWN="Item cannot be borrowed from Concordia Library";
 	public static final String BORROW_FAIL_ITEM_NOT_FOUND="The item does not exist in the inventory";
-	public static final String BORROW_FAIL_NO_OF_DAYS="Item cannot be borrowed due to invalid number of days";
 	
 }

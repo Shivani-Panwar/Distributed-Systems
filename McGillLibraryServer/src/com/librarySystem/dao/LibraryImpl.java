@@ -1,6 +1,5 @@
 package com.librarySystem.dao;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	private static HashMap<String, ArrayList<String>> BorrowList;
 	private static HashMap<String, ArrayList<String>> WaitQueue;
 
+	
 	@Override
 	public synchronized boolean addItem(String managerID, String itemID, String itemName, int quantity) {
 
@@ -44,7 +44,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 		// When the item is already present in the inventory, increase its
 		// quantity
-		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())) {
+		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode()) && itemID.length() == 7 && quantity>=0) {
 			if (map == null) {
 				item = new Item();
 				map = new HashMap<>();
@@ -73,10 +73,47 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		} else {
 			result = false;
 		}
-		// Log file generation
 		if (result == true) {
-			System.out.println(item.getID());
-			System.out.println(map.get(item.getID()).getName());
+
+			//Automatically assign the item to the users in waiting queue
+			if(WaitQueue!=null && WaitQueue.containsKey(itemID)){ // Checking if wait queue is empty and if it contains the itemID
+				int count=0;
+				ArrayList<String> borrowDetails=null;
+				ArrayList<String> userList=WaitQueue.get(itemID);
+				Item itemBorrow=map.get(itemID);
+				if (BorrowList == null) {
+					borrowDetails = new ArrayList<>();
+					BorrowList = new HashMap<>();
+				} else if (BorrowList.containsKey(itemID)) {
+					borrowDetails = BorrowList.get(itemID);
+				} else {
+					borrowDetails = new ArrayList<>();
+				}
+					count=(userList.size()<quantity?userList.size():quantity);
+					//Add user to borrow list only when the user is not external or when the user is external but has not borrowed 
+					//any item from the server otherwise skip user in wait list
+					for(int i=0;i<count;i++){ 
+						//If 10 items of an item ID are added and 5 users are in the waiting list for it, 
+						//then the item will be given to 5 users and its quantity in map will be reduced accordingly
+						int j=0;
+						if(!ClientList.contains(userList.get(j)))
+						{
+							borrowDetails.add(userList.get(j));
+							//Update logs for servers and clients with the successful borrow message.
+							Utilities.clientLog(userList.get(j), "Borrwing an Item", "Item borrowed Successfully!!");
+							Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userList.get(j),
+									"Item borrowed Successfully!!");
+							userList.remove(j);
+						}else{
+							j++;}
+					}
+					BorrowList.put(itemID, borrowDetails);
+					WaitQueue.put(itemID, userList);
+					//Update the Hashmap with the quantity after serving the waitlist
+					itemBorrow.setQuantity(quantity-count);
+					map.put(itemID, item);
+				}
+			// Log file generation
 			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Addition of Item", managerID,
 					"The item has been added to the inventory successfully!!");
 			Utilities.clientLog(managerID, "Addition of Item",
@@ -86,11 +123,10 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 					"The item cannot be added to the inventory!!");
 			Utilities.clientLog(managerID, "Addition of Item", "The item cannot be added to the inventory!!");
 		}
-
 		return result;
-
 	}
 
+	
 	@Override
 	public synchronized boolean removeItem(String managerID, String itemID, int quantity) {
 
@@ -107,8 +143,12 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// When the manager wants to delete the item completely
 		else if (map.containsKey(itemID) && quantity == 0) {
 			map.remove(itemID);
-			BorrowList.remove(itemID);
-			WaitQueue.remove(itemID);
+			if (BorrowList != null && BorrowList.containsKey(itemID)) {
+				BorrowList.remove(itemID);
+			}
+			if (WaitQueue != null && WaitQueue.containsKey(itemID)) {
+				WaitQueue.remove(itemID);
+			}
 			result = true;
 		}
 		// When the item ID is not found in the inventory
@@ -151,15 +191,24 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 		String result = null;
 		boolean alreadyborrowed = false;
+		ArrayList<String> userList = null;
+		if (BorrowList != null) {
+			userList = BorrowList.get(itemID);
+		}
+		if(numberOfDays < 1){
+			return Constants.BORROW_FAIL_NO_OF_DAYS;
+		}
 		// Check if the request is for an item in the user's library
 		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
+			if (userList == null || !userList.contains(userID)) {
 
-			// Check if external client has already borrowed an item
-			if (!Utilities.CodeCheck(userID, false, itemID.substring(0, 3), false)) {
-				if (ClientList.contains(userID)) {
+				// Check if external client has already borrowed an item
+				if (!Utilities.getUniversity(userID).equals(Constants.UNIVERSITY)) {
+					if(ClientList.contains(userID)){
 					alreadyborrowed = true;
 				} else {
 					alreadyborrowed = false;
+				}
 				}
 			}
 
@@ -167,8 +216,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				Item item = map.get(itemID);
 
 				if (item.getQuantity() != 0) {
-					item.setQuantity(item.getQuantity() - 1);
-					map.put(itemID, item);
 
 					// Check if user is from same library
 					if (Utilities.getUniversity(userID).equals(Constants.UNIVERSITY.getCode())) {
@@ -181,11 +228,9 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 					ArrayList<String> borrowDetails = null;
 					// Check if the list of borrowed items is empty or not.
 					if (BorrowList == null) {
-
 						borrowDetails = new ArrayList<>();
 						BorrowList = new HashMap<>();
 						borrowDetails.add(userID);
-
 						BorrowList.put(itemID, borrowDetails);
 
 					}
@@ -203,9 +248,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 						borrowDetails = new ArrayList<>();
 						borrowDetails.add(userID);
-
 						BorrowList.put(itemID, borrowDetails);
+
 					}
+					item.setQuantity(item.getQuantity() - 1);
+					map.put(itemID, item);
 				}
 				// When the quantity of the item is zero
 				else {
@@ -228,6 +275,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 			if (!Utilities.getUniversity(userID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 				ClientList.add(userID);
+
 			}
 			Utilities.clientLog(userID, "Borrwing an Item", "Item borrowed Successfully!!");
 			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userID,
@@ -278,8 +326,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	@Override
 	public boolean returnItem(String userID, String itemID) {
 		ArrayList<String> userList = BorrowList.get(itemID);
-		int i = 0;
-		boolean flag = false;
 		boolean result = false;
 		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 			// When the user wants to return a book the quantity is increased by
@@ -304,6 +350,8 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			if (ClientList.contains(userID)) {
 				ClientList.remove(userID);
 			}
+			userList.remove(userID);
+			BorrowList.put(itemID, userList);
 			Utilities.clientLog(userID, "Returning an Item", "The item was successfully returned!!");
 			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
 					"The item was successfully returned!!");
@@ -321,7 +369,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		ArrayList<String> usersWaiting = null;
 		boolean result = false;
 		// Check if the waiting list is empty or not.
-		if (WaitQueue == null) {
+		if (WaitQueue == null && !ClientList.contains(userID)) {
 			usersWaiting = new ArrayList<>();
 			WaitQueue = new HashMap<>();
 			usersWaiting.add(userID);
@@ -331,14 +379,14 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			result = true;
 		}
 		// Check if the item ID already exists in the queue
-		else if (WaitQueue.containsKey(itemID)) {
+		else if (WaitQueue.containsKey(itemID) && !ClientList.contains(userID)) {
 			usersWaiting = WaitQueue.get(itemID);
 			usersWaiting.add(userID);
 			WaitQueue.put(itemID, usersWaiting);
 			result = true;
 		}
 		// Add the item in the list if the list is not empty
-		else {
+		else if (WaitQueue != null && !WaitQueue.containsKey(itemID) && !ClientList.contains(userID)) {
 
 			usersWaiting = new ArrayList<>();
 			usersWaiting.add(userID);
