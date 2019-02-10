@@ -37,7 +37,6 @@ public class Client {
 			InetAddress ip = InetAddress.getByName(Constants.HOSTANAME);
 
 			// establish the connection with server port
-
 			byte[] messagetosend = message.getBytes();
 			DatagramPacket request = new DatagramPacket(messagetosend, messagetosend.length, ip, universityPort);
 			// Send the message to the server
@@ -48,7 +47,7 @@ public class Client {
 
 			// Recieve message from server
 			socket.receive(reply);
-			String received = reply.getData().toString();
+			String received = new String(reply.getData());
 
 			return received;
 		} catch (Exception e) {

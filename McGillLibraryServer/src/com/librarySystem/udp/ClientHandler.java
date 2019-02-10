@@ -36,7 +36,7 @@ public class ClientHandler extends Thread {
 
 			LibraryInterface library = new LibraryImpl();
 			
-			received = in.getData().toString();
+			received = new String(in.getData());
 
 			String action = Utilities.getActionFromMessage(received);
 
@@ -48,14 +48,12 @@ public class ClientHandler extends Thread {
 				bytes = Utilities.getReplyStringFromList(library.findItem(Utilities.getUserIdFromMessage(received)
 						, Utilities.getItemFromMessage(received))).getBytes();
 				out= new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
-				
 				break;
 
 			case Constants.BORROW_ITEM_ACTION:
 				bytes = String.valueOf(library.borrowItem(Utilities.getUserIdFromMessage(received)
 						, Utilities.getItemFromMessage(received), Utilities.getDaysFromMessage(received))).getBytes();
 				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
-				
 				break;
 				
 			case Constants.ADD_TO_QUEUE_ACTION:

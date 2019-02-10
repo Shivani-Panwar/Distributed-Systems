@@ -2,9 +2,10 @@ package com.librarySystem;
 
 import java.io.IOException;
 
+import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.rmi.Server;
 import com.librarySystem.udp.ServerUDP;
-
+import com.librarySystem.utility.Utilities;
 
 /**
  * This is the class that starts both the RMI and the UDP servers.
@@ -15,14 +16,13 @@ import com.librarySystem.udp.ServerUDP;
  */
 public class ConcordiaServer {
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException {
 
-		Server server=new Server();
-		server.URLRegistry();	
-		
-		ServerUDP serverudp=new ServerUDP();
+		Server server = new Server();
+		LibraryInterface library = server.URLRegistry();
+		Utilities.loadLibrary(library);
+
+		ServerUDP serverudp = new ServerUDP();
 		serverudp.startServer();
-		
-		
 	}
 }

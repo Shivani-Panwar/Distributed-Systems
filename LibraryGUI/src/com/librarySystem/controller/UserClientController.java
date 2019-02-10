@@ -55,7 +55,7 @@ public class UserClientController {
 
 			selection = Integer.valueOf(reader.readLine());
 			int yesno = 0;
-			boolean waiting = false;
+			//boolean waiting = false;
 			int choice = 0;
 			switch (selection) {
 			case 1:

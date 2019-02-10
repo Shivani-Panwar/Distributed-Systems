@@ -11,8 +11,10 @@ public class Constants {
 	public static final University UNIVERSITY = University.MCGILL;
 	public static final String HOSTANAME = "localhost";
 	public static final int PORT = 9999;
-	public static final String SERVER_LOG_PATH = "D:\\Logs\\ServerLogs\\";
-	public static final String CLIENT_LOG_PATH = "D:\\Logs\\UserLogs\\";
+	public static final String LIBRARY_DISK_PATH = "D:\\LibrarySystem\\";
+	public static final String SERVER_LOG_PATH = "D:\\LibrarySystem\\ServerLogs\\";
+	public static final String CLIENT_LOG_PATH = "D:\\LibrarySystem\\UserLogs\\";
+	public static final String ESCAPED_ESCAPE_OPERATOR = "\\";
 	public static final String SERVER_MESSAGE_SEPERATOR = "|";
 	public static final String SERVER_MESSAGE_DOUBLE_SEPERATOR = "||";
 	public static final String FIND_ITEM_ACTION = "FIND_ITEM";

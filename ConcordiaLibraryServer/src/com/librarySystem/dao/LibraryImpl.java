@@ -1,6 +1,5 @@
 package com.librarySystem.dao;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -294,10 +293,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// If the item name matches the one entered by the user then it is added
 		// to the array list
 		ArrayList<Item> ResultList = new ArrayList<>();
-
-		for (Entry<String, Item> value : map.entrySet()) {
-			if (value.getValue().getName().equals(itemName)) {
-				ResultList.add(value.getValue());
+		if (map != null) {
+			for (Entry<String, Item> value : map.entrySet()) {
+				if (value.getValue().getName().equals(itemName)) {
+					ResultList.add(value.getValue());
+				}
 			}
 		}
 
@@ -408,6 +408,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 					"The user cannot be added to the wait queue!!");
 		}
 		return result;
+	}
+	
+	@Override
+	protected void finalize(){
+		Utilities.unLoadLibrary(this);
 	}
 
 }

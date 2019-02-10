@@ -1,7 +1,10 @@
 package com.librarySystem.utility;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -15,6 +18,7 @@ import java.util.Date;
 
 import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
+import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.model.Item;
 
 /**
@@ -49,8 +53,9 @@ public class Utilities {
 	public static void serverLog(String serverID, String actionPerformed, String memberID, String reply) {
 		String FilePath = Constants.SERVER_LOG_PATH + serverID + "_Log";
 		try {
+			Utilities.createDirectoryIfNotExist(Constants.SERVER_LOG_PATH);
 			File logFile = new File(FilePath);
-			//System.out.println(logFile.createNewFile());
+			logFile.createNewFile();
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
 			String toWrite = "Client ID : " + memberID + " - Action Performed : " + actionPerformed + " Message : " + reply
 					+ " Time : " + dateFormat.format(new Date())+"\n";
@@ -80,10 +85,13 @@ public class Utilities {
 	 * @throws IOException
 	 */
 	public static void clientLog(String memberID, String actionPerformed, String reply) {
-		String FilePath = Constants.CLIENT_LOG_PATH + memberID + "_Log";
+		String FilePath = Constants.CLIENT_LOG_PATH + Constants.UNIVERSITY.getCode() + "-log"
+			+	Constants.ESCAPED_ESCAPE_OPERATOR	+ memberID + "_Log";
 		try {
+			Utilities.createDirectoryIfNotExist(Constants.CLIENT_LOG_PATH + 
+					Constants.UNIVERSITY.getCode() + "-log" + Constants.ESCAPED_ESCAPE_OPERATOR);
 			File logFile = new File(FilePath);
-			//System.out.println(logFile.createNewFile());
+			logFile.createNewFile();
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
 			String toWrite = "Action Performed : " + actionPerformed + " Message : " + reply + " Time : "
 					+ dateFormat.format(new Date()) + "\n";
@@ -102,10 +110,14 @@ public class Utilities {
 	 * @param error - The error message
 	 */
 	public static void errorLog(String error){
-		String FilePath = "Error_Log";
+		String FilePath = Constants.SERVER_LOG_PATH + Constants.UNIVERSITY.getCode() + "-log" 
+			+ Constants.ESCAPED_ESCAPE_OPERATOR + "Error_Log";
 		try {
+			Utilities.createDirectoryIfNotExist(Constants.SERVER_LOG_PATH + 
+					Constants.UNIVERSITY.getCode() + "-log" + Constants.ESCAPED_ESCAPE_OPERATOR);
+					
 			File logFile = new File(FilePath);
-			//System.out.println(logFile.createNewFile());
+			logFile.createNewFile();
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
 			String toWrite = " Error Message : " + error + " Time : "
 					+ dateFormat.format(new Date()) + "\n";
@@ -117,6 +129,17 @@ public class Utilities {
 			e.printStackTrace();
 		} 
 		
+	}
+	
+	public static void createDirectoryIfNotExist(String path){
+		System.out.println(path);
+		File file = new File(path);
+		System.out.println(file.getAbsolutePath());
+		if (!file.exists()) {
+			System.out.println("Creating dir" + path);
+            System.out.println(file.mkdirs());
+            
+        }
 	}
 
 	/**
@@ -231,7 +254,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static String getActionFromMessage(String message){
-		return message.split(Constants.SERVER_MESSAGE_SEPERATOR)[0];
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[0];
 	}
 	
 	/**
@@ -240,7 +263,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static String getUserIdFromMessage(String message){
-		return message.split(Constants.SERVER_MESSAGE_SEPERATOR)[1];
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[1];
 	}
 	
 	/**
@@ -249,7 +272,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static String getItemFromMessage(String message){
-		return message.split(Constants.SERVER_MESSAGE_SEPERATOR)[2];
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[2];
 	}
 	
 	/**
@@ -258,7 +281,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static int getDaysFromMessage(String message){
-		return Integer.valueOf(message.split(Constants.SERVER_MESSAGE_SEPERATOR)[2]);
+		return Integer.valueOf(message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[3]);
 	}
 	
 	/**
@@ -269,10 +292,11 @@ public class Utilities {
 	public static ArrayList<Item> getItemsFromReply(String message){
 		ArrayList<Item> items = new ArrayList<>();
 		if(message != null){
-			String[] list = message.split(Constants.SERVER_MESSAGE_DOUBLE_SEPERATOR);
-		
+			String[] list = message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR
+					+Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR);
+			System.out.println(Arrays.toString(list));
 			for(int i = 0; i < list.length; i++){
-				String[] s = list[i].split(Constants.SERVER_MESSAGE_SEPERATOR);
+				String[] s = list[i].split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR);
 				if(s.length == 3) {
 					Item item = new Item(s[0].trim(), s[1].trim(), Integer.valueOf(s[2].trim()));
 					items.add(item);
@@ -301,5 +325,50 @@ public class Utilities {
 			}
 		}
 		return builder.toString();	
+	}
+	
+	
+	public static void loadLibrary(LibraryInterface library){
+		String filePath = Constants.LIBRARY_DISK_PATH + Constants.UNIVERSITY.getCode() + "_data";
+		try {
+			Utilities.createDirectoryIfNotExist(Constants.LIBRARY_DISK_PATH);
+			File file = new File(filePath);
+			if(!file.exists()){
+				throw new FileNotFoundException("The file was not found");
+			}
+			
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line = reader.readLine();
+			ArrayList<Item> list = Utilities.getItemsFromReply(line);
+			for(Item item : list){
+				library.addItem(Constants.UNIVERSITY.getCode()+"M0000", item.getID(), item.getName(), item.getQuantity());
+			}
+			reader.close();
+			
+		} catch (IOException e) {
+			Utilities.errorLog(e.getMessage());
+		}
+		
+	}
+	
+	public static void unLoadLibrary(LibraryInterface library){
+		String filePath = Constants.LIBRARY_DISK_PATH + Constants.UNIVERSITY.getCode() + "_data";
+		try {
+			File file = new File(filePath);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
+			BufferedWriter wr = new BufferedWriter(new FileWriter(file));
+			String toWrite = Utilities.getReplyStringFromList(
+					library.listItemAvailability(Constants.UNIVERSITY.getCode()+"M0000"));
+			System.out.println(toWrite);
+			wr.write(toWrite);
+			wr.close();
+			
+		} catch (IOException e) {
+			Utilities.errorLog(e.getMessage());
+		}
+		
 	}
 }

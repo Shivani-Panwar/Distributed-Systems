@@ -294,9 +294,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// to the array list
 		ArrayList<Item> ResultList = new ArrayList<>();
 
-		for (Entry<String, Item> value : map.entrySet()) {
-			if (value.getValue().getName().equals(itemName)) {
-				ResultList.add(value.getValue());
+		if (map != null) {
+			for (Entry<String, Item> value : map.entrySet()) {
+				if (value.getValue().getName().equals(itemName)) {
+					ResultList.add(value.getValue());
+				}
 			}
 		}
 
@@ -408,5 +410,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		return result;
 	}
+	
+	@Override
+	protected void finalize(){
+		Utilities.unLoadLibrary(this);
+	}
+
 
 }

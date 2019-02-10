@@ -28,6 +28,7 @@ public class ServerUDP {
 		// running infinite loop for getting
 		// client request
 		while (true) {
+			System.out.println(Constants.UNIVERSITY.getCode()+" Server is running");
 			try {
 				// socket object to receive incoming client requests
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
