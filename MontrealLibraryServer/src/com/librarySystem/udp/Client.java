@@ -49,7 +49,7 @@ public class Client {
 			socket.receive(reply);
 			String received = new String(reply.getData());
 
-			return received;
+			return received.trim();
 		} catch (Exception e) {
 			Utilities.errorLog(e.getMessage());
 		} finally {

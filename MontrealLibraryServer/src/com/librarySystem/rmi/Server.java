@@ -4,6 +4,7 @@ import java.rmi.Naming;
 
 import com.librarySystem.constant.Constants;
 import com.librarySystem.dao.LibraryImpl;
+import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.utility.Utilities;
 
 
@@ -18,7 +19,7 @@ public class Server {
 	/**
 	 * This method initiates the server for the RMI.
 	 */
-	public void URLRegistry() {
+	public LibraryInterface URLRegistry() {
 		try {
 			// Call initRegistry to check whether the server is already
 			// registered on the port or a new registry is to be made.
@@ -30,11 +31,13 @@ public class Server {
 			Naming.rebind(registryURL, LibImpl);
 			System.out.println("Server is Running...");
 
+			return LibImpl;
 		} catch (Exception e) {
 			System.out.println("The server did not start!! "+e.getMessage());
 			Utilities.errorLog(e.getMessage());
 		}
 
+		return null;
 	}
 
 }

@@ -293,7 +293,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		// If the item name matches the one entered by the user then it is added
 		// to the array list
 		ArrayList<Item> ResultList = new ArrayList<>();
-
 		if (map != null) {
 			for (Entry<String, Item> value : map.entrySet()) {
 				if (value.getValue().getName().equals(itemName)) {
@@ -327,13 +326,15 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 
 	@Override
 	public boolean returnItem(String userID, String itemID) {
-		ArrayList<String> userList = BorrowList.get(itemID);
+		ArrayList<String> userList=null;
 		boolean result = false;
 		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())) {
 			// When the user wants to return a book the quantity is increased by
 			// 1.
-
-			if (userList.contains(userID)) {
+			if(BorrowList!=null){
+				userList = BorrowList.get(itemID);
+				}
+			if (userList!=null && userList.contains(userID)) {
 				if (map != null && map.containsKey(itemID)) {
 					Item item = map.get(itemID);
 					item.setQuantity(item.getQuantity() + 1);
@@ -349,11 +350,15 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Log file generation
 		if (result == true) {
-			if (ClientList.contains(userID)) {
+			if (ClientList!=null && ClientList.contains(userID)) {
 				ClientList.remove(userID);
 			}
+			
+			//Update the borrow list if the item was of this library
+			if(Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())){
 			userList.remove(userID);
 			BorrowList.put(itemID, userList);
+			}
 			Utilities.clientLog(userID, "Returning an Item", "The item was successfully returned!!");
 			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
 					"The item was successfully returned!!");
@@ -415,6 +420,5 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	protected void finalize(){
 		Utilities.unLoadLibrary(this);
 	}
-
 
 }

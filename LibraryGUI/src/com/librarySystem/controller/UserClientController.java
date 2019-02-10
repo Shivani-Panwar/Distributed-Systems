@@ -68,17 +68,18 @@ public class UserClientController {
 
 				// Call method in RMIService class
 				String reply = service.borrowItem(university, userID, itemID, days);
+				System.out.println(reply);
 				if (reply != null) {
 					if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
-						System.out.println("The book has been successfully borrowed!!\n");
+						System.out.println("The book has been successfully borrowed!!"+university.name()+"\n");
 					} else if (reply.equals(Constants.BORROW_FAIL_ITEM_NOT_FOUND)) {
-						System.out.println("The item cannot be borrowed!!\n");
+						System.out.println("The item cannot be borrowed!!"+university.name()+"\n");
 					} else if (reply.equals(Constants.BORROW_FAIL_OWN)) {
 						// If the book is not available then ask user if he
 						// wishes to be added in a wait list
 						do {
 							System.out.println(
-									"Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\2.Perform another search.\n");
+									"Item could not be borrowed.\nSelect an option:\n1.Add to wait list.\n2.Perform another search.\n");
 
 							yesno = Integer.valueOf(reader.readLine());
 							switch (yesno) {

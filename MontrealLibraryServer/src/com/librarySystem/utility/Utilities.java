@@ -254,7 +254,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static String getActionFromMessage(String message){
-		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[0];
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[0].trim();
 	}
 	
 	/**
@@ -263,7 +263,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static String getUserIdFromMessage(String message){
-		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[1];
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[1].trim();
 	}
 	
 	/**
@@ -272,7 +272,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static String getItemFromMessage(String message){
-		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[2];
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[2].trim();
 	}
 	
 	/**
@@ -281,7 +281,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static int getDaysFromMessage(String message){
-		return Integer.valueOf(message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[3]);
+		return Integer.valueOf(message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[3].trim());
 	}
 	
 	/**

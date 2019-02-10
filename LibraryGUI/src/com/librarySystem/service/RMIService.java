@@ -106,7 +106,7 @@ public class RMIService {
 		LibraryInterface library = client.getLibrary(university);
 		if (library != null) {
 			try {
-				return library.borrowItem(userID, itemID, numberOfDays);
+				return library.borrowItem(userID, itemID, numberOfDays).trim();
 			} catch (RemoteException e) {
 			
 				Utilities.errorLog(e.getMessage());
