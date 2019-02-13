@@ -54,7 +54,7 @@ public class LibrarySystem {
 				System.out.println("Enter a valid ID!!\n");
 			}
 
-			System.out.println("Want to exit? (Y/N)\n");
+			System.out.println("Want to exit the application? (Y/N)\n");
 			String exitString = reader.readLine();
 			exit = (exitString.equals("Y"))? true : false;
 			
