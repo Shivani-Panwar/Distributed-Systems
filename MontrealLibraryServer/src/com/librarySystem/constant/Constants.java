@@ -23,8 +23,9 @@ public class Constants {
 	public static final String RETURN_ITEM_ACTION="RETURN_ITEM";
 	public static final String BORROWED_FROM_OTHER="Item successfully borrowed from external Library!!";
 	public static final String BORROWED_FROM_OWN="Item successfully borrowed from the library!!";
-	public static final String BORROW_FAIL_OWN="Item cannot be borrowed from the library";
+	public static final String BORROW_FAIL_OWN="Item cannot be borrowed from the library!!";
 	public static final String BORROW_FAIL_ITEM_NOT_FOUND="The item does not exist in the inventory";
 	public static final String BORROW_FAIL_NO_OF_DAYS="Item cannot be borrowed due to invalid number of days";
+	public static final String BORROW_FAIL_ALREADY_BORROWED="User has already borrowed the item";
 	
 }

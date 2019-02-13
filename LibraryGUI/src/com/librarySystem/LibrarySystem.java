@@ -25,7 +25,7 @@ public class LibrarySystem {
 		boolean exit = false;
 		do {
 		BufferedReader reader = InputReader.getReader();
-		System.out.println("Enter your ID: ");
+		System.out.println("Enter your ID:\n");
 		String memberID;
 		try {
 			memberID = reader.readLine();
@@ -48,16 +48,16 @@ public class LibrarySystem {
 					ManagerClientController manager = new ManagerClientController();
 					manager.managerClient(memberID);
 				} else {
-					System.out.println("Enter a valid ID!! ");
+					System.out.println("Enter a valid ID!!\n");
 				}
 			} else {
-				System.out.println("Enter a valid ID!!");
+				System.out.println("Enter a valid ID!!\n");
 			}
 
-			System.out.println("Want to exit? (Y/N)");
+			System.out.println("Want to exit? (Y/N)\n");
 			String exitString = reader.readLine();
 			exit = (exitString.equals("Y"))? true : false;
-			System.out.println(exit);
+			
 		} catch (IOException e) {
 			
 			Utilities.errorLog(e.getMessage());

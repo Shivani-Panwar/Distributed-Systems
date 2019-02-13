@@ -55,6 +55,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				result = true;
 			} else if (map.containsKey(itemID)) {
 				item = map.get(itemID);
+				item.setName(itemName);
 				item.setQuantity(item.getQuantity() + quantity);
 				map.put(itemID, item);
 				result = true;
@@ -133,7 +134,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		boolean result = false;
 
 		// When the manager wants to reduce the quantity of the item
-		if (map != null && map.containsKey(itemID) && quantity != 0 && map.get(itemID).getQuantity() >= quantity) {
+		if (map != null && map.containsKey(itemID) && quantity != 0 && map.get(itemID).getQuantity() >= quantity && quantity>=0) {
 			Item item = map.get(itemID);
 			item.setQuantity(item.getQuantity() - quantity);
 			map.put(itemID, item);
@@ -190,7 +191,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	public synchronized String borrowItem(String userID, String itemID, int numberOfDays) {
 
 		String result = null;
-		boolean alreadyborrowed = false;
 		ArrayList<String> userList = null;
 		if (BorrowList != null) {
 			userList = BorrowList.get(itemID);
@@ -200,19 +200,25 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		// Check if the request is for an item in the user's library
 		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
-			if (userList == null || !userList.contains(userID)) {
-
-				// Check if external client has already borrowed an item
-				if (!Utilities.getUniversity(userID).equals(Constants.UNIVERSITY)) {
-					if(ClientList.contains(userID)){
-					alreadyborrowed = true;
-				} else {
-					alreadyborrowed = false;
-				}
-				}
+			//Check if user has already borrowed the item
+			if (userList != null && userList.contains(userID)) {
+				Utilities.clientLog(userID, "Borrwing an Item", "Item could not be borrowed!!");
+				Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userID,
+						"Item could not be borrowed!!");
+				    return Constants.BORROW_FAIL_ALREADY_BORROWED;
 			}
-
-			if (map != null && map.containsKey(itemID) && alreadyborrowed == false) {
+			
+			// Check if external client has already borrowed an item
+			if (!Utilities.getUniversity(userID).equals(Constants.UNIVERSITY) && ClientList!=null) {
+				if(ClientList.contains(userID)){
+					Utilities.clientLog(userID, "Borrwing an Item", "Item could not be borrowed!!");
+					Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userID,
+							"Item could not be borrowed!!");
+					return Constants.BORROW_FAIL_ALREADY_BORROWED;
+			}
+			}
+			
+			if (map != null && map.containsKey(itemID)) {
 				Item item = map.get(itemID);
 
 				if (item.getQuantity() != 0) {
@@ -258,7 +264,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				else {
 					result = Constants.BORROW_FAIL_OWN;
 				}
-
 			} else {
 				result = Constants.BORROW_FAIL_ITEM_NOT_FOUND;
 			}
