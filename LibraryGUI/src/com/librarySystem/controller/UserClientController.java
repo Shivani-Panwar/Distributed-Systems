@@ -52,7 +52,7 @@ public class UserClientController {
 			System.out.println(
 					"\nSelect the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
 			int selection = 0;
-
+			try{
 			selection = Integer.valueOf(reader.readLine());
 			int yesno = 0;
 			// boolean waiting = false;
@@ -68,7 +68,6 @@ public class UserClientController {
 
 				// Call method in RMIService class
 				String reply = service.borrowItem(university, userID, itemID, days);
-				System.out.println(reply);
 				if (reply != null) {
 					if (reply.equals(Constants.BORROWED_FROM_OWN) || reply.equals(Constants.BORROWED_FROM_OTHER)) {
 						System.out.println("The book has been successfully borrowed from " + Utilities.getUniversity(itemID) + "!!\n");
@@ -92,8 +91,9 @@ public class UserClientController {
 							case 1:
 								if (service.addToQueue(university, itemID, userID)) {
 									System.out.println("You have been added to the wait queue!!\n");
+								}else{
+									System.out.println("The user could not be added to the wait queue!!\n");
 								}
-
 								choice = 1;
 								break;
 							case 2:
@@ -118,7 +118,9 @@ public class UserClientController {
 				if (!itemsfound.isEmpty()) {
 					System.out.println("Items found: ");
 					for (int i = 0; i < itemsfound.size(); i++) {
-						System.out.println(itemsfound.get(i).getID() + " | " + itemsfound.get(i).getName() + " | "
+						//System.out.println(itemsfound.get(i).getID() + " | " + itemsfound.get(i).getName() + " | "
+							//	+ itemsfound.get(i).getQuantity());
+						System.out.println(itemsfound.get(i).getID() + "  "
 								+ itemsfound.get(i).getQuantity());
 					}
 				} else {
@@ -144,7 +146,10 @@ public class UserClientController {
 				System.out.println("Enter a valid choice!!\n");
 				break;
 			}
-		} while (!logout);
+		}catch(NumberFormatException e){
+			System.out.println("Enter a valid number!!");
+		}
+		}while (!logout);
 	}
 
 }

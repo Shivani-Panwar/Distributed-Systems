@@ -69,7 +69,8 @@ public class ManagerClientController {
 				if (itemsfound.isEmpty() == false) {
 					System.out.println("Items found: ");
 					for (int i = 0; i < itemsfound.size(); i++) {
-						System.out.println(itemsfound.get(i).getID() +" | "+itemsfound.get(i).getName() +" | "+itemsfound.get(i).getQuantity());
+						//System.out.println(itemsfound.get(i).getID() +" | "+itemsfound.get(i).getName() +" | "+itemsfound.get(i).getQuantity());
+						System.out.println(itemsfound.get(i).getID() +"   "+itemsfound.get(i).getName() +"   "+itemsfound.get(i).getQuantity());
 					}
 				}else{
 					System.out.println("No items were found!!\n");

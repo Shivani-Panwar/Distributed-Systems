@@ -26,8 +26,7 @@ public class Client {
 			registry = LocateRegistry.getRegistry(Constants.PORT);
 			obj = (LibraryInterface) registry.lookup(registryURL);
 		} catch (RemoteException | NotBoundException e) {
-			
-			e.printStackTrace();
+			System.out.println("The server is not running!!");
 			Utilities.errorLog(e.getMessage());
 		}
 		return obj;
