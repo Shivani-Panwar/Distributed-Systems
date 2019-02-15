@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
@@ -98,5 +100,19 @@ public class Utilities {
 			e.printStackTrace();
 		} 
 		
+	}
+	/**
+	 * This method is used to check that the suffix of the university code are integers only.
+	 * @param regex to check the string entered contains only integers
+	 * @param string to be checked
+	 * @return
+	 */
+	public static boolean matchesOrNot(String regex, String string){
+		final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+		final Matcher matcher = pattern.matcher(string);
+		if(matcher.find()) {
+			return true;
+		}
+		return false;
 	}
 }

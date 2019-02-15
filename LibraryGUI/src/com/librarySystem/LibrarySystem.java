@@ -31,7 +31,7 @@ public class LibrarySystem {
 			memberID = reader.readLine();
 
 			// Check if the ID entered is valid
-			if (memberID.length() == 8) {
+			if (memberID.length() == 8 && Utilities.matchesOrNot("\\d+",memberID.substring(4,8))) {
 				if (Utilities.CodeCheck(memberID, true, University.CONCORDIA.getCode(), false)
 						|| Utilities.CodeCheck(memberID, true, University.MCGILL.getCode(), false)
 						|| Utilities.CodeCheck(memberID, true, University.MONTREAL.getCode(), false)) {
