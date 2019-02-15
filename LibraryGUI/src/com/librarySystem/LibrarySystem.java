@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.librarySystem.constant.University;
 import com.librarySystem.controller.ManagerClientController;
 import com.librarySystem.controller.UserClientController;
+import com.librarySystem.service.RMIService;
 import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
 
@@ -67,6 +68,23 @@ public class LibrarySystem {
 		} while (!exit);
 		
 		InputReader.closeReader();
+		
+		Runnable thread1 =
+			    new Runnable(){
+			        public void run(){
+			        	RMIService service = new RMIService();
+			    		System.out.println(service.addItem(University.CONCORDIA, "CONM1111", "CON1111", "JAVA", 10));
+			        }
+			    };
+	    Runnable thread2 =
+			    new Runnable(){
+			        public void run(){
+			        	RMIService service = new RMIService();
+			    		System.out.println(service.addItem(University.CONCORDIA, "CONM1111", "CON1111", "JAVA", 11));
+			        }
+			    };
+	    thread1.run();
+	    thread2.run();
 	}
 
 }
