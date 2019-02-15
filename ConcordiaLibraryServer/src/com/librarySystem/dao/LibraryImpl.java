@@ -105,7 +105,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 						borrowDetails.add(userList.get(j));
 						// Update logs for servers and clients with the
 						// successful borrow message.
-						Utilities.clientLog(userList.get(j), "Borrwing an Item", "Item borrowed Successfully!!");
+						Utilities.clientLog(userList.get(j), "Borrwing an Item", "User removed from waitList and item borrowed successfully!!");
 						Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", userList.get(j),
 								"Item borrowed Successfully!!");
 						if (!Utilities.getUniversity(userList.get(j)).equals(Utilities.getUniversity(itemID))) {
@@ -391,7 +391,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 								borrowDetails.add(waitList.get(j));
 								// Update logs for servers and clients with the
 								// successful borrow message.
-								Utilities.clientLog(waitList.get(j), "Borrwing an Item", "Item borrowed Successfully!!");
+								Utilities.clientLog(waitList.get(j), "Borrwing an Item", "User removed from waitList and item borrowed successfully!!");
 								Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Borrwing an Item", waitList.get(j),
 										"Item borrowed Successfully!!");
 								if(!Utilities.getUniversity(waitList.get(j)).equals(Constants.UNIVERSITY)){
