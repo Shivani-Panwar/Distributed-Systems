@@ -46,7 +46,7 @@ public class UserClientController {
 		} else {
 			university = University.MONTREAL;
 		}
-
+	
 		do {
 
 			System.out.println(
@@ -146,7 +146,7 @@ public class UserClientController {
 				System.out.println("Enter a valid choice!!\n");
 				break;
 			}
-		}catch(NumberFormatException e){
+		}catch(NumberFormatException |StringIndexOutOfBoundsException e){
 			System.out.println("Enter a valid number!!");
 		}
 		}while (!logout);

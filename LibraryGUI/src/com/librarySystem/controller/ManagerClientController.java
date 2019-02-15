@@ -49,6 +49,7 @@ public class ManagerClientController {
 			System.out.println(
 					"\nSelect the action to be performed:\n1.Add an item.\n2.Find an item.\n3.Delete an item.\n4.Logout\n");
 			int selection = Integer.valueOf(reader.readLine());
+			try{
 			switch (selection) {
 			case 1:
 				System.out.println("\nEnter the ID for the item to be Added: ");
@@ -95,6 +96,9 @@ public class ManagerClientController {
 			default:
 				System.out.println("Enter a valid choice!!\n");
 				break;
+			}
+			}catch(NumberFormatException |StringIndexOutOfBoundsException e){
+				System.out.println("Enter a valid number!!");
 			}
 		} while (!logout);
 	}
