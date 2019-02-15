@@ -58,12 +58,12 @@ public class ManagerClientController {
 				itemName = reader.readLine();
 				System.out.println("Enter the number items to be added: ");
 				quantity = Integer.valueOf(reader.readLine());
-				if(Utilities.matchesOrNot("\\d+",managerID.substring(3,7))){
-				if (service.addItem(university, managerID, itemID, itemName, quantity)) {
-					System.out.println("The item was added successfully!!\n");
-				} else {
-					System.out.println("The item could not be added!!\n");
-				}
+				if(Utilities.matchesOrNot("\\d+",itemID.substring(3,7))){
+					if (service.addItem(university, managerID, itemID, itemName, quantity)) {
+						System.out.println("The item was added successfully!!\n");
+					} else {
+						System.out.println("The item could not be added!!\n");
+					}
 				}else{
 					System.out.println("Enter a valid item ID");
 				}
