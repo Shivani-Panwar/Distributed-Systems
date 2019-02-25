@@ -94,7 +94,6 @@ public class LibrarySystem {
 		}
 		InputReader.closeReader();
 		System.out.println("Application terminated!!");
-	
 		
 	}
 

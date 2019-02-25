@@ -159,6 +159,13 @@ public class RMIService {
 		return false;
 	}
 	
+	/**
+	 * This method is used when the user wants to be added to the wait queue for an item.
+	 * @param university
+	 * @param itemID
+	 * @param userID
+	 * @return
+	 */
 	public boolean addToQueue(University university, String itemID, String userID){
 		
 		LibraryInterface library = client.getLibrary(university);
@@ -169,6 +176,20 @@ public class RMIService {
 			
 				Utilities.errorLog(e.getMessage());
 	
+			}
+		}
+		return false;
+	}
+	
+	
+	public boolean exchangeItem(University university, String userID, String oldItem, String newItem){
+		LibraryInterface library = client.getLibrary(university);
+		if (library != null) {
+			try {
+				return library.exchangeItem(userID, oldItem, newItem);
+			} catch (RemoteException e) {
+			
+				Utilities.errorLog(e.getMessage());
 			}
 		}
 		return false;

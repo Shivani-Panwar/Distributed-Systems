@@ -69,6 +69,21 @@ public class ClientHandler extends Thread {
 						Utilities.getItemFromMessage(received))).getBytes();
 				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
 				break;
+				
+			case Constants.CHECK_IF_AVAILABLE_ACTION:
+				bytes = String.valueOf(library.checkAvailability(Utilities.getItemFromMessage(received))).getBytes();
+				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
+				break;
+				
+			case Constants.CAN_BORROW_ACTION:
+				bytes = String.valueOf(library.checkAvailability(Utilities.getItemFromMessage(received))).getBytes();
+				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
+				break;
+				
+			case Constants.CAN_RETURN_ACTION:
+				bytes = String.valueOf(library.checkAvailability(Utilities.getItemFromMessage(received))).getBytes();
+				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
+				break;
 
 			default:
 				bytes = "Invalid input".getBytes();
@@ -79,7 +94,7 @@ public class ClientHandler extends Thread {
 			ds.send(out);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utilities.errorLog(e.toString());
 		}
 	}
 }

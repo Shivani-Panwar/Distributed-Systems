@@ -33,6 +33,7 @@ public class UserClientController {
 	public void userClient(String userID) throws IOException {
 		BufferedReader reader = InputReader.getReader();
 		String itemID = null;
+		String oldItem=null;
 		String itemName = null;
 		boolean logout = false;
 		RMIService service = new RMIService();
@@ -50,7 +51,7 @@ public class UserClientController {
 		do {
 
 			System.out.println(
-					"\nSelect the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n4.Logout\n ");
+					"\nSelect the action to be performed:\n1.Borrow an item.\n2.Find an item.\n3.Return an item.\n5.Exchange an item.\n4.Logout.\n ");
 			int selection = 0;
 			try{
 			selection = Integer.valueOf(reader.readLine());
@@ -142,6 +143,20 @@ public class UserClientController {
 			case 4:
 				logout = true;
 				break;
+				
+			case 5:
+				System.out.println("Enter the ID for the item to be exchanged:\n");
+				oldItem = reader.readLine();
+				System.out.println("Enter the ID for the new item to borrow:\n");
+				itemID = reader.readLine();
+				// Call RMIService method
+				if (service.exchangeItem(university, userID, oldItem, itemID)) {
+					System.out.println("The item was returned exchanged!!\n");
+				} else {
+					System.out.println("The item could not be exchanged!!\n");
+				}
+				break;
+				
 			default:
 				System.out.println("Enter a valid choice!!\n");
 				break;

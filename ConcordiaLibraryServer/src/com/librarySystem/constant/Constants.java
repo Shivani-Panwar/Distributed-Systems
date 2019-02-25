@@ -21,6 +21,9 @@ public class Constants {
 	public static final String BORROW_ITEM_ACTION = "BORROW_ITEM";
 	public static final String ADD_TO_QUEUE_ACTION = "ADD_TO_QUEUE";
 	public static final String RETURN_ITEM_ACTION="RETURN_ITEM";
+	public static final String CHECK_IF_AVAILABLE_ACTION="CHECK_IF_AVAILABLE";
+	public static final String CAN_BORROW_ACTION="CAN_BORROW";
+	public static final String CAN_RETURN_ACTION="CAN_RETURN";
 	public static final String BORROWED_FROM_OTHER="Item successfully borrowed from external Library!!";
 	public static final String BORROWED_FROM_OWN="Item successfully borrowed from the library!!";
 	public static final String BORROW_FAIL_OWN="Item cannot be borrowed from the library!!";
