@@ -23,9 +23,10 @@ public class LibrarySystem {
 	public static void main(String[] args) {
 		
 		// Capture the member ID
+		BufferedReader reader = InputReader.getReader();
 		boolean exit = false;
 		do {
-		BufferedReader reader = InputReader.getReader();
+		
 		System.out.println("Enter your ID:\n");
 		String memberID;
 		try {
@@ -66,25 +67,34 @@ public class LibrarySystem {
 		} 
 			
 		} while (!exit);
-		
+		System.out.println("Do you wish to run the threads? (Y/N)");
+		try {
+			String runthread= reader.readLine();
+			if(runthread.equals("Y")){
+			Runnable thread1 =
+				    new Runnable(){
+				        public void run(){
+				        	RMIService service = new RMIService();
+				    		System.out.println(service.addItem(University.CONCORDIA, "CONM1111", "CON1111", "JAVA", 10));
+				        }
+				    };
+		    Runnable thread2 =
+				    new Runnable(){
+				        public void run(){
+				        	RMIService service = new RMIService();
+				    		System.out.println(service.addItem(University.CONCORDIA, "CONM1111", "CON1111", "JAVA", 11));
+				        }
+				    };
+		    thread1.run();
+		    thread2.run();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Invalid Input");
+		}
 		InputReader.closeReader();
+		System.out.println("Application terminated!!");
 		
-		Runnable thread1 =
-			    new Runnable(){
-			        public void run(){
-			        	RMIService service = new RMIService();
-			    		System.out.println(service.addItem(University.CONCORDIA, "CONM1111", "CON1111", "JAVA", 10));
-			        }
-			    };
-	    Runnable thread2 =
-			    new Runnable(){
-			        public void run(){
-			        	RMIService service = new RMIService();
-			    		System.out.println(service.addItem(University.CONCORDIA, "CONM1111", "CON1111", "JAVA", 11));
-			        }
-			    };
-	    thread1.run();
-	    thread2.run();
 	}
 
 }

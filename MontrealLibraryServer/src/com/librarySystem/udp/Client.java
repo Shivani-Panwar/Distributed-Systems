@@ -126,9 +126,52 @@ public class Client {
 	 * @return
 	 */
 	public boolean returnItemToRemoteLibrary(String userID, String itemID) {
-
 		String message = Utilities.getServerMessageString(Constants.RETURN_ITEM_ACTION, userID, itemID, 0);
 		
+		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
+		return Boolean
+				.valueOf(requestToServer(message, (remoteLibraries.get(0).equals(Utilities.getUniversity(itemID))
+						? remoteLibraries.get(0).getUdpPort() : remoteLibraries.get(1).getUdpPort())));
+	}
+	
+	/**
+	 * This method is used to find if an item is available in a library.
+	 * @param itemID
+	 * @return
+	 */
+	public boolean checkIfAvailable(String itemID){
+		String message = Utilities.getServerMessageString(Constants.CHECK_IF_AVAILABLE_ACTION, "", itemID, 0);
+
+		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
+		return Boolean
+				.valueOf(requestToServer(message, (remoteLibraries.get(0).equals(Utilities.getUniversity(itemID))
+						? remoteLibraries.get(0).getUdpPort() : remoteLibraries.get(1).getUdpPort())));
+	}
+	
+	/**
+	 * This method is used to check if the user can borrow an item.
+	 * @param userID
+	 * @param itemID
+	 * @return
+	 */
+	public boolean canBorrow(String userID,String itemID){
+		String message = Utilities.getServerMessageString(Constants.CAN_BORROW_ACTION, userID, itemID, 0);
+
+		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
+		return Boolean
+				.valueOf(requestToServer(message, (remoteLibraries.get(0).equals(Utilities.getUniversity(itemID))
+						? remoteLibraries.get(0).getUdpPort() : remoteLibraries.get(1).getUdpPort())));
+	}
+	
+	/**
+	 * This method is used to check if the user can return an item.
+	 * @param userID
+	 * @param itemID
+	 * @return
+	 */
+	public boolean canReturn(String userID,String itemID){
+		String message = Utilities.getServerMessageString(Constants.CAN_RETURN_ACTION, userID, itemID, 0);
+
 		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
 		return Boolean
 				.valueOf(requestToServer(message, (remoteLibraries.get(0).equals(Utilities.getUniversity(itemID))

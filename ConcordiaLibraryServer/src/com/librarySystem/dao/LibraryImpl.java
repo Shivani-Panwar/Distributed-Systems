@@ -496,10 +496,105 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		}
 		return result;
 	}
+	
+	@Override
+	public boolean exchangeItem(String userID, String oldItem, String newItem){
+		boolean result=false;
+		if(checkAvailability(newItem) && checkBorrowPossible(userID, newItem) && checkReturnPossible(userID, oldItem)){
+			borrowItem(userID,newItem,1);
+			returnItem(userID,oldItem);
+			result=true;
+		}
+		
+		if (result == true) {	
+			Utilities.clientLog(userID, "Returning an Item", "The item was successfully exchanged!!");
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
+					"The item was successfully exchanged!!");
+		} else {
+			Utilities.clientLog(userID, "Returning an Item", "The item cannot be exchanged!!");
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
+					"The item cannot be exchanged!!");
+		}
+		
+	return result;
+	}
+	
+	@Override
+	public boolean checkAvailability(String itemID){
+		boolean result=false;
+		if(Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())){
+		if(map!=null && map.get(itemID).getQuantity()>0){
+		result= true;
+		}
+		}else{
+			Client checkAvailability = new Client();
+			result= checkAvailability.checkIfAvailable(itemID);
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean checkBorrowPossible(String userID,String itemID){
+		boolean result = false;
+		ArrayList<String> userList = null;
+		if (BorrowList != null) {
+			userList = BorrowList.get(itemID);
+		}
+		// Check if the request is for an item in the user's library
+		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
+			// Check if user has already borrowed the item
+			if (userList != null && userList.contains(userID)) {
+				result=false;
+			}
+			// Check if external client has already borrowed an item
+			if (!Utilities.getUniversity(userID).equals(Constants.UNIVERSITY) && ClientList != null && ClientList.contains(userID)) {
+				result=false;
+			}
+
+			if (map != null && map.containsKey(itemID)) {
+				Item item = map.get(itemID);
+
+				if (item.getQuantity() != 0) {
+				    result = true;
+				}
+				// When the quantity of the item is zero
+				else {
+					result = false;
+				}
+			} else {
+				result = false;
+			}
+		}
+		// When the user requests an item from another library
+		else {
+			Client borrowitem = new Client();
+			result = borrowitem.canBorrow(userID, itemID);
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean checkReturnPossible(String userID,String itemID){
+		boolean result=false;
+		ArrayList<String> userList = null;
+		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())) {
+			// When the user wants to return a book the quantity is increased by
+			// 1.
+			if (BorrowList != null) {
+				userList = BorrowList.get(itemID);
+			}
+			if (userList != null && userList.contains(userID)) {
+			result= true;
+		} else {
+			Client returnitem = new Client();
+			result = returnitem.returnItemToRemoteLibrary(userID, itemID);
+		}
+	}
+		return result;
+	}
 
 	@Override
 	protected void finalize() {
 		Utilities.unLoadLibrary(this);
 	}
-
 }

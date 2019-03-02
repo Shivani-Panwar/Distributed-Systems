@@ -1,0 +1,41 @@
+module MontrealLibraryServer{
+	
+	
+	interface Montreal{
+	
+	 boolean addItem(in string managerID, in string itemID, in string itemName, in long quantity);
+
+
+	 boolean removeItem(in string managerID, in string itemID, in long quantity);
+
+	
+	 string listItemAvailability(in string managerID);
+
+
+	 string borrowItem(in string userID, in string itemID, in long numberOfDays);
+
+
+	 string findItem(in string userID, in string itemName);
+
+
+	 boolean returnItem(in string userID, in string itemID);
+	
+
+	 boolean addToQueue(in string itemID, in string userID);
+	
+
+	 boolean exchangeItem(in string userID, in string oldItem, in string newItem);
+	
+
+	 boolean checkAvailability(in string itemID);
+	 
+
+	 boolean checkBorrowPossible(in string userID, in string itemID);
+	 
+	
+	 boolean checkReturnPossible(in string userID, in string itemID);
+	 
+	 
+	  oneway void shutdown();
+	};
+};

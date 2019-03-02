@@ -137,4 +137,43 @@ public interface LibraryInterface extends Remote {
 	 * @throws IOException
 	 */
 	public boolean addToQueue(String itemID, String userID) throws java.rmi.RemoteException;
+	
+	/**
+	 * This method is used by the user when he wishes to exchange an item he has already
+	 * borrowed for another item.
+	 * 
+	 * @param userID The user who is invoking the method.
+	 * @param oldItem The item that will be exchanged.
+	 * @param newItem The new item that will be borrowed.
+	 * @return true if the item is borrowed successfully.
+	 * @throws java.rmi.RemoteException
+	 */
+	public boolean exchangeItem(String userID, String oldItem, String newItem) throws java.rmi.RemoteException;
+	
+	/**
+	 * This method is used to check if the item is available in the library.
+	 * 
+	 * @param itemID The item which is to be checked.
+	 * @return true if available else false.
+	 * @throws java.rmi.RemoteException
+	 */
+	public boolean checkAvailability(String itemID) throws java.rmi.RemoteException;
+	
+	/**
+	 * This method is used to check if the user can borrow the item from the library.
+	 * @param userID The user for which the borrow is to be checked.
+	 * @param itemID The item for which it is to be checked.
+	 * @return true if user can borrow else false.
+	 * @throws java.rmi.RemoteException
+	 */
+	public boolean checkBorrowPossible(String userID, String itemID) throws java.rmi.RemoteException;
+	
+	/**
+	 * This method is used to check if the user can return the item to the library.
+	 * @param userID The user for which the return is to be checked.
+	 * @param itemID The item for which return is to be checked.
+	 * @return true if the return action is possible else false.
+	 * @throws java.rmi.RemoteException
+	 */
+	public boolean checkReturnPossible(String userID, String itemID) throws java.rmi.RemoteException;
 }

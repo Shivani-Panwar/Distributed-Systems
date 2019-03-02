@@ -137,4 +137,15 @@ public interface LibraryInterface extends Remote  {
 	 * @throws IOException
 	 */
 	public boolean addToQueue(String itemID, String userID) throws java.rmi.RemoteException;
+	
+	/**
+	 * This method is used when the user wishes to exchange an item he borrowed with another item.
+	 * 
+	 * @param userID
+	 * @param oldItem
+	 * @param newItem
+	 * @return
+	 * @throws java.rmi.RemoteException
+	 */
+	public boolean exchangeItem(String userID, String oldItem, String newItem) throws java.rmi.RemoteException;
 }
