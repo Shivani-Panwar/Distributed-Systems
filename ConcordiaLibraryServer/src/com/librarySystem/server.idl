@@ -1,7 +1,7 @@
-module ConcordiaLibraryServer{
+module corba{
 	
 	
-	interface Concordia{
+	interface Library{
 	
 	 boolean addItem(in string managerID, in string itemID, in string itemName, in long quantity);
 

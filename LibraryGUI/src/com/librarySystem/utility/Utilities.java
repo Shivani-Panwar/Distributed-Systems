@@ -6,12 +6,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
+import com.librarySystem.model.Item;
 
 /**
  * This class contains utilities that the client uses.
@@ -115,4 +118,105 @@ public class Utilities {
 		}
 		return false;
 	}
+	
+	/**
+	 * This method defines how the UDP messages from servers will be separated.
+	 * @param action - Action being  performed by the server.
+	 * @param userID
+	 * @param item
+	 * @param days
+	 * @return
+	 */
+	public static String getServerMessageString(String action, String userID, String item, int days){	
+		return new StringBuilder().append(action)
+				.append(Constants.SERVER_MESSAGE_SEPERATOR)
+				.append(userID)
+				.append(Constants.SERVER_MESSAGE_SEPERATOR)
+				.append(item)
+				.append(Constants.SERVER_MESSAGE_SEPERATOR)
+				.append(String.valueOf(days))
+				.toString();
+			
+	}
+	
+	/**
+	 * This method is used to get the action being performed from the message that is sent using UDP.
+	 * @param message
+	 * @return
+	 */
+	public static String getActionFromMessage(String message){
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[0].trim();
+	}
+	
+	/**
+	 * This method is used to get the userID from the message that is sent using UDP.
+	 * @param message
+	 * @return
+	 */
+	public static String getUserIdFromMessage(String message){
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[1].trim();
+	}
+	
+	/**
+	 * This method is used to get the item name from the message that is sent using UDP.
+	 * @param message
+	 * @return
+	 */
+	public static String getItemFromMessage(String message){
+		return message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[2].trim();
+	}
+	
+	/**
+	 * This method is used to get the number of days from the message that is sent using UDP.
+	 * @param message
+	 * @return
+	 */
+	public static int getDaysFromMessage(String message){
+		return Integer.valueOf(message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[3].trim());
+	}
+	
+	/**
+	 * This method is used to get the item from the reply that is received from the server
+	 * @param message
+	 * @return
+	 */
+	public static ArrayList<Item> getItemsFromReply(String message){
+		ArrayList<Item> items = new ArrayList<>();
+		if(message != null){
+			String[] list = message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR
+					+Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR);
+			System.out.println(Arrays.toString(list));
+			for(int i = 0; i < list.length; i++){
+				String[] s = list[i].split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR);
+				if(s.length == 3) {
+					Item item = new Item(s[0].trim(), s[1].trim(), Integer.valueOf(s[2].trim()));
+					items.add(item);
+				}
+			}
+		}
+		return items;
+	}
+	
+	/**
+	 * This message is used to get the String reply from the server message.
+	 * @param list
+	 * @return
+	 */
+	public static String getReplyStringFromList(ArrayList<Item> list){
+		int i = 0;
+		StringBuilder builder = new StringBuilder();
+		for(Item item : list){
+			builder.append(item.getID())
+			.append(Constants.SERVER_MESSAGE_SEPERATOR)
+			.append(item.getName())
+			.append(Constants.SERVER_MESSAGE_SEPERATOR)
+			.append(String.valueOf(item.getQuantity()));
+			if(i < list.size()-1){
+				builder.append(Constants.SERVER_MESSAGE_DOUBLE_SEPERATOR);
+			}
+		}
+		return builder.toString();	
+	}
+	
+
 }

@@ -18,5 +18,8 @@ public class Constants {
 	public static final String BORROW_FAIL_OWN="Item cannot be borrowed from the library!!";
 	public static final String BORROW_FAIL_ITEM_NOT_FOUND="The item does not exist in the inventory";
 	public static final String BORROW_FAIL_ALREADY_BORROWED="User has already borrowed the item";
+	public static final String ESCAPED_ESCAPE_OPERATOR = "\\";
+	public static final String SERVER_MESSAGE_SEPERATOR = "|";
+	public static final String SERVER_MESSAGE_DOUBLE_SEPERATOR = "||";
 	
 }
