@@ -1,5 +1,7 @@
 package com.librarySystem.corba;
 
+import java.io.IOException;
+
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
@@ -9,7 +11,7 @@ import org.omg.PortableServer.POAHelper;
 
 import com.librarySystem.constant.Constants;
 
-public class Server {
+public class ServerCorba {
 
 	public void startServer(String[] args) {
 		try {
@@ -42,8 +44,21 @@ public class Server {
 		}
 
 		catch (Exception e) {
-			System.err.println("ERROR: " + e);
-			e.printStackTrace(System.out);
+			if(e instanceof org.omg.CORBA.COMM_FAILURE){
+				if(e.getCause().getMessage().equals(Constants.CORBA_CONNECT_REFUSE_EXCEPTION)){
+					try {
+						Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"orbd -ORBInitialPort "+Constants.CORBA_PORT+"\"");
+						Thread.sleep(5000);
+						this.startServer(args);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
 		}
 
 		System.out.println(Constants.UNIVERSITY + " Server Exiting ...");
