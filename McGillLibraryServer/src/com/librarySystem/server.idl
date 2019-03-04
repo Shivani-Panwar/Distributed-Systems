@@ -1,7 +1,7 @@
-module McGillLibraryServer{
+module corba{
 	
 	
-	interface McGill{
+	interface Library{
 	
 	 boolean addItem(in string managerID, in string itemID, in string itemName, in long quantity);
 

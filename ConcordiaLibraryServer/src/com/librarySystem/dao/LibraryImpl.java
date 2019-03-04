@@ -330,7 +330,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			ArrayList<Item> items = new ArrayList<>();
 			Client findinothers = new Client();
 			items = findinothers.findItemsOnRemoteLibraries(userID, itemName);
-
 			if (items != null) {
 				ResultList.addAll(items);
 			}

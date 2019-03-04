@@ -1,6 +1,7 @@
 package com.librarySystem.corba;
 
 import java.io.IOException;
+import java.util.logging.LogManager;
 
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
@@ -17,6 +18,7 @@ public class ServerCorba {
 		try {
 			// create and initialize the ORB //// get reference to rootpoa &amp;
 			// activate the POAManager
+			LogManager.getLogManager().reset();
 			ORB orb = ORB.init(args, null);
 			POA rootpoa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 			rootpoa.the_POAManager().activate();

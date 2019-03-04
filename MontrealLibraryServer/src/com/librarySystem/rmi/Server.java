@@ -23,10 +23,10 @@ public class Server {
 		try {
 			// Call initRegistry to check whether the server is already
 			// registered on the port or a new registry is to be made.
-			Utilities.initRegistry(Constants.PORT);
+			Utilities.initRegistry(Constants.RMI_PORT);
 
 			LibraryImpl LibImpl = new LibraryImpl();
-			String registryURL = "rmi://"+Constants.HOSTANAME+":"+Constants.PORT+"/"+Constants.UNIVERSITY.getCode()+"";
+			String registryURL = "rmi://"+Constants.HOSTANAME+":"+Constants.RMI_PORT+"/"+Constants.UNIVERSITY.getCode()+"";
 
 			Naming.rebind(registryURL, LibImpl);
 			System.out.println("Server is Running...");
