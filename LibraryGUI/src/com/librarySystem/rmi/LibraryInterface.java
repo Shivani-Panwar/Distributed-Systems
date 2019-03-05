@@ -1,4 +1,4 @@
-package com.librarySystem.dao;
+package com.librarySystem.rmi;
 
 import java.io.IOException;
 import java.rmi.*;

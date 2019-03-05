@@ -4,9 +4,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import com.librarySystem.constant.University;
-import com.librarySystem.dao.Client;
-import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.model.Item;
+import com.librarySystem.rmi.Client;
+import com.librarySystem.rmi.LibraryInterface;
 import com.librarySystem.utility.Utilities;
 
 /**

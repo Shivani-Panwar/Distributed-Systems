@@ -65,8 +65,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="com.librarySystem.dao.Client" project="LibraryGUI" 
-    file="/LibraryGUI/src/com/librarySystem/dao/Client.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="8" language="java" name="com.librarySystem.rmi.Client" project="LibraryGUI" 
+    file="/LibraryGUI/src/com/librarySystem/rmi/Client.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1185" y="-91"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -74,8 +74,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="9" language="java" name="com.librarySystem.dao.LibraryInterface" project="LibraryGUI" 
-    file="/LibraryGUI/src/com/librarySystem/dao/LibraryInterface.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="9" language="java" name="com.librarySystem.rmi.LibraryInterface" project="LibraryGUI" 
+    file="/LibraryGUI/src/com/librarySystem/rmi/LibraryInterface.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1005" y="581"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -102,92 +102,92 @@
     </display>  
   </class>  
   <dependency id="12">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="13">    
-    <end type="SOURCE" refId="3"/>    
+    <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="6"/>  
   </dependency>  
-  <dependency id="14">    
+  <dependency id="13">    
     <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="14">    
+    <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="6"/>  
   </dependency>  
   <dependency id="15">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <dependency id="16">    
-    <end type="SOURCE" refId="2"/>    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="10"/>  
   </dependency>  
-  <dependency id="17">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="11"/>  
-  </dependency>  
-  <dependency id="18">    
+  <dependency id="16">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="4"/>  
   </dependency>  
-  <association id="19">    
+  <dependency id="17">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="18">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="19">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <association id="20">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="20" name="client">        
+      <attribute id="21" name="client">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="21" minimum="0" maximum="1">        
+      <multiplicity id="22" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="22">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
   <dependency id="23">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="24">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <dependency id="25">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="7"/>  
-  </dependency>  
-  <dependency id="26">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="11"/>  
-  </dependency>  
-  <dependency id="27">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <dependency id="28">    
     <end type="SOURCE" refId="10"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
-  <dependency id="29">    
+  <dependency id="24">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="25">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="26">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="27">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="28">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="29">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="6"/>  
   </dependency>  
   <dependency id="30">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
   <dependency id="31">    
-    <end type="SOURCE" refId="3"/>    
+    <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="7"/>  
   </dependency>  
   <dependency id="32">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="5"/>  
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="10"/>  
   </dependency>  
   <dependency id="33">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="9"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
