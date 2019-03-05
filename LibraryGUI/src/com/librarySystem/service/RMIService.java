@@ -15,7 +15,7 @@ import com.librarySystem.utility.Utilities;
  * @version 1.0
  *
  */
-public class RMIService {
+public class RMIService implements LibraryService {
 
 	private static Client client;
 

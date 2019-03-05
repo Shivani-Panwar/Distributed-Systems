@@ -1,4 +1,4 @@
-package com.librarySystem.corbaDAO;
+package com.librarySystem.corba;
 
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;

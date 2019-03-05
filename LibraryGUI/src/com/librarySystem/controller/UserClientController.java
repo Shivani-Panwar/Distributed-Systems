@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.librarySystem.constant.Constants;
+import com.librarySystem.constant.DSImplementation;
 import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
 import com.librarySystem.service.CorbaService;
+import com.librarySystem.service.LibraryService;
 import com.librarySystem.service.RMIService;
 import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
@@ -23,6 +25,16 @@ import com.librarySystem.utility.Utilities;
  */
 public class UserClientController {
 
+private LibraryService service;
+	
+	public UserClientController(){
+		if(Constants.DS_IMPLEMENTATION.equals(DSImplementation.RMI)){
+			service = new RMIService();
+		} else {
+			service = new CorbaService();
+		}
+	}
+	
 	/**
 	 * This method is used to take all the inputs from the manager and perform
 	 * the required action till the manager does not exit the program.
@@ -37,8 +49,6 @@ public class UserClientController {
 		String oldItem=null;
 		String itemName = null;
 		boolean logout = false;
-		//RMIService service = new RMIService();
-		CorbaService service=new CorbaService();
 		University university = null;
 
 		// Check the university of the user.

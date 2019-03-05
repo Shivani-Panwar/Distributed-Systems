@@ -144,7 +144,8 @@ public class CorbaToLibraryInterface extends LibraryPOA {
 	}
 
 	@Override
-	public void shutdown() {		
+	public void shutdown() {	
+		orb.shutdown(true);
 	}
 
 }

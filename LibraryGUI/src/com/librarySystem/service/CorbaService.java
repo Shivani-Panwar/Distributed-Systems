@@ -2,9 +2,10 @@ package com.librarySystem.service;
 
 import java.util.ArrayList;
 
+import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
-import com.librarySystem.corbaDAO.Client;
-import com.librarySystem.corbaDAO.Library;
+import com.librarySystem.corba.Client;
+import com.librarySystem.corba.Library;
 import com.librarySystem.model.Item;
 import com.librarySystem.utility.Utilities;
 
@@ -14,12 +15,13 @@ import com.librarySystem.utility.Utilities;
  * @version 1.0
  *
  */
-public class CorbaService {
+public class CorbaService implements LibraryService {
 
 	private static Client client;
 
 	static {
-		client = new Client(new String[2]);
+		client = new Client(new String[]{Constants.ORBINITIALPORT_KEY, String.valueOf(Constants.CORBA_PORT)
+				, Constants.ORBINITIALHOST_KEY, Constants.HOSTANAME});
 	}
 
 	/**
