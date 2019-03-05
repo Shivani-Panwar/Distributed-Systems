@@ -27,7 +27,5 @@ public class Client {
 			e.printStackTrace();
 		}
 		return null;
-
 	}
-
 }

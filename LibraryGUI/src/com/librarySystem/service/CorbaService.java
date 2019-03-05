@@ -14,7 +14,7 @@ import com.librarySystem.utility.Utilities;
  * @version 1.0
  *
  */
-public class CrobaService {
+public class CorbaService {
 
 	private static Client client;
 

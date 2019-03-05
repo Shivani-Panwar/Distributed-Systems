@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
+import com.librarySystem.service.CorbaService;
 import com.librarySystem.service.RMIService;
 import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
@@ -35,8 +36,8 @@ public class ManagerClientController {
 		boolean logout = false;
 		int quantity = 0;
 		University university = null;
-		RMIService service = new RMIService();
-
+		//RMIService service = new RMIService();
+		CorbaService service = new CorbaService();
 		if (Utilities.CodeCheck(managerID, false, University.CONCORDIA.getCode(), false)) {
 			university = University.CONCORDIA;
 		} else if (Utilities.CodeCheck(managerID, false, University.MCGILL.getCode(), false)) {

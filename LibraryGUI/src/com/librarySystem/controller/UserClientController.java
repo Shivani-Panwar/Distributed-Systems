@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
 import com.librarySystem.model.Item;
+import com.librarySystem.service.CorbaService;
 import com.librarySystem.service.RMIService;
 import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
@@ -36,7 +37,8 @@ public class UserClientController {
 		String oldItem=null;
 		String itemName = null;
 		boolean logout = false;
-		RMIService service = new RMIService();
+		//RMIService service = new RMIService();
+		CorbaService service=new CorbaService();
 		University university = null;
 
 		// Check the university of the user.
