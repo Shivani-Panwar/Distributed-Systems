@@ -8,13 +8,15 @@ package com.librarySystem.corba;
 * Monday, March 4, 2019 2:26:45 o'clock PM EST
 */
 
+@SuppressWarnings("unchecked")
 public abstract class LibraryPOA extends org.omg.PortableServer.Servant
  implements LibraryOperations, org.omg.CORBA.portable.InvokeHandler
 {
 
   // Constructors
 
-  private static java.util.Hashtable _methods = new java.util.Hashtable ();
+  @SuppressWarnings("rawtypes")
+private static java.util.Hashtable _methods = new java.util.Hashtable ();
   static
   {
     _methods.put ("addItem", new java.lang.Integer (0));
