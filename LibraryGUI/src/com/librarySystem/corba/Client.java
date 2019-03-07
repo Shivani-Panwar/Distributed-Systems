@@ -1,5 +1,7 @@
 package com.librarySystem.corba;
 
+import java.util.logging.LogManager;
+
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;

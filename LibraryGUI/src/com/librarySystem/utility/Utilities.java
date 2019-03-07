@@ -95,7 +95,6 @@ public class Utilities {
 			BufferedWriter wr = new BufferedWriter(new FileWriter(logFile, true));
 			String toWrite = " Error Message : " + error + " Time : "
 					+ dateFormat.format(new Date()) + "\n";
-			System.out.println(toWrite);
 			wr.newLine();
 			wr.write(toWrite);
 			wr.close();
@@ -185,7 +184,6 @@ public class Utilities {
 		if(message != null){
 			String[] list = message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR
 					+Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR);
-			System.out.println(Arrays.toString(list));
 			for(int i = 0; i < list.length; i++){
 				String[] s = list[i].split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR);
 				if(s.length == 3) {

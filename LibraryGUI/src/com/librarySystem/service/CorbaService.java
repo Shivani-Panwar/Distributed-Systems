@@ -87,7 +87,6 @@ public class CorbaService implements LibraryService {
 				String reply = library.listItemAvailability(managerID);
 				result = Utilities.getItemsFromReply(reply);
 			} catch (Exception e) {
-				
 				Utilities.errorLog(e.getMessage());
 			}
 		}

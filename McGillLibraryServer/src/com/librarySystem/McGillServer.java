@@ -27,8 +27,8 @@ public class McGillServer {
 			Utilities.loadLibrary(library);
 		} else {
 			ServerCorba server = new ServerCorba();
-			server.startServer(new String[]{Constants.ORBINITIALPORT_KEY, String.valueOf(Constants.CORBA_PORT)
-					, Constants.ORBINITIALHOST_KEY, Constants.HOSTANAME});
+			Utilities.loadLibrary(server.startServer(new String[]{Constants.ORBINITIALPORT_KEY, String.valueOf(Constants.CORBA_PORT)
+					, Constants.ORBINITIALHOST_KEY, Constants.HOSTANAME}));
 		}
 
 		ServerUDP serverudp = new ServerUDP();

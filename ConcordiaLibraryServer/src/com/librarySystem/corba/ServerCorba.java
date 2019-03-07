@@ -14,7 +14,8 @@ import com.librarySystem.constant.Constants;
 
 public class ServerCorba {
 
-	public void startServer(String[] args) {
+	public CorbaToLibraryInterface startServer(String[] args) {
+		CorbaToLibraryInterface libraryObj = new CorbaToLibraryInterface();
 		try {
 			// create and initialize the ORB //// get reference to rootpoa &amp;
 			// activate the POAManager
@@ -24,7 +25,7 @@ public class ServerCorba {
 			rootpoa.the_POAManager().activate();
 
 			// create servant and register it with the ORB
-			CorbaToLibraryInterface libraryObj = new CorbaToLibraryInterface();
+			
 			libraryObj.setORB(orb);
 
 			// get object reference from the servant
@@ -40,9 +41,8 @@ public class ServerCorba {
 			System.out.println(Constants.UNIVERSITY + " Server ready and waiting ...");
 
 			// wait for invocations from clients
-			for (;;) {
-				orb.run();
-			}
+			Thread handler = new CorbaClientHandler(orb);
+			handler.start();
 		}
 
 		catch (Exception e) {
@@ -62,8 +62,6 @@ public class ServerCorba {
 				}
 			}
 		}
-
-		System.out.println(Constants.UNIVERSITY + " Server Exiting ...");
-
+		return libraryObj;
 	}
 }

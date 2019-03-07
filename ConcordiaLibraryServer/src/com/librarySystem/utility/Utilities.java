@@ -18,6 +18,7 @@ import java.util.Date;
 
 import com.librarySystem.constant.Constants;
 import com.librarySystem.constant.University;
+import com.librarySystem.corba.CorbaToLibraryInterface;
 import com.librarySystem.dao.LibraryInterface;
 import com.librarySystem.model.Item;
 
@@ -132,12 +133,10 @@ public class Utilities {
 	}
 	
 	public static void createDirectoryIfNotExist(String path){
-		System.out.println(path);
 		File file = new File(path);
-		System.out.println(file.getAbsolutePath());
 		if (!file.exists()) {
 			System.out.println("Creating dir" + path);
-            System.out.println(file.mkdirs());
+            file.mkdirs();
             
         }
 	}
@@ -329,6 +328,29 @@ public class Utilities {
 	
 	
 	public static void loadLibrary(LibraryInterface library){
+		String filePath = Constants.LIBRARY_DISK_PATH + Constants.UNIVERSITY.getCode() + "_data";
+		try {
+			Utilities.createDirectoryIfNotExist(Constants.LIBRARY_DISK_PATH);
+			File file = new File(filePath);
+			if(!file.exists()){
+				throw new FileNotFoundException("The file was not found");
+			}
+			
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line = reader.readLine();
+			ArrayList<Item> list = Utilities.getItemsFromReply(line);
+			for(Item item : list){
+				library.addItem(Constants.UNIVERSITY.getCode()+"M0000", item.getID(), item.getName(), item.getQuantity());
+			}
+			reader.close();
+			
+		} catch (IOException e) {
+			Utilities.errorLog(e.getMessage());
+		}
+		
+	}
+	
+	public static void loadLibrary(CorbaToLibraryInterface library){
 		String filePath = Constants.LIBRARY_DISK_PATH + Constants.UNIVERSITY.getCode() + "_data";
 		try {
 			Utilities.createDirectoryIfNotExist(Constants.LIBRARY_DISK_PATH);
