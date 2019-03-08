@@ -499,12 +499,11 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	@Override
 	public boolean exchangeItem(String userID, String oldItem, String newItem){
 		boolean result=false;
-		if(checkAvailability(newItem) && checkBorrowPossible(userID, newItem) && checkReturnPossible(userID, oldItem)){
-			borrowItem(userID,newItem,1);
+		if(checkAvailability(newItem) && checkBorrowPossible(userID, newItem) && checkReturnPossible(userID, oldItem)){		
 			returnItem(userID,oldItem);
+			borrowItem(userID,newItem,1);
 			result=true;
-		}
-		
+		}	
 		if (result == true) {	
 			Utilities.clientLog(userID, "Returning an Item", "The item was successfully exchanged!!");
 			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
@@ -513,8 +512,7 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			Utilities.clientLog(userID, "Returning an Item", "The item cannot be exchanged!!");
 			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
 					"The item cannot be exchanged!!");
-		}
-		
+		}	
 	return result;
 	}
 	
@@ -543,14 +541,10 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
 			// Check if user has already borrowed the item
 			if (userList != null && userList.contains(userID)) {
-				result=false;
+				result=true;
 			}
-			// Check if external client has already borrowed an item
-			if (!Utilities.getUniversity(userID).equals(Constants.UNIVERSITY) && ClientList != null && ClientList.contains(userID)) {
-				result=false;
-			}
-
-			if (map != null && map.containsKey(itemID)) {
+			
+			if (map != null && map.containsKey(itemID) && result!=true) {
 				Item item = map.get(itemID);
 
 				if (item.getQuantity() != 0) {
@@ -577,18 +571,16 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		boolean result=false;
 		ArrayList<String> userList = null;
 		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())) {
-			// When the user wants to return a book the quantity is increased by
-			// 1.
 			if (BorrowList != null) {
 				userList = BorrowList.get(itemID);
 			}
 			if (userList != null && userList.contains(userID)) {
 			result= true;
-		} else {
-			Client returnitem = new Client();
-			result = returnitem.returnItemToRemoteLibrary(userID, itemID);
 		}
-	}
+		}else {
+			Client returnitem = new Client();
+			result = returnitem.canReturn(userID, itemID);
+		}
 		return result;
 	}
 

@@ -281,6 +281,7 @@ public class Utilities {
 	 */
 	public static int getDaysFromMessage(String message){
 		return Integer.valueOf(message.split(Constants.ESCAPED_ESCAPE_OPERATOR+Constants.SERVER_MESSAGE_SEPERATOR)[3].trim());
+		
 	}
 	
 	/**

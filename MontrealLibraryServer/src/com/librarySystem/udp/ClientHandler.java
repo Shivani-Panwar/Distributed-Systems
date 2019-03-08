@@ -76,12 +76,12 @@ public class ClientHandler extends Thread {
 				break;
 				
 			case Constants.CAN_BORROW_ACTION:
-				bytes = String.valueOf(library.checkAvailability(Utilities.getItemFromMessage(received))).getBytes();
+				bytes = String.valueOf(library.checkBorrowPossible(Utilities.getUserIdFromMessage(received), Utilities.getItemFromMessage(received))).getBytes();
 				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
 				break;
 				
 			case Constants.CAN_RETURN_ACTION:
-				bytes = String.valueOf(library.checkAvailability(Utilities.getItemFromMessage(received))).getBytes();
+				bytes = String.valueOf(library.checkReturnPossible(Utilities.getUserIdFromMessage(received), Utilities.getItemFromMessage(received))).getBytes();
 				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());
 				break;
 

@@ -140,7 +140,7 @@ public class Client {
 	 * @return
 	 */
 	public boolean checkIfAvailable(String itemID){
-		String message = Utilities.getServerMessageString(Constants.CHECK_IF_AVAILABLE_ACTION, "", itemID, 0);
+		String message = Utilities.getServerMessageString(Constants.CHECK_IF_AVAILABLE_ACTION, "CONU0000", itemID, 0);
 
 		ArrayList<University> remoteLibraries = Utilities.getRemoteLibraryNames();
 		return Boolean

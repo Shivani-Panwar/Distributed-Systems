@@ -157,13 +157,13 @@ private LibraryService service;
 				break;
 				
 			case 5:
-				System.out.println("Enter the ID for the item to be exchanged:\n");
+				System.out.println("Enter the ID for the item to be exchanged:");
 				oldItem = reader.readLine();
-				System.out.println("Enter the ID for the new item to borrow:\n");
+				System.out.println("Enter the ID for the new item to borrow:");
 				itemID = reader.readLine();
 				// Call RMIService method
 				if (service.exchangeItem(university, userID, oldItem, itemID)) {
-					System.out.println("The item was returned exchanged!!\n");
+					System.out.println("The item was exchanged!!\n");
 				} else {
 					System.out.println("The item could not be exchanged!!\n");
 				}

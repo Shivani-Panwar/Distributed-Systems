@@ -330,7 +330,6 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 			ArrayList<Item> items = new ArrayList<>();
 			Client findinothers = new Client();
 			items = findinothers.findItemsOnRemoteLibraries(userID, itemName);
-
 			if (items != null) {
 				ResultList.addAll(items);
 			}
@@ -501,8 +500,9 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	public boolean exchangeItem(String userID, String oldItem, String newItem){
 		boolean result=false;
 		if(checkAvailability(newItem) && checkBorrowPossible(userID, newItem) && checkReturnPossible(userID, oldItem)){
-			borrowItem(userID,newItem,1);
+			int days=1;
 			returnItem(userID,oldItem);
+			borrowItem(userID,newItem,days);
 			result=true;
 		}
 		
@@ -544,14 +544,10 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		if (Utilities.getUniversity(itemID).equals(Constants.UNIVERSITY)) {
 			// Check if user has already borrowed the item
 			if (userList != null && userList.contains(userID)) {
-				result=false;
+				result=true;
 			}
-			// Check if external client has already borrowed an item
-			if (!Utilities.getUniversity(userID).equals(Constants.UNIVERSITY) && ClientList != null && ClientList.contains(userID)) {
-				result=false;
-			}
-
-			if (map != null && map.containsKey(itemID)) {
+			
+			if (map != null && map.containsKey(itemID) && result!=true) {
 				Item item = map.get(itemID);
 
 				if (item.getQuantity() != 0) {
@@ -578,18 +574,16 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 		boolean result=false;
 		ArrayList<String> userList = null;
 		if (Utilities.getUniversity(itemID).getCode().equals(Constants.UNIVERSITY.getCode())) {
-			// When the user wants to return a book the quantity is increased by
-			// 1.
 			if (BorrowList != null) {
 				userList = BorrowList.get(itemID);
 			}
 			if (userList != null && userList.contains(userID)) {
 			result= true;
-		} else {
-			Client returnitem = new Client();
-			result = returnitem.returnItemToRemoteLibrary(userID, itemID);
 		}
-	}
+		}else {
+			Client returnitem = new Client();
+			result = returnitem.canReturn(userID, itemID);
+		}
 		return result;
 	}
 
