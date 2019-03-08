@@ -24,12 +24,12 @@ public class ServerUDP {
 		// server is listening on port
 		DatagramSocket ds = new DatagramSocket(Constants.UNIVERSITY.getUdpPort());
 
-		byte[] buffer = new byte[4000];
+		System.out.println(Constants.UNIVERSITY.getCode()+" Server is running");
 		// running infinite loop for getting
 		// client request
 		while (true) {
-			System.out.println(Constants.UNIVERSITY.getCode()+" Server is running");
 			try {
+				byte[] buffer = new byte[4000];
 				// socket object to receive incoming client requests
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 				ds.receive(request);
