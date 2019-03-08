@@ -163,9 +163,9 @@ private LibraryService service;
 				itemID = reader.readLine();
 				// Call RMIService method
 				if (service.exchangeItem(university, userID, oldItem, itemID)) {
-					System.out.println("The item was exchanged!!\n");
+					System.out.println("The item was exchanged successfully!!\n");
 				} else {
-					System.out.println("The item could not be exchanged!!\n");
+					System.out.println("The item could not be exchanged, check logs!!\n");
 				}
 				break;
 				

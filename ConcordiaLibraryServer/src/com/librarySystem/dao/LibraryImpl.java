@@ -498,19 +498,23 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	
 	@Override
 	public boolean exchangeItem(String userID, String oldItem, String newItem){
+		boolean resultReturn=false;
 		boolean result=false;
+		String resultBorrow=null;
 		if(checkAvailability(newItem) && checkBorrowPossible(userID, newItem) && checkReturnPossible(userID, oldItem)){		
-			returnItem(userID,oldItem);
-			borrowItem(userID,newItem,1);
-			result=true;
+			resultReturn=returnItem(userID,oldItem);
+			if(resultReturn=true){
+			resultBorrow=borrowItem(userID,newItem,1);
+			}
 		}	
-		if (result == true) {	
-			Utilities.clientLog(userID, "Returning an Item", "The item was successfully exchanged!!");
-			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
+		if (resultReturn == true && resultBorrow!=null && resultBorrow.equals(Constants.BORROWED_FROM_OWN)|| resultBorrow.equals(Constants.BORROWED_FROM_OTHER)) {	
+			Utilities.clientLog(userID, "Exchanging an Item", "The item was successfully exchanged!!");
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Exchanging an Item", userID,
 					"The item was successfully exchanged!!");
+			result=true;
 		} else {
-			Utilities.clientLog(userID, "Returning an Item", "The item cannot be exchanged!!");
-			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Returning an Item", userID,
+			Utilities.clientLog(userID, "Exchanging an Item", "The item cannot be exchanged!!");
+			Utilities.serverLog(Constants.UNIVERSITY.getCode(), "Exchanging an Item", userID,
 					"The item cannot be exchanged!!");
 		}	
 	return result;

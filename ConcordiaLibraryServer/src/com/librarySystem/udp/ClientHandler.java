@@ -51,8 +51,7 @@ public class ClientHandler extends Thread {
 				break;
 
 			case Constants.BORROW_ITEM_ACTION:
-				bytes = String
-						.valueOf(library.borrowItem(Utilities.getUserIdFromMessage(received),
+				bytes = String.valueOf(library.borrowItem(Utilities.getUserIdFromMessage(received),
 								Utilities.getItemFromMessage(received), Utilities.getDaysFromMessage(received)))
 						.getBytes();
 				out = new DatagramPacket(bytes, bytes.length, in.getAddress(), in.getPort());

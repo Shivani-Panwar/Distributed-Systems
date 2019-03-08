@@ -243,8 +243,7 @@ public class Utilities {
 				.append(item)
 				.append(Constants.SERVER_MESSAGE_SEPERATOR)
 				.append(String.valueOf(days))
-				.toString();
-			
+				.toString();		
 	}
 	
 	/**
