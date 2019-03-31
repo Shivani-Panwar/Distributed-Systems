@@ -9,7 +9,7 @@ package com.librarySystem.constant;
 public class Constants {
 	
 	public static final University UNIVERSITY = University.CONCORDIA;
-	public static final DSImplementation DS_IMPLEMENTATION = DSImplementation.CORBA;
+	public static final DSImplementation DS_IMPLEMENTATION = DSImplementation.WEBSERVICE;
 	public static final String HOSTANAME = "localhost";
 	public static final int RMI_PORT = 9999;
 	public static final int CORBA_PORT = 1050;

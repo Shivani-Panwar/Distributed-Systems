@@ -11,6 +11,7 @@ import com.librarySystem.model.Item;
 import com.librarySystem.service.CorbaService;
 import com.librarySystem.service.LibraryService;
 import com.librarySystem.service.RMIService;
+import com.librarySystem.service.WebServiceLibrary;
 import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
 
@@ -30,9 +31,11 @@ public class ManagerClientController {
 	public ManagerClientController(){
 		if(Constants.DS_IMPLEMENTATION.equals(DSImplementation.RMI)){
 			service = new RMIService();
-		} else {
+		} else if(Constants.DS_IMPLEMENTATION.equals(DSImplementation.CORBA)){
 			service = new CorbaService();
-		}
+		}else{
+			service = new WebServiceLibrary();
+			}
 	}
 	
 	/**
@@ -83,6 +86,7 @@ public class ManagerClientController {
 				break;
 
 			case 2:
+				//ArrayList<Item> itemsfound = service.listItemAvailability(university, managerID);
 				ArrayList<Item> itemsfound = service.listItemAvailability(university, managerID);
 				if (itemsfound.isEmpty() == false) {
 					System.out.println("Items found: ");
