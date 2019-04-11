@@ -11,7 +11,7 @@ import com.librarySystem.model.Item;
 import com.librarySystem.service.CorbaService;
 import com.librarySystem.service.LibraryService;
 import com.librarySystem.service.RMIService;
-import com.librarySystem.service.WebServiceLibrary;
+import com.librarySystem.service.SOAPWebService;
 import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
 
@@ -34,7 +34,7 @@ public class ManagerClientController {
 		} else if(Constants.DS_IMPLEMENTATION.equals(DSImplementation.CORBA)){
 			service = new CorbaService();
 		}else{
-			service = new WebServiceLibrary();
+			service = new SOAPWebService();
 			}
 	}
 	

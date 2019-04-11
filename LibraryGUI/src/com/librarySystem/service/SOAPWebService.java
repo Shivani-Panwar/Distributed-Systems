@@ -12,7 +12,7 @@ import com.librarySystem.rmi.LibraryInterface;
 import com.librarySystem.utility.Utilities;
 
 @WebServiceRef(wsdlLocation="com.librarySystem.soap")
-public class WebServiceLibrary implements LibraryService {
+public class SOAPWebService implements LibraryService {
 
 	private static Client client;
 
