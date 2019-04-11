@@ -20,7 +20,7 @@ import com.librarySystem.utility.Utilities;
 public class Client {
 
 	/**
-	 * This method is used to send data to the  othe rservers using UDP.
+	 * This method is used to send data to the  other servers using UDP.
 	 * 
 	 * @param message - Message that is to be sent via UDP connection.
 	 * @param universityPort - Port to which the data is being sent.

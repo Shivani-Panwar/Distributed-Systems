@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import javax.jws.WebService;
+
 import com.librarySystem.constant.Constants;
 import com.librarySystem.model.Item;
 import com.librarySystem.udp.Client;
@@ -20,6 +22,7 @@ import com.librarySystem.utility.Utilities;
  * @version 1.0
  *
  */
+@WebService(endpointInterface = "com.librarySystem.soap")
 public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface {
 
 	private static final long serialVersionUID = 1L;

@@ -11,6 +11,7 @@ import com.librarySystem.rmi.Client;
 import com.librarySystem.rmi.LibraryInterface;
 import com.librarySystem.utility.Utilities;
 
+@WebServiceRef(wsdlLocation="com.librarySystem.soap")
 public class WebServiceLibrary implements LibraryService {
 
 	private static Client client;
@@ -28,7 +29,7 @@ public class WebServiceLibrary implements LibraryService {
 	 * @param quantity	- Quantity of the books that are to be added
 	 * @return
 	 */
-	@WebServiceRef(wsdlLocation="D:/Distributed-Systems/Library-System/Distributed-Systems/ConcordiaLibraryServer/src/SOAPServiceService.wsdl")
+	@Override
 	public boolean addItem(University university, String managerID, String itemID, String itemName, int quantity) {
 
 		LibraryInterface library = client.getLibrary(university);
@@ -53,7 +54,7 @@ public class WebServiceLibrary implements LibraryService {
 	 * @param quantity - Quantity of the books that are to be removed
 	 * @return
 	 */
-	@WebServiceRef(wsdlLocation="D:/Distributed-Systems/Library-System/Distributed-Systems/ConcordiaLibraryServer/src/SOAPServiceService.wsdl")
+	@Override
 	public boolean removeItem(University university, String managerID, String itemID, int quantity) {
 
 		LibraryInterface library = client.getLibrary(university);
@@ -76,7 +77,7 @@ public class WebServiceLibrary implements LibraryService {
 	 * @param managerID
 	 * @return
 	 */
-	@WebServiceRef(wsdlLocation="D:/Distributed-Systems/Library-System/Distributed-Systems/ConcordiaLibraryServer/src/SOAPServiceService.wsdl")
+	@Override
 	public ArrayList<Item> listItemAvailability(University university, String managerID) {
 
 		LibraryInterface library = client.getLibrary(university);
@@ -100,7 +101,7 @@ public class WebServiceLibrary implements LibraryService {
 	 * @param numberOfDays
 	 * @return
 	 */
-	@WebServiceRef(wsdlLocation="D:/Distributed-Systems/Library-System/Distributed-Systems/ConcordiaLibraryServer/src/SOAPServiceService.wsdl")
+	@Override
 	public String borrowItem(University university, String userID, String itemID, int numberOfDays) {
 
 		LibraryInterface library = client.getLibrary(university);
@@ -122,7 +123,7 @@ public class WebServiceLibrary implements LibraryService {
 	 * @param itemName
 	 * @return
 	 */
-	@WebServiceRef(wsdlLocation="D:/Distributed-Systems/Library-System/Distributed-Systems/ConcordiaLibraryServer/src/SOAPServiceService.wsdl")
+	@Override
 	public ArrayList<Item> findItem(University university, String userID, String itemName) {
 
 		LibraryInterface library = client.getLibrary(university);
@@ -146,7 +147,7 @@ public class WebServiceLibrary implements LibraryService {
 	 * @param itemID
 	 * @return
 	 */
-	@WebServiceRef(wsdlLocation="D:/Distributed-Systems/Library-System/Distributed-Systems/ConcordiaLibraryServer/src/SOAPServiceService.wsdl")
+	@Override
 	public boolean returnItem(University university, String userID, String itemID) {
 
 		LibraryInterface library = client.getLibrary(university);
@@ -168,7 +169,7 @@ public class WebServiceLibrary implements LibraryService {
 	 * @param userID
 	 * @return
 	 */
-	@WebServiceRef(wsdlLocation="D:/Distributed-Systems/Library-System/Distributed-Systems/ConcordiaLibraryServer/src/SOAPServiceService.wsdl")
+	@Override
 	public boolean addToQueue(University university, String itemID, String userID){
 		
 		LibraryInterface library = client.getLibrary(university);
@@ -184,7 +185,7 @@ public class WebServiceLibrary implements LibraryService {
 		return false;
 	}
 	
-	@WebServiceRef(wsdlLocation="D:/Distributed-Systems/Library-System/Distributed-Systems/ConcordiaLibraryServer/src/SOAPServiceService.wsdl")
+	@Override
 	public boolean exchangeItem(University university, String userID, String oldItem, String newItem){
 		LibraryInterface library = client.getLibrary(university);
 		if (library != null) {
