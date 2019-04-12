@@ -9,7 +9,7 @@ package com.librarySystem.constant;
  */
 public class Constants {
 	
-	public static final DSImplementation DS_IMPLEMENTATION = DSImplementation.CORBA;
+	public static final DSImplementation DS_IMPLEMENTATION = DSImplementation.SOAPSERVICE;
 	public static final String HOSTANAME = "localhost";
 	public static final int PORT = 9999;
 	public static final int CORBA_PORT = 1050;

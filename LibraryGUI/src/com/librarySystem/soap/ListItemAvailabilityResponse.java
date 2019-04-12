@@ -1,10 +1,14 @@
 
 package com.librarySystem.soap;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.librarySystem.model.Item;
 
 
 /**
@@ -27,13 +31,13 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "listItemAvailabilityResponse", propOrder = {
+@XmlType(namespace="listItemAvailabilityResponse",name = "listItemAvailabilityResponse", propOrder = {
     "_return"
 })
 public class ListItemAvailabilityResponse {
 
     @XmlElement(name = "return")
-    protected String _return;
+    protected ArrayList<Item> _return;
 
     /**
      * Gets the value of the return property.
@@ -43,7 +47,7 @@ public class ListItemAvailabilityResponse {
      *     {@link String }
      *     
      */
-    public String getReturn() {
+    public ArrayList<Item> getReturn() {
         return _return;
     }
 
@@ -55,7 +59,7 @@ public class ListItemAvailabilityResponse {
      *     {@link String }
      *     
      */
-    public void setReturn(String value) {
+    public void setReturn(ArrayList<Item> value) {
         this._return = value;
     }
 

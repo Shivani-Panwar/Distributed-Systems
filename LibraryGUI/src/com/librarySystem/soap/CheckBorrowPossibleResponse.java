@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "checkBorrowPossibleResponse", propOrder = {
+@XmlType(namespace="checkBorrowPossibleResponse",name = "checkBorrowPossibleResponse", propOrder = {
     "_return"
 })
 public class CheckBorrowPossibleResponse {

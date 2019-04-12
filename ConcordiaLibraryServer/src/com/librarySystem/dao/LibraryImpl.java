@@ -196,10 +196,12 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 	public synchronized ArrayList<Item> listItemAvailability(String managerID) {
 		// When the manager wants to list out all the items in his library
 		ArrayList<Item> ResultList = new ArrayList<>();
+		if(map!=null){
 		Set<String> keys = map.keySet();
 
 		for (String key : keys) {
 			ResultList.add(map.get(key));
+		}
 		}
 		// Log file generation
 		Utilities.clientLog(managerID, "Requested List of Items", "The Items have been listed successfully");
@@ -328,8 +330,8 @@ public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface
 				}
 			}
 		}
-
 		if (Utilities.getUniversity(userID).getCode().equals(Constants.UNIVERSITY.getCode())) {
+
 			ArrayList<Item> items = new ArrayList<>();
 			Client findinothers = new Client();
 			items = findinothers.findItemsOnRemoteLibraries(userID, itemName);

@@ -4,6 +4,6 @@ public enum DSImplementation {
 	
 	CORBA,
 	RMI,
-	WEBSERVICE;
+	SOAPSERVICE;
 
 }

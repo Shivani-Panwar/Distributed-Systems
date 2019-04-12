@@ -61,7 +61,7 @@ public class LibrarySystem {
 			exit = (exitString.equals("Y"))? true : false;
 			
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 			Utilities.errorLog(e.getMessage());
 			
 		} 

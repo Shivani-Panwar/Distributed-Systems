@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://soap.librarySystem.com/" xmlns:tns="http://soap.librarySystem.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="addItem" type="tns:addItem"/>
+
+  <xs:element name="addItemResponse" type="tns:addItemResponse"/>
+
+  <xs:element name="addToQueue" type="tns:addToQueue"/>
+
+  <xs:element name="addToQueueResponse" type="tns:addToQueueResponse"/>
+
+  <xs:element name="borrowItem" type="tns:borrowItem"/>
+
+  <xs:element name="borrowItemResponse" type="tns:borrowItemResponse"/>
+
+  <xs:element name="checkAvailability" type="tns:checkAvailability"/>
+
+  <xs:element name="checkAvailabilityResponse" type="tns:checkAvailabilityResponse"/>
+
+  <xs:element name="checkBorrowPossible" type="tns:checkBorrowPossible"/>
+
+  <xs:element name="checkBorrowPossibleResponse" type="tns:checkBorrowPossibleResponse"/>
+
+  <xs:element name="checkReturnPossible" type="tns:checkReturnPossible"/>
+
+  <xs:element name="checkReturnPossibleResponse" type="tns:checkReturnPossibleResponse"/>
+
+  <xs:element name="exchangeItem" type="tns:exchangeItem"/>
+
+  <xs:element name="exchangeItemResponse" type="tns:exchangeItemResponse"/>
+
+  <xs:element name="findItem" type="tns:findItem"/>
+
+  <xs:element name="findItemResponse" type="tns:findItemResponse"/>
+
+  <xs:element name="listItemAvailability" type="tns:listItemAvailability"/>
+
+  <xs:element name="listItemAvailabilityResponse" type="tns:listItemAvailabilityResponse"/>
+
+  <xs:element name="removeItem" type="tns:removeItem"/>
+
+  <xs:element name="removeItemResponse" type="tns:removeItemResponse"/>
+
+  <xs:element name="returnItem" type="tns:returnItem"/>
+
+  <xs:element name="returnItemResponse" type="tns:returnItemResponse"/>
+
+  <xs:complexType name="checkAvailability">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkAvailabilityResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkBorrowPossible">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkBorrowPossibleResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="listItemAvailability">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="listItemAvailabilityResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="returnItem">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="returnItemResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="findItem">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="findItemResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addToQueue">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addToQueueResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="removeItem">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg2" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="removeItemResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addItem">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg2" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg3" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addItemResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="borrowItem">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg2" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="borrowItemResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="exchangeItem">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg2" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="exchangeItemResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkReturnPossible">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+      <xs:element name="arg1" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="checkReturnPossibleResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

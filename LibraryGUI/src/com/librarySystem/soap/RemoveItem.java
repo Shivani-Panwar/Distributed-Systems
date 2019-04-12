@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "removeItem", propOrder = {
+@XmlType(namespace="removeItem",name = "removeItem", propOrder = {
     "arg0",
     "arg1",
     "arg2"

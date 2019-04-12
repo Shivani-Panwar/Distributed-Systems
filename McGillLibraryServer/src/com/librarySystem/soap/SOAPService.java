@@ -50,15 +50,16 @@ public class SOAPService {
 
 	//@Override
 	@WebMethod
-	public String listItemAvailability(String managerID) {
+	public ArrayList<Item> listItemAvailability(String managerID) {
 		String returnString = null;
+		ArrayList<Item> items=null;
 		try {
-			ArrayList<Item> items = library.listItemAvailability(managerID);
+			items = library.listItemAvailability(managerID);
 			returnString = Utilities.getReplyStringFromList(items);
 		} catch (RemoteException e) {
 			Utilities.errorLog(e.toString());
 		}
-		return returnString;
+		return items;
 	}
 
 	//@Override
@@ -74,15 +75,17 @@ public class SOAPService {
 
 	//@Override
 	@WebMethod
-	public String findItem(String userID, String itemName) {
+	public ArrayList<Item> findItem(String userID, String itemName) {
 		String returnString = null;
+		ArrayList<Item> items=null;
 		try{
-			ArrayList<Item> items=library.findItem(userID, itemName);
-			returnString = Utilities.getReplyStringFromList(items);
-		}catch(RemoteException e){
+
+			System.out.println("In server ke andar");
+			items=library.findItem(userID, itemName);
+			}catch(RemoteException e){
 			Utilities.errorLog(e.toString());
 		}
-		return returnString;
+		return items;
 	}
 
 	//@Override

@@ -11,6 +11,8 @@ import com.librarySystem.model.Item;
 import com.librarySystem.service.CorbaService;
 import com.librarySystem.service.LibraryService;
 import com.librarySystem.service.RMIService;
+import com.librarySystem.service.SOAPWebService;
+import com.librarySystem.soap.SOAPServiceService;
 import com.librarySystem.utility.InputReader;
 import com.librarySystem.utility.Utilities;
 
@@ -30,6 +32,8 @@ private LibraryService service;
 	public UserClientController(){
 		if(Constants.DS_IMPLEMENTATION.equals(DSImplementation.RMI)){
 			service = new RMIService();
+		}else if(Constants.DS_IMPLEMENTATION.equals(DSImplementation.SOAPSERVICE)){
+			service = new SOAPWebService();
 		} else {
 			service = new CorbaService();
 		}

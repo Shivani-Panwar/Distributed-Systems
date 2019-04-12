@@ -9,7 +9,7 @@ package com.librarySystem.constant;
 public class Constants {
 	
 	public static final University UNIVERSITY = University.MONTREAL;
-	public static final DSImplementation DS_IMPLEMENTATION = DSImplementation.WEBSERVICE;
+	public static final DSImplementation DS_IMPLEMENTATION = DSImplementation.SOAPSERVICE;
 	public static final String HOSTANAME = "localhost";
 	public static final int RMI_PORT = 9999;
 	public static final int CORBA_PORT = 1050;
@@ -35,5 +35,4 @@ public class Constants {
 	public static final String BORROW_FAIL_NO_OF_DAYS="Item cannot be borrowed due to invalid number of days";
 	public static final String BORROW_FAIL_ALREADY_BORROWED="User has already borrowed the item";
 	public static final String CORBA_CONNECT_REFUSE_EXCEPTION = "Connection refused: connect";
-	
-}
+	}

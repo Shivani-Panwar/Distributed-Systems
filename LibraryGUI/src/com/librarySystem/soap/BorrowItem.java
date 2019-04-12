@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "borrowItem", propOrder = {
+@XmlType(namespace="borrowItem", name = "borrowItem", propOrder = {
     "arg0",
     "arg1",
     "arg2"

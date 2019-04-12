@@ -1,6 +1,8 @@
 
 package com.librarySystem.soap;
 
+import java.util.ArrayList;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -9,6 +11,8 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Action;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+
+import com.librarySystem.model.Item;
 
 
 /**
@@ -32,10 +36,10 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "listItemAvailability", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.ListItemAvailability")
-    @ResponseWrapper(localName = "listItemAvailabilityResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.ListItemAvailabilityResponse")
+    @RequestWrapper(localName = "listItemAvailability", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarSystem.soap.ListItemAvailability")
+    @ResponseWrapper(localName = "listItemAvailabilityResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.ListItemAvailabilityResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/listItemAvailabilityRequest", output = "http://soap.librarySystem.com/SOAPService/listItemAvailabilityResponse")
-    public String listItemAvailability(
+    public ArrayList<Item> listItemAvailability(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
 
@@ -47,8 +51,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "checkAvailability", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.CheckAvailability")
-    @ResponseWrapper(localName = "checkAvailabilityResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.CheckAvailabilityResponse")
+    @RequestWrapper(localName = "checkAvailability", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.CheckAvailability")
+    @ResponseWrapper(localName = "checkAvailabilityResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.CheckAvailabilityResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/checkAvailabilityRequest", output = "http://soap.librarySystem.com/SOAPService/checkAvailabilityResponse")
     public boolean checkAvailability(
         @WebParam(name = "arg0", targetNamespace = "")
@@ -63,8 +67,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "checkReturnPossible", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.CheckReturnPossible")
-    @ResponseWrapper(localName = "checkReturnPossibleResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.CheckReturnPossibleResponse")
+    @RequestWrapper(localName = "checkReturnPossible", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.CheckReturnPossible")
+    @ResponseWrapper(localName = "checkReturnPossibleResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.CheckReturnPossibleResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/checkReturnPossibleRequest", output = "http://soap.librarySystem.com/SOAPService/checkReturnPossibleResponse")
     public boolean checkReturnPossible(
         @WebParam(name = "arg0", targetNamespace = "")
@@ -81,8 +85,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "checkBorrowPossible", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.CheckBorrowPossible")
-    @ResponseWrapper(localName = "checkBorrowPossibleResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.CheckBorrowPossibleResponse")
+    @RequestWrapper(localName = "checkBorrowPossible", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.CheckBorrowPossible")
+    @ResponseWrapper(localName = "checkBorrowPossibleResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.CheckBorrowPossibleResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/checkBorrowPossibleRequest", output = "http://soap.librarySystem.com/SOAPService/checkBorrowPossibleResponse")
     public boolean checkBorrowPossible(
         @WebParam(name = "arg0", targetNamespace = "")
@@ -100,8 +104,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "borrowItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.BorrowItem")
-    @ResponseWrapper(localName = "borrowItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.BorrowItemResponse")
+    @RequestWrapper(localName = "borrowItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.BorrowItem")
+    @ResponseWrapper(localName = "borrowItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.BorrowItemResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/borrowItemRequest", output = "http://soap.librarySystem.com/SOAPService/borrowItemResponse")
     public String borrowItem(
         @WebParam(name = "arg0", targetNamespace = "")
@@ -120,10 +124,10 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.FindItem")
-    @ResponseWrapper(localName = "findItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.FindItemResponse")
+    @RequestWrapper(localName = "findItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.FindItem")
+    @ResponseWrapper(localName = "findItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.FindItemResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/findItemRequest", output = "http://soap.librarySystem.com/SOAPService/findItemResponse")
-    public String findItem(
+    public ArrayList<Item> findItem(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
@@ -138,8 +142,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "addToQueue", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.AddToQueue")
-    @ResponseWrapper(localName = "addToQueueResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.AddToQueueResponse")
+    @RequestWrapper(localName = "addToQueue", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.AddToQueue")
+    @ResponseWrapper(localName = "addToQueueResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.AddToQueueResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/addToQueueRequest", output = "http://soap.librarySystem.com/SOAPService/addToQueueResponse")
     public boolean addToQueue(
         @WebParam(name = "arg0", targetNamespace = "")
@@ -157,8 +161,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "removeItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.RemoveItem")
-    @ResponseWrapper(localName = "removeItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.RemoveItemResponse")
+    @RequestWrapper(localName = "removeItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.RemoveItem")
+    @ResponseWrapper(localName = "removeItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.RemoveItemResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/removeItemRequest", output = "http://soap.librarySystem.com/SOAPService/removeItemResponse")
     public boolean removeItem(
         @WebParam(name = "arg0", targetNamespace = "")
@@ -178,8 +182,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "exchangeItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.ExchangeItem")
-    @ResponseWrapper(localName = "exchangeItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.ExchangeItemResponse")
+    @RequestWrapper(localName = "exchangeItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.ExchangeItem")
+    @ResponseWrapper(localName = "exchangeItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.ExchangeItemResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/exchangeItemRequest", output = "http://soap.librarySystem.com/SOAPService/exchangeItemResponse")
     public boolean exchangeItem(
         @WebParam(name = "arg0", targetNamespace = "")
@@ -200,8 +204,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "addItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.AddItem")
-    @ResponseWrapper(localName = "addItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.AddItemResponse")
+    @RequestWrapper(localName = "addItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.AddItem")
+    @ResponseWrapper(localName = "addItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.AddItemResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/addItemRequest", output = "http://soap.librarySystem.com/SOAPService/addItemResponse")
     public boolean addItem(
         @WebParam(name = "arg0", targetNamespace = "")
@@ -222,8 +226,8 @@ public interface SOAPService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "returnItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.ReturnItem")
-    @ResponseWrapper(localName = "returnItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarysystem.soap.ReturnItemResponse")
+    @RequestWrapper(localName = "returnItem", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.ReturnItem")
+    @ResponseWrapper(localName = "returnItemResponse", targetNamespace = "http://soap.librarySystem.com/", className = "com.librarySystem.soap.ReturnItemResponse")
     @Action(input = "http://soap.librarySystem.com/SOAPService/returnItemRequest", output = "http://soap.librarySystem.com/SOAPService/returnItemResponse")
     public boolean returnItem(
         @WebParam(name = "arg0", targetNamespace = "")
